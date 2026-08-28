@@ -62,11 +62,24 @@
     color: var(--ink-soft);
   }
   .masthead .brand span { color: var(--ink); }
+  .masthead-end {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+  }
+  #vote-again-slot:empty { display: none; }
+  #vote-again-slot .btn.link {
+    font-size: 14px;
+    padding: 0;
+    white-space: nowrap;
+  }
 
   /* ---- progress ticks ------------------------------------------------------ */
   .ticks {
     list-style: none;
     display: flex;
+    flex-direction: row;
     gap: 8px;
     padding: 0;
     margin: 0;
@@ -76,6 +89,14 @@
     height: 4px;
     background: var(--hair);
     border-radius: 2px;
+  }
+  .ticks.ticks--vertical {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ticks.ticks--vertical li {
+    width: 4px;
+    height: 22px;
   }
   .ticks li.done { background: var(--accent); }
   .ticks li.now  { background: var(--ink-soft); }
@@ -264,14 +285,37 @@
   .capture .err  { color: #8a2b1f; font-size: 14px; margin: 12px 0 0; }
   .capture .ok   { margin: 0; }
 
-  .vote-again { margin-top: 34px; }
+  .duel-body {
+    display: block;
+  }
+  .duel-ticks {
+    display: none;
+  }
 
   @media (max-width: 760px) {
     .wrap { padding: 20px 18px 64px; }
     header.masthead { margin-bottom: 22px; padding-bottom: 10px; }
     .masthead .brand { font-size: 10px; }
     .question { font-size: clamp(1.3rem, 6vw, 1.7rem); margin: 2px 0 18px; }
-    .shelf { flex-direction: column; gap: 20px; align-items: center; max-width: none; }
+    .duel-body {
+      display: flex;
+      align-items: stretch;
+      gap: 14px;
+      justify-content: center;
+    }
+    .duel-body .shelf {
+      flex: 1 1 auto;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      max-width: 220px;
+    }
+    .duel-ticks {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      padding: 4px 0;
+    }
     .slot { width: 100%; max-width: 220px; padding-bottom: 12px; }
     .hint { margin-top: 18px; }
   }
@@ -285,7 +329,10 @@
 <div class="wrap">
   <header class="masthead">
     <div class="brand"><span>gâteau patate</span> — packaging test</div>
-    <ol class="ticks" id="ticks" aria-hidden="true"></ol>
+    <div class="masthead-end">
+      <div id="vote-again-slot"></div>
+      <ol class="ticks" id="ticks" aria-hidden="true"></ol>
+    </div>
   </header>
   <main id="app" aria-live="polite"></main>
 </div>
@@ -301,8 +348,8 @@
    Leave both blank to run standalone against localStorage (a console notice
    prints when that happens).
 =========================================================================== */
-const SUPABASE_URL      = '';
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL      = 'https://wootkprvnxkdvcwncwil.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_E0YJoQnlDPQiyE_IL7UjLw_Z3pt7NuM';
 
 /* ===========================================================================
    DESIGNS — the whole test surface. To add a design: append one object here and
@@ -505,8 +552,25 @@ function commitVote(winnerId, loserId) {
 =========================================================================== */
 const app = document.getElementById('app');
 const ticksEl = document.getElementById('ticks');
+const ticksHome = document.querySelector('.masthead-end');
+const voteAgainSlot = document.getElementById('vote-again-slot');
+const mobileLayout = window.matchMedia('(max-width: 760px)');
 
 function designById(id) { return DESIGNS.find(d => d.id === id); }
+
+function parkTicks() {
+  ticksEl.classList.remove('ticks--vertical');
+  ticksHome.appendChild(ticksEl);
+}
+
+function placeTicksBesideDuel(duelTicksSlot) {
+  if (mobileLayout.matches && duelTicksSlot) {
+    duelTicksSlot.appendChild(ticksEl);
+    ticksEl.classList.add('ticks--vertical');
+  } else {
+    parkTicks();
+  }
+}
 
 function renderTicks(show) {
   ticksEl.innerHTML = '';
@@ -517,6 +581,10 @@ function renderTicks(show) {
     else if (i === state.round) li.className = 'now';
     ticksEl.appendChild(li);
   }
+}
+
+function clearVoteAgain() {
+  voteAgainSlot.replaceChildren();
 }
 
 function packButton(design, side) {
@@ -546,6 +614,7 @@ let locked = false;
 
 function renderDuel() {
   locked = false;
+  clearVoteAgain();
   ensurePair();
   if (!state.current) { renderLeaderboard(); return; }   // no designs configured
   renderTicks(true);
@@ -554,6 +623,9 @@ function renderDuel() {
   const stage = document.createElement('div');
   stage.className = 'stage';
   stage.innerHTML = '<h1 class="question">Which one would you pick off the shelf?</h1>';
+
+  const duelBody = document.createElement('div');
+  duelBody.className = 'duel-body';
 
   const shelf = document.createElement('div');
   shelf.className = 'shelf';
@@ -572,11 +644,17 @@ function renderDuel() {
   leftBtn.addEventListener('click', () => choose(leftBtn, rightBtn));
   rightBtn.addEventListener('click', () => choose(rightBtn, leftBtn));
 
+  const duelTicks = document.createElement('aside');
+  duelTicks.className = 'duel-ticks';
+  duelTicks.setAttribute('aria-hidden', 'true');
+  duelBody.append(shelf, duelTicks);
+  placeTicksBesideDuel(duelTicks);
+
   const hint = document.createElement('p');
   hint.className = 'hint';
   hint.innerHTML = 'Pick with <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>1</kbd> <kbd>2</kbd>.';
 
-  stage.append(shelf, hint);
+  stage.append(duelBody, hint);
   app.replaceChildren(stage);
 }
 
@@ -600,6 +678,8 @@ function choose(winnerBtn, loserBtn) {
 }
 
 function renderQuestions() {
+  parkTicks();
+  clearVoteAgain();
   renderTicks(true);
   const panel = document.createElement('section');
   panel.className = 'stage panel';
@@ -662,6 +742,8 @@ function aggregate(votes) {
 }
 
 async function renderLeaderboard({ resultsOnly = false } = {}) {
+  parkTicks();
+  clearVoteAgain();
   renderTicks(false);
 
   const loading = document.createElement('div');
@@ -770,8 +852,6 @@ function appendCapture() {
 }
 
 function appendVoteAgain() {
-  const p = document.createElement('p');
-  p.className = 'vote-again';
   const btn = document.createElement('button');
   btn.className = 'btn link';
   btn.type = 'button';
@@ -781,8 +861,7 @@ function appendVoteAgain() {
     if (location.hash) { location.hash = ''; }
     renderDuel();
   });
-  p.appendChild(btn);
-  app.append(p);
+  voteAgainSlot.replaceChildren(btn);
 }
 
 /* ===========================================================================
@@ -816,6 +895,9 @@ async function main() {
   preloadArtwork();
   window.addEventListener('hashchange', route);
   window.addEventListener('keydown', onKey);
+  mobileLayout.addEventListener('change', () => {
+    if (state?.phase === 'duel') renderDuel();
+  });
   route();
 }
 
