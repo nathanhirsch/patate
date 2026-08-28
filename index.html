@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which one would you pick?</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------------------------------------------------------------------------
+     Near-neutral chrome. The packaging designs vary by colour, so the interface
+     must not. Bone paper, ink text, hairline rules, one cool accent used only on
+     the progress ticks and the leaderboard bars — never next to the artwork.
+  --------------------------------------------------------------------------- */
+  :root {
+    --paper:    #f3efe6;
+    --paper-2:  #ece7db;
+    --ink:      #201f1c;
+    --ink-soft: #59564d;
+    --hair:     #d6d0c2;
+    --accent:   #35566e;   /* cool slate — ticks and bars only */
+    --maxw:     1040px;
+    --display:  'Fraunces', Georgia, 'Times New Roman', serif;
+    --ui:       'Hanken Grotesk', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --mono:     'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--ui);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 40px 24px 96px;
+  }
+  .count, .ticks, .wl, .bar-num, .meta { font-variant-numeric: tabular-nums; }
+
+  header.masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 14px;
+    margin-bottom: 44px;
+  }
+  .masthead .brand {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .masthead .brand span { color: var(--ink); }
+
+  /* ---- progress ticks ------------------------------------------------------ */
+  .ticks {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+  }
+  .ticks li {
+    width: 22px;
+    height: 4px;
+    background: var(--hair);
+    border-radius: 2px;
+  }
+  .ticks li.done { background: var(--accent); }
+  .ticks li.now  { background: var(--ink-soft); }
+
+  /* ---- duel -------------------------------------------------------------- */
+  .stage { animation: rise .32s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .question {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.7rem, 4.4vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 8px 0 40px;
+    max-width: 18ch;
+  }
+
+  .shelf {
+    display: flex;
+    gap: 56px;
+    align-items: flex-end;
+    max-width: 680px;
+  }
+  .slot {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    padding-bottom: 18px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .slot::after {                       /* soft contact shadow under the pack */
+    content: "";
+    position: absolute;
+    left: 10%; right: 10%;
+    bottom: 10px;
+    height: 20px;
+    background: radial-gradient(ellipse at center, rgba(20,18,14,.28), rgba(20,18,14,0) 72%);
+    filter: blur(1.5px);
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 0;
+  }
+  .slot:hover::after, .slot:focus-within::after { opacity: .8; transform: scaleX(1.06); }
+
+  .pack {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;              /* reserves space — no layout shift on load */
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--hair);
+    background: var(--paper-2);
+    cursor: pointer;
+    transition: transform .2s cubic-bezier(.33,1,.68,1);
+    border-radius: 2px;
+  }
+  .pack img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                /* artwork should be produced at 4:5 */
+    background: var(--paper-2);
+  }
+  .pack .ph {                          /* fallback when the image is missing */
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background: #cdc9bf;
+    color: #6b6860;
+    font-family: var(--mono);
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .pack.missing img { display: none; }
+  .pack.missing .ph { display: flex; }
+
+  .pack:hover, .pack:focus-visible { transform: translateY(-10px); }
+  .pack:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+  .pack.chosen { animation: liftoff .42s cubic-bezier(.4,0,.2,1) both; pointer-events: none; }
+  .pack.settle { animation: settle .42s ease both; }
+  @keyframes liftoff { to { transform: translateY(-175%); opacity: 0; } }
+  @keyframes settle  { from { transform: translateY(-10px); } to { transform: translateY(0); } }
+
+  .hint {
+    margin-top: 26px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .hint kbd {
+    font-family: var(--mono);
+    font-size: 12px;
+    border: 1px solid var(--hair);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 5px;
+    background: var(--paper-2);
+  }
+
+  /* ---- questions -------------------------------------------------------- */
+  .panel { max-width: 560px; }
+  .panel h2, .board h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.6vw, 2rem);
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .panel p.lead { color: var(--ink-soft); margin: 0 0 28px; }
+  .field { margin-bottom: 22px; }
+  .field label { display: block; font-weight: 500; margin-bottom: 8px; }
+  input[type="text"], input[type="email"] {
+    width: 100%;
+    font: inherit;
+    padding: 11px 12px;
+    border: 1px solid var(--ink-soft);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--ink);
+  }
+  input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-color: var(--ink); }
+
+  .row { display: flex; gap: 14px; align-items: center; margin-top: 30px; }
+  button.btn {
+    font: inherit;
+    font-weight: 500;
+    padding: 11px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid var(--ink);
+  }
+  button.btn.primary { background: var(--ink); color: var(--paper); }
+  button.btn.ghost   { background: transparent; color: var(--ink); }
+  button.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  button.btn.link {
+    border: none; background: none; padding: 6px 0;
+    color: var(--ink); text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  /* ---- leaderboard ----------------------------------------------------- */
+  .board { max-width: 620px; }
+  .board .meta {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 4px 0 28px;
+  }
+  .board ol { list-style: none; padding: 0; margin: 0; }
+  .board li {
+    display: grid;
+    grid-template-columns: 22px 46px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 0;
+    border-top: 1px solid var(--hair);
+  }
+  .board li:last-child { border-bottom: 1px solid var(--hair); }
+  .board .rank { font-family: var(--mono); color: var(--ink-soft); font-size: 13px; }
+  .board .thumb {
+    width: 46px; height: 46px;
+    object-fit: cover;
+    border: 1px solid var(--hair);
+    background: #cdc9bf;
+    border-radius: 2px;
+  }
+  .board .track {
+    height: 10px;
+    background: var(--paper-2);
+    border: 1px solid var(--hair);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .board .fill { height: 100%; background: var(--accent); }
+  .board .wl { font-family: var(--mono); font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+
+  .capture { max-width: 620px; margin-top: 44px; border-top: 1px solid var(--hair); padding-top: 24px; }
+  .capture form { display: flex; gap: 12px; flex-wrap: wrap; }
+  .capture input[type="email"] { flex: 1 1 240px; }
+  .capture .fine { color: var(--ink-soft); font-size: 14px; margin: 12px 0 0; }
+  .capture .err  { color: #8a2b1f; font-size: 14px; margin: 12px 0 0; }
+  .capture .ok   { margin: 0; }
+
+  .vote-again { margin-top: 34px; }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 20px 18px 64px; }
+    header.masthead { margin-bottom: 22px; padding-bottom: 10px; }
+    .masthead .brand { font-size: 10px; }
+    .question { font-size: clamp(1.3rem, 6vw, 1.7rem); margin: 2px 0 18px; }
+    .shelf { flex-direction: column; gap: 20px; align-items: center; max-width: none; }
+    .slot { width: 100%; max-width: 220px; padding-bottom: 12px; }
+    .hint { margin-top: 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand"><span>gâteau patate</span> — packaging test</div>
+    <ol class="ticks" id="ticks" aria-hidden="true"></ol>
+  </header>
+  <main id="app" aria-live="polite"></main>
+</div>
+
+<noscript><p style="max-width:560px">This test needs JavaScript to run.</p></noscript>
+
+<script type="module">
+/* ===========================================================================
+   CONFIG — public by design.
+   Paste your Supabase project URL and anon (public) key below. They are safe in
+   client code: Row Level Security (see schema.sql) is what protects the data.
+   NEVER put the service_role key here.
+   Leave both blank to run standalone against localStorage (a console notice
+   prints when that happens).
+=========================================================================== */
+const SUPABASE_URL      = '';
+const SUPABASE_ANON_KEY = '';
+
+/* ===========================================================================
+   DESIGNS — the whole test surface. To add a design: append one object here and
+   drop the matching file in /designs. Nothing else changes.
+   - id:    written to the database. Keep it short and stable. Never renumber an
+            id once voting has started.
+   - label: for your eyes only (this file + the leaderboard). Never shown during
+            a duel — naming the variable would bias the choice.
+   - img:   path to the artwork. A missing file renders a gray placeholder card.
+=========================================================================== */
+const DESIGNS = [
+  { id: 'a', label: 'Morizot Passage — vanilla bites, sand',        img: 'designs/a.png' },
+  { id: 'b', label: 'Morizot Passage — rum & vanilla bites, sage',  img: 'designs/b.png' },
+  { id: 'c', label: 'Morizot Passage — vanilla bites, lilac',       img: 'designs/c.png' },
+  { id: 'd', label: 'Morizot Passage — rum & vanilla bites, rose',  img: 'designs/d.png' },
+  { id: 'e', label: 'Morizot Passage — rum & vanilla bites, sky',   img: 'designs/e.png' },
+];
+
+const ROUNDS = 7;
+
+/* ===========================================================================
+   Storage keys + small utilities
+=========================================================================== */
+const STATE_KEY  = 'patate.state.v1';
+const VOTES_KEY  = 'patate.local.votes.v1';
+const RESP_KEY   = 'patate.local.responses.v1';
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function uuid() {
+  if (crypto.randomUUID) return crypto.randomUUID();
+  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+}
+function readJSON(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch { return fallback; }
+}
+function writeJSON(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* private mode */ }
+}
+function pushLocal(key, row) {
+  const arr = readJSON(key, []);
+  arr.push(row);
+  writeJSON(key, arr);
+}
+const pairKey = (x, y) => [x, y].sort().join('|');
+
+/* ===========================================================================
+   Data layer — Supabase when configured, localStorage otherwise. Every call is
+   wrapped: a backend outage degrades to local mode, it never blanks the screen
+   and never blocks a vote.
+=========================================================================== */
+let supabase = null;
+
+async function initSupabase() {
+  const configured = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 20;
+  if (!configured) {
+    console.info('%c[packaging test] local mode — no Supabase config, using localStorage.',
+      'color:#888');
+    return;
+  }
+  try {
+    const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+    supabase = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } catch (err) {
+    console.warn('[packaging test] could not load Supabase client — falling back to local mode.', err);
+    supabase = null;
+  }
+}
+
+/* Fire-and-forget. Each vote is its own row, written immediately. */
+function recordVote(round, winner, loser) {
+  const payload = { session_id: state.sessionId, round, winner, loser };
+  if (!supabase) { pushLocal(VOTES_KEY, payload); return; }
+  supabase.from('votes').insert(payload).then(
+    ({ error }) => { if (error) { console.warn('[packaging test] vote write failed — kept locally.', error); pushLocal(VOTES_KEY, payload); } },
+    (err) => { console.warn('[packaging test] vote write threw — kept locally.', err); pushLocal(VOTES_KEY, payload); }
+  );
+}
+
+async function recordResponse(fields) {
+  const payload = { session_id: state.sessionId, guess: null, why: null, email: null, ...fields };
+  if (!supabase) { pushLocal(RESP_KEY, payload); return; }
+  try {
+    const { error } = await supabase.from('responses').insert(payload);
+    if (error) throw error;
+  } catch (err) {
+    console.warn('[packaging test] response write failed — kept locally.', err);
+    pushLocal(RESP_KEY, payload);
+  }
+}
+
+async function fetchVotes() {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from('votes').select('session_id,winner,loser');
+      if (error) throw error;
+      return data || [];
+    } catch (err) {
+      console.warn('[packaging test] could not read votes — showing local votes.', err);
+    }
+  }
+  return readJSON(VOTES_KEY, []);
+}
+
+/* ===========================================================================
+   Session state — one object, mirrored to localStorage so a refresh resumes
+   rather than starting a new session.
+=========================================================================== */
+let state;
+
+function freshState() {
+  return {
+    sessionId: uuid(),
+    round: 0,               // rounds completed
+    phase: 'duel',          // duel -> questions -> leaderboard
+    pairCounts: {},         // "a|b" -> times shown this session
+    cycleSeen: [],          // pairs shown in the current cycle (for no-repeat)
+    appearances: {},        // design id -> times shown this session
+    current: null,          // { a, b, leftId, rightId }
+    guess: null,
+    why: null,
+    questionsDone: false,
+    emailDone: false,
+  };
+}
+function loadState() {
+  const saved = readJSON(STATE_KEY, null);
+  state = (saved && saved.sessionId) ? { ...freshState(), ...saved } : freshState();
+  save();
+}
+function save() { writeJSON(STATE_KEY, state); }
+
+function resetSession() {
+  state = freshState();
+  save();
+}
+
+/* ===========================================================================
+   Pair selection
+   - the unordered pair this session has seen least (no repeat until the pool is
+     exhausted, then a new cycle starts)
+   - ties broken toward the designs shown least this session
+   - then at random
+   - left / right assigned independently every round
+=========================================================================== */
+function allPairs() {
+  const ids = DESIGNS.map(d => d.id);
+  const out = [];
+  for (let i = 0; i < ids.length; i++)
+    for (let j = i + 1; j < ids.length; j++)
+      out.push([ids[i], ids[j]]);
+  return out;
+}
+
+function pickPair() {
+  const all = allPairs();
+  if (all.length === 0) return null;
+
+  let pool = all.filter(p => !state.cycleSeen.includes(pairKey(p[0], p[1])));
+  if (pool.length === 0) {                 // every pair seen — begin a new cycle
+    state.cycleSeen = [];
+    pool = all.slice();
+  }
+
+  const timesShown = p => state.pairCounts[pairKey(p[0], p[1])] || 0;
+  const minShown = Math.min(...pool.map(timesShown));
+  pool = pool.filter(p => timesShown(p) === minShown);
+
+  const seenDesign = id => state.appearances[id] || 0;
+  const minDesign = Math.min(...pool.map(p => seenDesign(p[0]) + seenDesign(p[1])));
+  pool = pool.filter(p => seenDesign(p[0]) + seenDesign(p[1]) === minDesign);
+
+  const [x, y] = pool[Math.floor(Math.random() * pool.length)];
+  const flip = Math.random() < 0.5;
+  return { a: x, b: y, leftId: flip ? y : x, rightId: flip ? x : y };
+}
+
+function ensurePair() {
+  if (!state.current) { state.current = pickPair(); save(); }
+}
+
+function commitVote(winnerId, loserId) {
+  const { a, b } = state.current;
+  const k = pairKey(a, b);
+  state.pairCounts[k] = (state.pairCounts[k] || 0) + 1;
+  state.cycleSeen.push(k);
+  state.appearances[a] = (state.appearances[a] || 0) + 1;
+  state.appearances[b] = (state.appearances[b] || 0) + 1;
+  state.round += 1;
+  recordVote(state.round, winnerId, loserId);   // round is 1-indexed in the DB
+  state.current = null;
+  if (state.round >= ROUNDS) state.phase = 'questions';
+  save();
+}
+
+/* ===========================================================================
+   Rendering
+=========================================================================== */
+const app = document.getElementById('app');
+const ticksEl = document.getElementById('ticks');
+
+function designById(id) { return DESIGNS.find(d => d.id === id); }
+
+function renderTicks(show) {
+  ticksEl.innerHTML = '';
+  if (!show) return;
+  for (let i = 0; i < ROUNDS; i++) {
+    const li = document.createElement('li');
+    if (i < state.round) li.className = 'done';
+    else if (i === state.round) li.className = 'now';
+    ticksEl.appendChild(li);
+  }
+}
+
+function packButton(design, side) {
+  const btn = document.createElement('button');
+  btn.className = 'pack';
+  btn.type = 'button';
+  btn.setAttribute('aria-label', side === 'left' ? 'Choose the pack on the left' : 'Choose the pack on the right');
+  btn.dataset.id = design.id;
+
+  const img = new Image();
+  img.src = design.img;
+  img.alt = '';
+  img.width = 800; img.height = 1000;
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.addEventListener('error', () => btn.classList.add('missing'));
+
+  const ph = document.createElement('span');
+  ph.className = 'ph';
+  ph.textContent = design.id;
+
+  btn.append(img, ph);
+  return btn;
+}
+
+let locked = false;
+
+function renderDuel() {
+  locked = false;
+  ensurePair();
+  if (!state.current) { renderLeaderboard(); return; }   // no designs configured
+  renderTicks(true);
+
+  const { leftId, rightId } = state.current;
+  const stage = document.createElement('div');
+  stage.className = 'stage';
+  stage.innerHTML = '<h1 class="question">Which one would you pick off the shelf?</h1>';
+
+  const shelf = document.createElement('div');
+  shelf.className = 'shelf';
+
+  const leftSlot = document.createElement('div');
+  leftSlot.className = 'slot';
+  const rightSlot = document.createElement('div');
+  rightSlot.className = 'slot';
+
+  const leftBtn = packButton(designById(leftId), 'left');
+  const rightBtn = packButton(designById(rightId), 'right');
+  leftSlot.appendChild(leftBtn);
+  rightSlot.appendChild(rightBtn);
+  shelf.append(leftSlot, rightSlot);
+
+  leftBtn.addEventListener('click', () => choose(leftBtn, rightBtn));
+  rightBtn.addEventListener('click', () => choose(rightBtn, leftBtn));
+
+  const hint = document.createElement('p');
+  hint.className = 'hint';
+  hint.innerHTML = 'Pick with <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>1</kbd> <kbd>2</kbd>.';
+
+  stage.append(shelf, hint);
+  app.replaceChildren(stage);
+}
+
+function choose(winnerBtn, loserBtn) {
+  if (locked) return;
+  locked = true;
+
+  const winnerId = winnerBtn.dataset.id;
+  const loserId = loserBtn.dataset.id;
+  commitVote(winnerId, loserId);
+
+  const advance = () => {
+    if (state.phase === 'questions') renderQuestions();
+    else renderDuel();
+  };
+
+  if (reducedMotion) { advance(); return; }
+  winnerBtn.classList.add('chosen');
+  loserBtn.classList.add('settle');
+  setTimeout(advance, 440);
+}
+
+function renderQuestions() {
+  renderTicks(true);
+  const panel = document.createElement('section');
+  panel.className = 'stage panel';
+  panel.innerHTML = `
+    <h2>Two quick questions</h2>
+    <p class="lead">Both optional. Skip straight to the results if you like.</p>
+    <div class="field">
+      <label for="q-guess">What do you think is inside?</label>
+      <input type="text" id="q-guess" autocomplete="off" maxlength="200">
+    </div>
+    <div class="field">
+      <label for="q-why">What made you pick the ones you picked?</label>
+      <input type="text" id="q-why" autocomplete="off" maxlength="300">
+    </div>
+    <div class="row">
+      <button class="btn primary" id="q-done" type="button">Done</button>
+      <button class="btn ghost" id="q-skip" type="button">Skip</button>
+    </div>`;
+  app.replaceChildren(panel);
+
+  const guessEl = panel.querySelector('#q-guess');
+  const whyEl = panel.querySelector('#q-why');
+
+  panel.querySelector('#q-done').addEventListener('click', () => {
+    const guess = guessEl.value.trim();
+    const why = whyEl.value.trim();
+    state.guess = guess || null;
+    state.why = why || null;
+    state.questionsDone = true;
+    state.phase = 'leaderboard';
+    save();
+    if (guess || why) recordResponse({ guess: state.guess, why: state.why });
+    renderLeaderboard();
+  });
+  panel.querySelector('#q-skip').addEventListener('click', () => {
+    state.questionsDone = true;
+    state.phase = 'leaderboard';
+    save();
+    renderLeaderboard();
+  });
+  guessEl.focus();
+}
+
+function aggregate(votes) {
+  const stats = new Map(DESIGNS.map(d => [d.id, { id: d.id, wins: 0, losses: 0 }]));
+  for (const v of votes) {
+    if (stats.has(v.winner)) stats.get(v.winner).wins++;
+    if (stats.has(v.loser)) stats.get(v.loser).losses++;
+  }
+  const rows = [...stats.values()].map(s => {
+    const n = s.wins + s.losses;
+    return { ...s, appearances: n, smoothed: (s.wins + 1) / (s.wins + s.losses + 2) };
+  });
+  rows.sort((x, y) => y.smoothed - x.smoothed || y.wins - x.wins);
+  return {
+    rows,
+    sessions: new Set(votes.map(v => v.session_id)).size,
+    total: votes.length,
+  };
+}
+
+async function renderLeaderboard({ resultsOnly = false } = {}) {
+  renderTicks(false);
+
+  const loading = document.createElement('div');
+  loading.className = 'stage board';
+  loading.innerHTML = '<h2>Live standings</h2><p class="meta">loading&hellip;</p>';
+  app.replaceChildren(loading);
+
+  const votes = await fetchVotes();
+  const { rows, sessions, total } = aggregate(votes);
+
+  const board = document.createElement('section');
+  board.className = 'stage board';
+
+  if (total === 0) {
+    board.innerHTML = '<h2>Live standings</h2><p class="meta">No votes yet.</p>';
+    app.replaceChildren(board);
+    if (!resultsOnly) appendVoteAgain();
+    return;
+  }
+
+  const h = document.createElement('h2');
+  h.textContent = 'Live standings';
+  const meta = document.createElement('p');
+  meta.className = 'meta';
+  meta.textContent = `${sessions} ${sessions === 1 ? 'session' : 'sessions'} · ${total} ${total === 1 ? 'vote' : 'votes'}`;
+
+  const ol = document.createElement('ol');
+  const max = Math.max(...rows.map(r => r.smoothed));
+  rows.forEach((r, i) => {
+    const d = designById(r.id);
+    const li = document.createElement('li');
+
+    const rank = document.createElement('span');
+    rank.className = 'rank';
+    rank.textContent = String(i + 1);
+
+    const thumb = new Image();
+    thumb.className = 'thumb';
+    thumb.src = d ? d.img : '';
+    thumb.alt = '';
+    thumb.width = 46; thumb.height = 46;
+    thumb.loading = 'lazy';
+    thumb.addEventListener('error', () => { thumb.style.visibility = 'hidden'; });
+
+    const track = document.createElement('div');
+    track.className = 'track';
+    const fill = document.createElement('div');
+    fill.className = 'fill';
+    fill.style.width = (max ? (r.smoothed / max) * 100 : 0).toFixed(1) + '%';
+    track.appendChild(fill);
+
+    const wl = document.createElement('span');
+    wl.className = 'wl';
+    wl.textContent = `${r.wins}–${r.losses}`;
+
+    li.append(rank, thumb, track, wl);
+    ol.appendChild(li);
+  });
+
+  board.append(h, meta, ol);
+  app.replaceChildren(board);
+
+  if (!resultsOnly) {
+    appendCapture();
+    appendVoteAgain();
+  }
+}
+
+function appendCapture() {
+  const box = document.createElement('section');
+  box.className = 'capture';
+
+  if (state.emailDone) {
+    box.innerHTML = '<p class="ok">Thanks — we will be in touch.</p>';
+    app.append(box);
+    return;
+  }
+
+  box.innerHTML = `
+    <form novalidate>
+      <input type="email" id="cap-email" placeholder="you@example.com" autocomplete="email" aria-label="Email address">
+      <button class="btn primary" type="submit">Keep me posted</button>
+    </form>
+    <p class="fine">Occasional updates and tasting invites. Nothing else.</p>`;
+  app.append(box);
+
+  const form = box.querySelector('form');
+  const input = box.querySelector('#cap-email');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = input.value.trim();
+    box.querySelector('.err')?.remove();
+    if (!email.includes('@')) {
+      const err = document.createElement('p');
+      err.className = 'err';
+      err.textContent = 'That does not look like an email address.';
+      form.after(err);
+      return;
+    }
+    state.emailDone = true;
+    save();
+    recordResponse({ email });
+    box.replaceChildren(Object.assign(document.createElement('p'),
+      { className: 'ok', textContent: 'Thanks — we will be in touch.' }));
+  });
+}
+
+function appendVoteAgain() {
+  const p = document.createElement('p');
+  p.className = 'vote-again';
+  const btn = document.createElement('button');
+  btn.className = 'btn link';
+  btn.type = 'button';
+  btn.textContent = 'Vote again';
+  btn.addEventListener('click', () => {
+    resetSession();
+    if (location.hash) { location.hash = ''; }
+    renderDuel();
+  });
+  p.appendChild(btn);
+  app.append(p);
+}
+
+/* ===========================================================================
+   Keyboard — only while a duel is on screen
+=========================================================================== */
+function onKey(e) {
+  if (state?.phase !== 'duel' || location.hash === '#results') return;
+  const packs = app.querySelectorAll('.pack');
+  if (packs.length < 2) return;
+  if (e.key === 'ArrowLeft' || e.key === '1') { e.preventDefault(); choose(packs[0], packs[1]); }
+  else if (e.key === 'ArrowRight' || e.key === '2') { e.preventDefault(); choose(packs[1], packs[0]); }
+}
+
+/* ===========================================================================
+   Routing + boot
+=========================================================================== */
+function route() {
+  if (location.hash === '#results') { renderLeaderboard({ resultsOnly: true }); return; }
+  if (state.phase === 'questions' && !state.questionsDone) { renderQuestions(); return; }
+  if (state.phase === 'questions' || state.phase === 'leaderboard') { renderLeaderboard(); return; }
+  renderDuel();
+}
+
+function preloadArtwork() {
+  for (const d of DESIGNS) { const im = new Image(); im.src = d.img; }
+}
+
+async function main() {
+  await initSupabase();
+  loadState();
+  preloadArtwork();
+  window.addEventListener('hashchange', route);
+  window.addEventListener('keydown', onKey);
+  route();
+}
+
+main();
+</script>
+</body>
+</html>
