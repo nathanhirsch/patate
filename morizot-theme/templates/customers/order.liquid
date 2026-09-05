@@ -1,0 +1,45 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <p class="mp-breadcrumb"><a href="{{ routes.account_url }}">{{ 'customer.account.return' | t }}</a></p>
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">{{ 'customer.orders.title' | t }}</p>
+      <h1 class="mp-page__title">{{ 'customer.order.title' | t: name: order.name }}</h1>
+      <p class="mp-mono mp-mono--dim">{{ 'customer.order.date_html' | t: date: order.created_at | date: '%B %-d, %Y' }}</p>
+    </div>
+
+    <table class="mp-order-table">
+      <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td><a href="{{ line_item.product.url }}">{{ line_item.title | escape }}</a></td>
+            <td>{{ line_item.price | money }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3">{{ 'customer.order.subtotal' | t }}</td><td>{{ order.line_items_subtotal_price | money }}</td></tr>
+        {%- for shipping_method in order.shipping_methods -%}
+          <tr><td colspan="3">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</td><td>{{ shipping_method.price | money }}</td></tr>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+          <tr><td colspan="3">{{ 'customer.order.tax' | t }} ({{ tax_line.title }})</td><td>{{ tax_line.price | money }}</td></tr>
+        {%- endfor -%}
+        <tr><td colspan="3"><b>{{ 'customer.order.total' | t }}</b></td><td><b>{{ order.total_net_amount | money }}</b></td></tr>
+      </tfoot>
+    </table>
+
+    <div class="mp-account-grid" style="margin-top:var(--mp-flow)">
+      <div>
+        <p class="mp-mono mp-mono--dim">Shipping address</p>
+        <div class="mp-body" style="font-size:14px">{{ order.shipping_address | format_address }}</div>
+      </div>
+      <div>
+        <p class="mp-mono mp-mono--dim">Billing address</p>
+        <div class="mp-body" style="font-size:14px">{{ order.billing_address | format_address }}</div>
+      </div>
+    </div>
+  </div>
+</div>

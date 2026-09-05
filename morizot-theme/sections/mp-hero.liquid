@@ -1,0 +1,95 @@
+{% comment %}
+  mp-hero — stage 1. Title, product photograph, the cream buy bar floating
+  over the seam, then the claim band. Mobile stacks in that order; from 900px
+  the type takes the left column and the photograph the right.
+
+  Add to cart is the native {% form 'product' %} pattern: it posts variant IDs
+  and (when present) a selling plan, so subscription, bundle and cart apps all
+  work. Works with JavaScript disabled.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- liquid
+  assign s = section.settings
+  assign product = s.product
+  assign v = product.selected_or_first_available_variant
+-%}
+<div class="mp">
+  <section class="mp-hero" aria-labelledby="mp-hero-h-{{ section.id }}">
+    <div class="mp-hero__copy">
+      <p class="mp-mono mp-mono--accent mp-reveal">{{ s.eyebrow | escape }}</p>
+      <h1 id="mp-hero-h-{{ section.id }}" class="mp-display mp-reveal" style="--mp-stagger:60ms;">{{ s.title }}</h1>
+      {%- if s.deck != blank -%}
+        <p class="mp-deck mp-reveal" style="--mp-stagger:120ms;">{{ s.deck | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="mp-hero__media mp-reveal">
+      {%- if s.image != blank -%}
+        {{ s.image | image_url: width: 1800 | image_tag: sizes: '(min-width: 900px) 50vw, 100vw', widths: '600,900,1200,1600,1800', alt: s.image.alt | default: product.title }}
+      {%- elsif product.featured_image -%}
+        {{ product.featured_image | image_url: width: 1800 | image_tag: sizes: '(min-width: 900px) 50vw, 100vw', widths: '600,900,1200,1600,1800', alt: product.title }}
+      {%- endif -%}
+      {%- if s.fig_label != blank -%}<span class="mp-hero__fig mp-mono">{{ s.fig_label | escape }}</span>{%- endif -%}
+    </div>
+
+    <div class="mp-hero__buy">
+      {%- if product != blank -%}
+        {%- form 'product', product, id: 'mp-hero-form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ v.id }}">
+          {%- if product.selling_plan_groups.size > 0 and s.use_subscription -%}
+            {%- assign plan = product.selling_plan_groups.first.selling_plans.first -%}
+            <input type="hidden" name="selling_plan" value="{{ plan.id }}">
+          {%- endif -%}
+          <div class="mp-buy">
+            <div style="flex:1">
+              <div class="mp-buy__price">{{ s.offer_title | escape }} — {{ v.price | money }}</div>
+              <div class="mp-buy__sub">{{ s.offer_note | escape }}</div>
+            </div>
+            <button type="submit" name="add" class="mp-buy__add" aria-label="{{ s.button_label | escape }}"{% unless v.available %} disabled aria-disabled="true"{% endunless %}>+</button>
+          </div>
+        {%- endform -%}
+        <p class="mp-note" style="margin-top:12px;">{{ s.ship_note | escape }} · <a href="{{ product.url }}">Full details</a></p>
+      {%- else -%}
+        <div class="mp-buy">
+          <div style="flex:1"><div class="mp-buy__price">{{ s.offer_title | escape }}</div><div class="mp-buy__sub">Connect a product in <strong>MP Hero → Product</strong>.</div></div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {% render 'mp-stats',
+       stat_1_value: s.stat_1_value, stat_1_label: s.stat_1_label,
+       stat_2_value: s.stat_2_value, stat_2_label: s.stat_2_label,
+       stat_3_value: s.stat_3_value, stat_3_label: s.stat_3_label %}
+  </section>
+  {%- if s.body != blank -%}
+    <div class="mp-wrap" style="padding-top:22px;"><p class="mp-body mp-reveal">{{ s.body | escape }}</p></div>
+  {%- endif -%}
+</div>
+{% schema %}
+{
+  "name": "MP Hero",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "checkbox", "id": "use_subscription", "label": "Preselect first subscription plan", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Morizot Passage" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "Sweet potato<br><em>vanilla</em> fuel" },
+    { "type": "text", "id": "deck", "label": "Deck", "default": "A pâtissier's sweet potato vanilla cake, dense with carbohydrate and protein." },
+    { "type": "image_picker", "id": "image", "label": "Hero photograph" },
+    { "type": "text", "id": "fig_label", "label": "Figure label", "default": "Fig. 1 — the cake" },
+    { "type": "text", "id": "offer_title", "label": "Offer title", "default": "Box of 6" },
+    { "type": "text", "id": "offer_note", "label": "Offer note", "default": "or 12 for $50 · subscribe & save 15%" },
+    { "type": "text", "id": "button_label", "label": "Add-to-cart label", "default": "Add to bag" },
+    { "type": "text", "id": "ship_note", "label": "Shipping note", "default": "Ships Mon–Wed · fresh 10 days" },
+    { "type": "header", "content": "Claim band" },
+    { "type": "text", "id": "stat_1_value", "label": "Value 1", "default": "40<span>g</span>" },
+    { "type": "text", "id": "stat_1_label", "label": "Label 1", "default": "Carbs / serving" },
+    { "type": "text", "id": "stat_2_value", "label": "Value 2", "default": "3<span>g</span>" },
+    { "type": "text", "id": "stat_2_label", "label": "Label 2", "default": "Protein / serving" },
+    { "type": "text", "id": "stat_3_value", "label": "Value 3", "default": "Grain" },
+    { "type": "text", "id": "stat_3_label", "label": "Label 3", "default": "Free" },
+    { "type": "textarea", "id": "body", "label": "Standfirst paragraph" }
+  ],
+  "presets": [{ "name": "MP Hero" }]
+}
+{% endschema %}

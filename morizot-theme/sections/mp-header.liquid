@@ -1,0 +1,49 @@
+{% comment %}
+  mp-header — sticky masthead. Editorial nav on the left, wordmark centre,
+  issue line + cart count right. Uses a real Shopify menu when one is chosen;
+  cart count reads the live cart so cart/upsell apps stay in sync.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <header class="mp-header">
+    <div class="mp-wrap mp-header__in">
+      <nav class="mp-header__nav mp-mono" aria-label="{{ 'general.navigation' | t | default: 'Primary' }}">
+        {%- if s.menu != blank -%}
+          {%- for link in linklists[s.menu].links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          <a href="{{ routes.all_products_collection_url }}">Shop</a>
+          <a href="/pages/the-cake">The cake</a>
+          <a href="/pages/logbook">Logbook</a>
+          <a href="/pages/team">Team</a>
+        {%- endif -%}
+      </nav>
+      <a class="mp-header__mark" href="{{ routes.root_url }}">
+        {%- if s.logo != blank -%}
+          {{ s.logo | image_url: width: 400 | image_tag: alt: shop.name, style: 'height:28px;width:auto;' }}
+        {%- else -%}
+          {{ s.wordmark | default: shop.name | escape }}
+        {%- endif -%}
+      </a>
+      <div class="mp-header__meta mp-mono">
+        <span class="mp-issue mp-mono--dim">{{ s.issue | escape }}</span>
+        <a href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a>
+      </div>
+    </div>
+  </header>
+</div>
+{% schema %}
+{
+  "name": "MP Header",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (optional)" },
+    { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "Morizot Passage" },
+    { "type": "link_list", "id": "menu", "label": "Navigation menu" },
+    { "type": "text", "id": "issue", "label": "Issue line", "default": "N° 01 — Fall 2026" }
+  ],
+  "presets": [{ "name": "MP Header" }]
+}
+{% endschema %}

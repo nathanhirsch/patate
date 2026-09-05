@@ -1,0 +1,55 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <p class="mp-breadcrumb"><a href="{{ routes.account_url }}">{{ 'customer.account.return' | t }}</a></p>
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">Account</p>
+      <h1 class="mp-page__title">{{ 'customer.addresses.title' | t }}</h1>
+    </div>
+
+    {%- paginate customer.addresses by 6 -%}
+      <div class="mp-account-grid">
+        <div>
+          <p class="mp-mono mp-mono--dim">{{ 'customer.addresses.add_new' | t }}</p>
+          {%- form 'customer_address', customer.new_address -%}
+            {% render 'mp-address-fields', address: customer.new_address %}
+            <label class="mp-form-note" style="display:flex;gap:8px;margin-top:12px">
+              {{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}
+            </label>
+            <button type="submit" class="mp-link-btn" style="margin-top:14px">{{ 'customer.addresses.add' | t }}</button>
+          {%- endform -%}
+        </div>
+        <div>
+          {%- for address in customer.addresses -%}
+            <div style="padding:16px 0;border-bottom:1px solid var(--mp-line)">
+              {%- if address == customer.default_address -%}<p class="mp-mono mp-mono--accent">Default</p>{%- endif -%}
+              <div class="mp-body" style="font-size:14px">{{ address | format_address }}</div>
+              <details style="margin-top:8px">
+                <summary class="mp-form-note" style="cursor:pointer">{{ 'customer.addresses.edit' | t }}</summary>
+                {%- form 'customer_address', address -%}
+                  {% render 'mp-address-fields', address: address %}
+                  <div style="display:flex;gap:10px;margin-top:12px">
+                    <button type="submit" class="mp-link-btn mp-link-btn--ghost">{{ 'customer.addresses.update' | t }}</button>
+                    <a href="#" class="mp-link-btn mp-link-btn--ghost" data-address-delete data-url="{{ address.url }}" data-confirm="{{ 'customer.addresses.delete_confirm' | t }}">{{ 'customer.addresses.delete' | t }}</a>
+                  </div>
+                {%- endform -%}
+              </details>
+            </div>
+          {%- endfor -%}
+          {% render 'mp-pagination', paginate: paginate %}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+</div>
+<script>
+  document.querySelectorAll('[data-address-delete]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      if (!window.confirm(a.dataset.confirm)) return;
+      var f = document.createElement('form');
+      f.method = 'post'; f.action = a.dataset.url;
+      f.innerHTML = '<input type="hidden" name="_method" value="delete">';
+      document.body.appendChild(f); f.submit();
+    });
+  });
+</script>

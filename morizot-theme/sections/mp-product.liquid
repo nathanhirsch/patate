@@ -1,0 +1,161 @@
+{% comment %}
+  mp-product — the product page. Photograph column + buy column from 1000px,
+  stacked with a snap gallery below that.
+
+  Ecosystem notes:
+  · One native {% form 'product' %} carries variant id, quantity and selling
+    plan, so subscription apps (Recharge, Seal, Shopify Subscriptions),
+    bundle apps and cart drawers all read it the normal way.
+  · Pack buttons are variants of the same product — no custom line items —
+    so inventory, discounts and analytics apps see standard variant sales.
+  · {"type": "@app"} blocks are supported: reviews, badges, upsells and
+    subscription widgets can be dropped inside the buy column from the theme
+    editor without touching this file.
+  · The sticky mobile bar submits the same form; no separate AJAX path.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- liquid
+  assign s = section.settings
+  assign product = section.settings.product | default: product
+  assign v = product.selected_or_first_available_variant
+-%}
+<div class="mp" data-mp-pdp data-money-format="{{ shop.money_format | escape }}">
+  <section class="mp-pdp" aria-labelledby="mp-pdp-h-{{ section.id }}">
+    <div class="mp-pdp__media">
+      {%- if product.media.size > 0 -%}
+        {%- for media in product.media limit: 5 -%}
+          <div>{{ media.preview_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 45vw, 82vw', widths: '600,900,1200,1600', alt: product.title }}</div>
+        {%- endfor -%}
+      {%- else -%}
+        <div>{% render 'mp-figure', caption: 'product photograph', ratio: '4/5', radius: '4px' %}</div>
+      {%- endif -%}
+    </div>
+    <div class="mp-pdp__dots" aria-hidden="true">
+      {%- for media in product.media limit: 5 -%}<i {% if forloop.first %}data-on{% endif %}></i>{%- endfor -%}
+    </div>
+
+    <div class="mp-pdp__panel">
+      <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+      <h1 id="mp-pdp-h-{{ section.id }}" class="mp-h2" style="font-size:clamp(2rem,4.6vw,4.5rem);">
+        {%- if s.title_html != blank -%}{{ s.title_html }}{%- else -%}{{ product.title | escape }}{%- endif -%}
+      </h1>
+      <p class="mp-body">{{ s.body | default: product.description | strip_html | truncate: 220 }}</p>
+
+      {% render 'mp-stats',
+         stat_1_value: s.stat_1_value, stat_1_label: s.stat_1_label,
+         stat_2_value: s.stat_2_value, stat_2_label: s.stat_2_label,
+         stat_3_value: s.stat_3_value, stat_3_label: s.stat_3_label %}
+
+      {%- if product != blank -%}
+        {%- form 'product', product, id: 'mp-pdp-form', novalidate: 'novalidate', data-mp-form: true -%}
+          <input type="hidden" name="id" value="{{ v.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <input type="hidden" name="selling_plan" value="">
+
+          <div class="mp-rule mp-rule--hair mp-mono mp-mono--accent" style="margin-top:20px;">
+            <span>{{ s.pack_label | escape }}</span>
+            <span class="mp-mono--dim" data-mp-unit></span>
+          </div>
+          <div class="mp-packs" role="radiogroup" aria-label="{{ s.pack_label | escape }}" style="margin-top:12px;">
+            {%- for variant in product.variants -%}
+              <button type="button" class="mp-pack" role="radio"
+                aria-checked="{% if variant == v %}true{% else %}false{% endif %}"
+                data-variant-id="{{ variant.id }}"
+                data-price="{{ variant.price }}"
+                data-count="{{ variant.metafields.custom.units.value | default: 1 }}"
+                data-available="{{ variant.available }}">
+                <span class="mp-pack__n">{{ variant.title }}</span>
+                <span class="mp-pack__s">{{ variant.price | money }}{% unless variant.available %} · {{ s.sold_out_label | escape }}{% endunless %}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+
+          {%- if product.selling_plan_groups.size > 0 -%}
+            <div class="mp-plans" role="radiogroup" aria-label="{{ s.plan_label | escape }}" style="margin-top:16px;">
+              {%- for group in product.selling_plan_groups -%}
+                {%- for plan in group.selling_plans -%}
+                  <button type="button" class="mp-plan" role="radio" aria-checked="{% if forloop.first and forloop.parentloop.first %}true{% else %}false{% endif %}"
+                    data-plan-id="{{ plan.id }}"
+                    data-discount="{{ plan.price_adjustments.first.value | default: 0 }}">
+                    <span class="mp-plan__dot"></span>
+                    <span><span class="mp-plan__t">{{ plan.name }}</span><br><span class="mp-plan__s">{{ plan.description | default: s.plan_note | escape }}</span></span>
+                  </button>
+                {%- endfor -%}
+              {%- endfor -%}
+              <button type="button" class="mp-plan" role="radio" aria-checked="false" data-plan-id="">
+                <span class="mp-plan__dot"></span>
+                <span class="mp-plan__t">{{ s.onetime_label | escape }}</span>
+              </button>
+            </div>
+          {%- endif -%}
+
+          <div data-mp-anchor style="margin-top:24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+            <button type="submit" name="add" class="mp-btn" style="flex:1;min-width:220px;" data-mp-submit
+              data-label="{{ s.button_label | escape }}" data-label-sold="{{ s.sold_out_label | escape }}"
+              {% unless v.available %}disabled aria-disabled="true"{% endunless %}>
+              <span data-mp-label>{{ s.button_label | escape }}</span> — <span data-mp-price>{{ v.price | money }}</span>
+            </button>
+            <p class="mp-note">{{ s.ship_note | escape }}</p>
+          </div>
+        {%- endform -%}
+
+        <div class="mp-sticky" role="region" aria-label="{{ s.button_label | escape }}">
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:14px;">{{ s.sticky_label | escape }}</div>
+            <div class="mp-buy__sub" data-mp-price>{{ v.price | money }}</div>
+          </div>
+          <button type="button" class="mp-sticky__cta" data-mp-sticky-submit>{{ s.button_label | escape }}</button>
+        </div>
+      {%- else -%}
+        <p class="mp-body">Connect a product in <strong>MP Product → Product</strong> to enable checkout.</p>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            <div {{ block.shopify_attributes }} style="margin-top:20px;">{% render block %}</div>
+          {%- when 'detail' -%}
+            <details class="mp-acc" {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.title | escape }}</summary>
+              <div class="mp-acc__body">{{ block.settings.body }}</div>
+            </details>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Product",
+  "tag": "div",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product (leave empty on a product template)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The cake · Fig. 1" },
+    { "type": "html", "id": "title_html", "label": "Title override (use <em>)", "default": "Sweet potato<br><em>vanilla</em> cake" },
+    { "type": "textarea", "id": "body", "label": "Description override", "default": "Roasted sweet potato, Madagascar vanilla, eggs. A French recipe, dense and moist, stable in a jersey pocket for hours." },
+    { "type": "text", "id": "pack_label", "label": "Pack label", "default": "Pack" },
+    { "type": "text", "id": "plan_label", "label": "Plan label", "default": "Delivery" },
+    { "type": "text", "id": "plan_note", "label": "Plan note", "default": "Skip or cancel anytime" },
+    { "type": "text", "id": "onetime_label", "label": "One-time label", "default": "One-time purchase" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Add to bag" },
+    { "type": "text", "id": "sold_out_label", "label": "Sold-out label", "default": "Sold out" },
+    { "type": "text", "id": "sticky_label", "label": "Sticky bar label", "default": "Box of 6 · every 2 weeks" },
+    { "type": "text", "id": "ship_note", "label": "Shipping note", "default": "Ships Mon–Wed · fresh 10 days" },
+    { "type": "header", "content": "Claim band" },
+    { "type": "text", "id": "stat_1_value", "label": "Value 1", "default": "40<span>g</span>" },
+    { "type": "text", "id": "stat_1_label", "label": "Label 1", "default": "Carbs / serving" },
+    { "type": "text", "id": "stat_2_value", "label": "Value 2", "default": "3<span>g</span>" },
+    { "type": "text", "id": "stat_2_label", "label": "Label 2", "default": "Protein / serving" },
+    { "type": "text", "id": "stat_3_value", "label": "Value 3", "default": "Grain" },
+    { "type": "text", "id": "stat_3_label", "label": "Label 3", "default": "Free" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "detail", "name": "Detail accordion", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Shipping & freshness" },
+      { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Baked and shipped Monday to Wednesday. Fresh for 10 days at room temperature, 3 weeks refrigerated.</p>" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Product", "blocks": [{ "type": "detail" }] }]
+}
+{% endschema %}

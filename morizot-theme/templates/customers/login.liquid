@@ -1,0 +1,33 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-center">
+      <p class="mp-mono mp-mono--accent">Account</p>
+      <h1 class="mp-page__title">{{ 'customer.login.title' | t }}</h1>
+
+      {%- form 'customer_login', class: 'mp-center', style: 'width:100%' -%}
+        {%- if form.errors -%}<div class="mp-form-err">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.login.email' | t }}</span><input type="email" name="customer[email]" required></label>
+        {%- if form.password_needed -%}
+          <label class="mp-field" style="width:100%"><span>{{ 'customer.login.password' | t }}</span><input type="password" name="customer[password]"></label>
+          <a class="mp-form-note" href="#recover" onclick="document.getElementById('recover').hidden=false;return false">{{ 'customer.login.forgot_password' | t }}</a>
+        {%- endif -%}
+        <button type="submit" class="mp-link-btn" style="margin-top:14px">{{ 'customer.login.submit' | t }}</button>
+      {%- endform -%}
+
+      <div id="recover" hidden style="width:100%">
+        {%- form 'recover_customer_password', class: 'mp-center', style: 'width:100%;margin-top:20px' -%}
+          <h2 class="mp-card__title">{{ 'customer.recover_password.title' | t }}</h2>
+          <p class="mp-form-note">{{ 'customer.recover_password.subtext' | t }}</p>
+          {%- if form.posted_successfully? -%}
+            <p class="mp-form-note">{{ 'customer.recover_password.success' | t }}</p>
+          {%- else -%}
+            <label class="mp-field" style="width:100%"><span>{{ 'customer.recover_password.email' | t }}</span><input type="email" name="email" required></label>
+            <button type="submit" class="mp-link-btn mp-link-btn--ghost" style="margin-top:14px">{{ 'customer.recover_password.submit' | t }}</button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      <a class="mp-form-note" href="{{ routes.account_register_url }}">{{ 'customer.register.title' | t }}</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+{% comment %}
+  mp-where — stage 2. "Where it goes": a headline, a short standfirst and a
+  three-photograph grid (one wide, two square on mobile; 2fr 1fr 1fr on
+  desktop). Photographs are blocks so the merchant can swap them freely.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-where-h-{{ section.id }}">
+    <div class="mp-head mp-head--split mp-reveal">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h2 id="mp-where-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;">{{ s.title }}</h2>
+      </div>
+      {%- if s.body != blank -%}<p class="mp-body" style="max-width:34ch;">{{ s.body | escape }}</p>{%- endif -%}
+    </div>
+    <div class="mp-grid3">
+      {%- for block in section.blocks -%}
+        <div class="mp-grid3__cell mp-reveal" style="--mp-stagger:{{ forloop.index0 | times: 80 }}ms;" {{ block.shopify_attributes }}>
+          {% render 'mp-figure', image: block.settings.image, caption: block.settings.caption, fill: true, sizes: '(min-width: 900px) 45vw, 100vw' %}
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Where it goes",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Where it goes" },
+    { "type": "html", "id": "title", "label": "Title", "default": "Fuel we actually eat, every day." },
+    { "type": "textarea", "id": "body", "label": "Standfirst", "default": "Race mornings, between workouts, and breakfast in a jacket pocket. Made in Chicago, tested outside." }
+  ],
+  "blocks": [
+    { "type": "photo", "name": "Photograph", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "caption", "label": "Caption", "default": "Bryce Canyon · trail day" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Where it goes", "blocks": [{ "type": "photo" }, { "type": "photo" }, { "type": "photo" }] }]
+}
+{% endschema %}

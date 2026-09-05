@@ -1,3 +1,12 @@
 .DS_Store
 .env
 .env.*
+
+# local preview photos (not part of the theme)
+morizot-theme/assets/cake-slice.jpeg
+morizot-theme/assets/cakes-stack.jpeg
+morizot-theme/assets/cakes-four.jpeg
+morizot-theme/assets/life-hoodoos.jpg
+morizot-theme/assets/life-trail.jpg
+morizot-theme/assets/life-canyon.jpg
+morizot-theme/assets/life-sunrise.jpg

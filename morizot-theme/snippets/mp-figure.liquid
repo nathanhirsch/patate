@@ -1,0 +1,35 @@
+{% comment %}
+  mp-figure — one editorial figure. Renders a real image when given one and a
+  labelled stand-in when the merchant has not uploaded it yet.
+
+  Usage:
+    {% render 'mp-figure', image: block.settings.image, caption: 'BRYCE CANYON',
+       ratio: '3/2', radius: '4px', sizes: '(min-width: 900px) 40vw, 100vw' %}
+
+  fill: true  — the figure has no ratio of its own and instead fills a parent
+  that owns the box (position + size + radius). Use inside grid cells so the
+  photograph can never be a different height than its cell.
+{% endcomment %}
+{%- liquid
+  assign ratio = ratio | default: '4/5'
+  assign radius = radius | default: '8px'
+  assign sizes = sizes | default: '100vw'
+  assign box_style = 'aspect-ratio:' | append: ratio | append: ';border-radius:' | append: radius | append: ';margin:0;'
+  if fill
+    assign box_style = 'margin:0;'
+  endif
+-%}
+<figure class="mp-fig{% if fill %} mp-fig--fill{% endif %}{% unless image %} mp-fig--ph{% endunless %}" style="{{ box_style }}">
+  {%- if image -%}
+    {{ image | image_url: width: 1600 | image_tag:
+        loading: 'lazy',
+        sizes: sizes,
+        widths: '400,600,800,1000,1200,1600',
+        alt: image.alt | default: caption | escape }}
+  {%- endif -%}
+  {%- if caption != blank -%}
+    <figcaption class="mp-fig__cap">{{ caption | escape }}</figcaption>
+  {%- else -%}
+    {%- unless image -%}<figcaption class="mp-fig__cap">image</figcaption>{%- endunless -%}
+  {%- endif -%}
+</figure>

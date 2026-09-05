@@ -1,0 +1,73 @@
+{% comment %}
+  Cart — native /cart form. No AJAX, no custom line items, so cart, upsell and
+  discount apps behave exactly as they expect.
+{% endcomment %}
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">{{ 'cart.title' | t }}</p>
+      <h1 class="mp-page__title">Your bag</h1>
+    </div>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="mp-cart__empty">
+        <p class="mp-body">{{ 'cart.empty' | t }}</p>
+        <a class="mp-link-btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }}</a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" id="cart" class="mp-cart">
+        {%- for item in cart.items -%}
+          <div class="mp-cart__row">
+            <div class="mp-cart__thumb">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 176 }}" alt="{{ item.image.alt | escape }}" width="88" height="88" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div>
+              <a class="mp-cart__t" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <div class="mp-cart__meta">{{ item.variant.title | escape }}</div>
+              {%- endunless -%}
+              {%- if item.selling_plan_allocation -%}
+                <div class="mp-cart__meta">{{ item.selling_plan_allocation.selling_plan.name | escape }}</div>
+              {%- endif -%}
+              {%- for property in item.properties -%}
+                {%- unless property.last == blank or property.first[0] == '_' -%}
+                  <div class="mp-cart__meta">{{ property.first }}: {{ property.last }}</div>
+                {%- endunless -%}
+              {%- endfor -%}
+              <div class="mp-cart__qty">
+                <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="{{ 'cart.quantity' | t }}">
+              </div>
+              <a class="mp-form-note" href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}</a>
+            </div>
+            <div class="mp-cart__price">
+              {{ item.final_line_price | money }}
+              {%- if item.original_line_price != item.final_line_price -%}
+                <div class="mp-cart__meta"><s>{{ item.original_line_price | money }}</s></div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+
+        {%- if settings.cart_notes_enabled -%}
+          <label class="mp-field" for="cart-note">
+            <span>{{ 'cart.note' | t }}</span>
+            <textarea id="cart-note" name="note" rows="2">{{ cart.note }}</textarea>
+          </label>
+        {%- endif -%}
+
+        <div class="mp-cart__foot">
+          <div>
+            <div class="mp-cart__total">{{ 'cart.subtotal' | t }} — {{ cart.total_price | money }}</div>
+            <p class="mp-form-note">{{ 'cart.taxes_and_shipping_at_checkout' | t }}</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button type="submit" name="update" class="mp-link-btn mp-link-btn--ghost">{{ 'cart.update' | t }}</button>
+            <button type="submit" name="checkout" class="mp-link-btn">{{ 'cart.checkout' | t }}</button>
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</div>

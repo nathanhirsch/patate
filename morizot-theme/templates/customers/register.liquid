@@ -1,0 +1,17 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-center">
+      <p class="mp-mono mp-mono--accent">Account</p>
+      <h1 class="mp-page__title">{{ 'customer.register.title' | t }}</h1>
+      {%- form 'create_customer', class: 'mp-center', style: 'width:100%' -%}
+        {%- if form.errors -%}<div class="mp-form-err">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.register.first_name' | t }}</span><input type="text" name="customer[first_name]"></label>
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.register.last_name' | t }}</span><input type="text" name="customer[last_name]"></label>
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.register.email' | t }}</span><input type="email" name="customer[email]" required></label>
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.register.password' | t }}</span><input type="password" name="customer[password]" required></label>
+        <button type="submit" class="mp-link-btn" style="margin-top:14px">{{ 'customer.register.submit' | t }}</button>
+      {%- endform -%}
+      <a class="mp-form-note" href="{{ routes.account_login_url }}">{{ 'customer.login.title' | t }}</a>
+    </div>
+  </div>
+</div>

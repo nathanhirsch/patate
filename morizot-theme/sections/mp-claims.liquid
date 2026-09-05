@@ -1,0 +1,49 @@
+{% comment %}
+  mp-claims — the nine-cell ledger. Three columns at every width; each claim is
+  a block so the merchant can add, remove or reorder them.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-claims-h-{{ section.id }}">
+    <div class="mp-rule mp-mono mp-mono--accent mp-reveal">
+      <span id="mp-claims-h-{{ section.id }}">{{ s.title | escape }}</span>
+      <span>{{ section.blocks.size }} {{ s.count_label | escape }}</span>
+    </div>
+    <div class="mp-claims">
+      {%- for block in section.blocks -%}
+        <div class="mp-claim mp-reveal" style="--mp-stagger:{{ forloop.index0 | times: 40 }}ms;" {{ block.shopify_attributes }}>
+          <span class="mp-claim__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="mp-claim__t">{{ block.settings.text | escape }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Claims",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Rule label", "default": "What's in it" },
+    { "type": "text", "id": "count_label", "label": "Count word", "default": "claims" }
+  ],
+  "blocks": [
+    { "type": "claim", "name": "Claim", "settings": [
+      { "type": "text", "id": "text", "label": "Claim", "default": "Grain-free" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Claims", "blocks": [
+    { "type": "claim", "settings": { "text": "Super soft texture" } },
+    { "type": "claim", "settings": { "text": "Grain-free" } },
+    { "type": "claim", "settings": { "text": "40 g of carbs per serving" } },
+    { "type": "claim", "settings": { "text": "Highly digestible" } },
+    { "type": "claim", "settings": { "text": "Gluten-free" } },
+    { "type": "claim", "settings": { "text": "Dairy-free" } },
+    { "type": "claim", "settings": { "text": "Kosher" } },
+    { "type": "claim", "settings": { "text": "Non-GMO" } },
+    { "type": "claim", "settings": { "text": "French recipe" } }
+  ]}]
+}
+{% endschema %}

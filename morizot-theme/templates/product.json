@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "mp-product",
+      "blocks": {
+        "d1": { "type": "detail", "settings": { "title": "Shipping & freshness" } },
+        "d2": { "type": "detail", "settings": { "title": "How the chef makes it", "body": "<p>Sweet potatoes are roasted whole, then folded into a French sponge with Madagascar vanilla. No grain, no dairy, no preservatives.</p>" } },
+        "d3": { "type": "detail", "settings": { "title": "Storage", "body": "<p>Room temperature 10 days, refrigerated 3 weeks, frozen 3 months.</p>" } }
+      },
+      "block_order": ["d1", "d2", "d3"]
+    },
+    "claims": { "type": "mp-claims" },
+    "timing": { "type": "mp-timing" },
+    "nutrition": { "type": "mp-nutrition" },
+    "closer": { "type": "mp-closer" }
+  },
+  "order": ["main", "claims", "timing", "nutrition", "closer"]
+}

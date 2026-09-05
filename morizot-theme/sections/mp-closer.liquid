@@ -1,0 +1,26 @@
+{% comment %}
+  mp-closer — full-bleed photograph, gradient to ink, one closing line.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-closer" aria-labelledby="mp-closer-h-{{ section.id }}">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 2400 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,2000,2400', alt: s.image.alt | default: s.title }}
+    {%- endif -%}
+    {%- if s.fig_label != blank -%}<span class="mp-mono mp-mono--accent">{{ s.fig_label | escape }}</span>{%- endif -%}
+    <h2 id="mp-closer-h-{{ section.id }}" class="mp-h2" style="max-width:24ch;">{{ s.title | escape }}</h2>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Closer",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photograph" },
+    { "type": "text", "id": "fig_label", "label": "Figure label", "default": "Fig. 2 — every day, outside" },
+    { "type": "text", "id": "title", "label": "Closing line", "default": "We are small. The standard isn't." }
+  ],
+  "presets": [{ "name": "MP Closer" }]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header": {
+      "type": "mp-header",
+      "settings": {}
+    }
+  },
+  "order": ["header"]
+}

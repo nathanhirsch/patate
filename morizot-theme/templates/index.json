@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "hero": { "type": "mp-hero" },
+    "where": {
+      "type": "mp-where",
+      "blocks": {
+        "p1": { "type": "photo", "settings": { "caption": "Bryce Canyon · trail day" } },
+        "p2": { "type": "photo", "settings": { "caption": "Joshua Tree" } },
+        "p3": { "type": "photo", "settings": { "caption": "Grand Canyon rim" } }
+      },
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "logbook": {
+      "type": "mp-logbook",
+      "blocks": {
+        "e1": { "type": "entry", "settings": { "caption": "South Kaibab, 5,200 ft", "meta_left": "Oct 12 · Arizona", "meta_right": "26.2 mi", "title": "Two cakes at 5am. One in the pocket for mile 20." } },
+        "e2": { "type": "entry", "settings": { "caption": "First light", "meta_left": "Daily · 6:00", "title": "The box before the bakery" } },
+        "e3": { "type": "entry", "settings": { "caption": "Desert loop", "meta_left": "Sep 2 · 4,200 ft", "title": "Ridge line, no bonk" } }
+      },
+      "block_order": ["e1", "e2", "e3"]
+    },
+    "team": {
+      "type": "mp-team",
+      "blocks": {
+        "m1": { "type": "member", "settings": { "name": "Chef", "tone": "#C4651D" } },
+        "m2": { "type": "member", "settings": { "name": "Runner", "tone": "#E0A672" } },
+        "m3": { "type": "member", "settings": { "name": "Lifter", "tone": "#7A3A0F" } }
+      },
+      "block_order": ["m1", "m2", "m3"]
+    },
+    "closer": { "type": "mp-closer" }
+  },
+  "order": ["hero", "where", "logbook", "team", "closer"]
+}

@@ -1,0 +1,59 @@
+{% comment %}
+  mp-logbook — stage 3. The blog-borrowed run: a ruled LOGBOOK header, one
+  lead entry and two secondary entries. Entries are blocks; each can link to a
+  blog article, a page, or nothing at all.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-log-h-{{ section.id }}">
+    <div class="mp-rule mp-mono mp-mono--accent mp-reveal">
+      <span id="mp-log-h-{{ section.id }}">{{ s.title | escape }}</span>
+      <span>{{ s.year | escape }}</span>
+    </div>
+    <div class="mp-log">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- if forloop.first -%}
+          <article class="mp-log__lead mp-reveal" {{ block.shopify_attributes }}>
+            {%- if b.url != blank -%}<a href="{{ b.url }}">{%- endif -%}
+            {% render 'mp-figure', image: b.image, caption: b.caption, ratio: '3/2', radius: '4px', sizes: '(min-width: 900px) 45vw, 100vw' %}
+            <div class="mp-log__meta mp-mono mp-mono--dim"><span>{{ b.meta_left | escape }}</span><span>{{ b.meta_right | escape }}</span></div>
+            <h3 class="mp-h3 mp-log__title" style="font-size:clamp(1.375rem,2vw,1.875rem);">{{ b.title | escape }}</h3>
+            {%- if b.url != blank -%}</a>{%- endif -%}
+          </article>
+        {%- else -%}
+          <article class="mp-reveal" style="--mp-stagger:{{ forloop.index0 | times: 80 }}ms;" {{ block.shopify_attributes }}>
+            {%- if b.url != blank -%}<a href="{{ b.url }}">{%- endif -%}
+            {% render 'mp-figure', image: b.image, caption: b.caption, ratio: '4/5', radius: '4px', sizes: '(min-width: 900px) 22vw, 50vw' %}
+            <div class="mp-mono mp-mono--dim" style="margin-top:12px;">{{ b.meta_left | escape }}</div>
+            <h3 class="mp-h3" style="margin-top:4px;">{{ b.title | escape }}</h3>
+            {%- if b.url != blank -%}</a>{%- endif -%}
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Logbook",
+  "tag": "div",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Rule label", "default": "Logbook" },
+    { "type": "text", "id": "year", "label": "Rule right", "default": "2026" }
+  ],
+  "blocks": [
+    { "type": "entry", "name": "Entry", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Photograph" },
+      { "type": "text", "id": "caption", "label": "Photo caption", "default": "South Kaibab, 5,200 ft" },
+      { "type": "text", "id": "meta_left", "label": "Meta left", "default": "Oct 12 · Arizona" },
+      { "type": "text", "id": "meta_right", "label": "Meta right", "default": "26.2 mi" },
+      { "type": "text", "id": "title", "label": "Entry title", "default": "Two cakes at 5am. One in the pocket for mile 20." },
+      { "type": "url", "id": "url", "label": "Link (optional)" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Logbook", "blocks": [{ "type": "entry" }, { "type": "entry" }, { "type": "entry" }] }]
+}
+{% endschema %}

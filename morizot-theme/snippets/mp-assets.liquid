@@ -1,0 +1,6 @@
+{% comment %}
+  Every mp-* section renders this so it is self-contained in the theme
+  editor. The browser fetches each file once.
+{% endcomment %}
+{{ 'mp-store.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mp-store.js' | asset_url }}" defer></script>
