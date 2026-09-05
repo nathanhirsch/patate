@@ -20,10 +20,11 @@
     {%- if product.compare_at_price > product.price -%}
       <s>{{ product.compare_at_price | money }}</s>
     {%- endif -%}
+    {%- assign card_price = product.price | money -%}
     {%- if product.price_varies -%}
-      {{ 'products.product.from_price' | t: price: product.price | money }}
+      {{ 'products.product.from_price' | t: price: card_price }}
     {%- else -%}
-      {{ product.price | money }}
+      {{ card_price }}
     {%- endif -%}
   </div>
 </a>

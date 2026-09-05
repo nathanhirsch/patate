@@ -24,7 +24,7 @@
             {%- else -%}
               <a class="mp-card" href="{{ item.url }}">
                 <div class="mp-card__media">
-                  {%- if item.image -%}<img src="{{ item.image | image_url: width: 800 }}" alt="" loading="lazy">{%- endif -%}
+                  {%- if item.image -%}{{ item.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width:1100px) 22vw, (min-width:760px) 30vw, 45vw', widths: '300,500,700', alt: '' }}{%- endif -%}
                 </div>
                 <div class="mp-card__title">{{ item.title | escape }}</div>
                 <div class="mp-card__price">{{ item.object_type }}</div>

@@ -4,7 +4,8 @@
     <div class="mp-page__head">
       <p class="mp-mono mp-mono--accent">{{ 'customer.orders.title' | t }}</p>
       <h1 class="mp-page__title">{{ 'customer.order.title' | t: name: order.name }}</h1>
-      <p class="mp-mono mp-mono--dim">{{ 'customer.order.date_html' | t: date: order.created_at | date: '%B %-d, %Y' }}</p>
+      {%- assign order_date = order.created_at | date: '%B %-d, %Y' -%}
+      <p class="mp-mono mp-mono--dim">{{ 'customer.order.date_html' | t: date: order_date }}</p>
     </div>
 
     <table class="mp-order-table">

@@ -1,9 +1,10 @@
+{%- assign gc_value = gift_card.balance | money -%}
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ 'gift_cards.issued.title' | t: value: gift_card.initial_value | money, shop: shop.name }}</title>
+  <title>{{ gc_value }} gift card &ndash; {{ shop.name }}</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
   {{ 'mp-store.css' | asset_url | stylesheet_tag }}
   {{ content_for_header }}
@@ -13,13 +14,16 @@
     <div class="mp-wrap mp-page">
       <div class="mp-center">
         <p class="mp-mono mp-mono--accent">{{ shop.name }}</p>
-        <h1 class="mp-page__title">{{ gift_card.balance | money }} gift card</h1>
+        <h1 class="mp-page__title">{{ gc_value }} gift card</h1>
+        {%- if gift_card.expired -%}
+          <p class="mp-form-note">This gift card has expired.</p>
+        {%- endif -%}
         {{ gift_card.qr_identifier }}
         <p class="mp-mono mp-mono--dim" style="letter-spacing:.2em">{{ gift_card.code | format_code }}</p>
         {%- if gift_card.pass_url -%}
           <a class="mp-link-btn mp-link-btn--ghost" href="{{ gift_card.pass_url }}">Add to Apple Wallet</a>
         {%- endif -%}
-        <a class="mp-link-btn" href="{{ shop.url }}">{{ 'gift_cards.issued.shop_link' | t | default: 'Visit the shop' }}</a>
+        <a class="mp-link-btn" href="{{ shop.url }}">Visit the shop</a>
       </div>
     </div>
   </div>

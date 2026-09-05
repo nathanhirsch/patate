@@ -8,7 +8,7 @@
       </div>
       {%- if article.image -%}
         <div class="mp-article__hero">
-          <img src="{{ article.image | image_url: width: 1600 }}" alt="{{ article.image.alt | escape }}">
+          {{ article.image | image_url: width: 1600 | image_tag: sizes: '(min-width: 700px) 68ch, 100vw', widths: '600,900,1200,1600', alt: article.image.alt | escape }}
         </div>
       {%- endif -%}
       <div class="mp-prose">{{ article.content }}</div>
