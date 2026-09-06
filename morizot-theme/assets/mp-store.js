@@ -42,8 +42,16 @@
       if (idInput) idInput.value = pack.dataset.variantId || '';
       if (planInput) planInput.value = (plan && plan.dataset.planId) || '';
       priceEls.forEach(function(el){ el.textContent = money(final, fmt); });
-      if (unitEl && pack.dataset.count){
-        unitEl.textContent = money(Math.round(final / parseInt(pack.dataset.count,10)), fmt) + ' / cake';
+      // Per-cake price. Count comes from the variant metafield custom.units if
+      // set, otherwise the first number in the pack label ("6 cakes" -> 6).
+      var count = parseInt(pack.dataset.count, 10);
+      if (!count) {
+        var nm = pack.querySelector('.mp-pack__n');
+        var m = nm && nm.textContent.match(/\d+/);
+        count = m ? parseInt(m[0], 10) : 0;
+      }
+      if (unitEl) {
+        unitEl.textContent = count > 1 ? money(Math.round(final / count), fmt) + ' / cake' : '';
       }
       var avail = pack.dataset.available !== 'false';
       submits.forEach(function(b){

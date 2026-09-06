@@ -12,6 +12,12 @@
     subscription widgets can be dropped inside the buy column from the theme
     editor without touching this file.
   · The sticky mobile bar submits the same form; no separate AJAX path.
+  · Per-cake price ("$4.67 / cake") is worked out in the browser: it divides
+    the pack price by the number of cakes in the pack. That count is read from
+    the variant metafield custom.units (Integer) when it is set, and otherwise
+    from the first number in the variant name — so naming the pack options
+    "6 cakes" / "12 cakes" / "24 cakes" is enough, no metafield required.
+    It follows the subscription discount when a plan is selected.
 {% endcomment %}
 {% render 'mp-assets' %}
 {%- liquid
@@ -62,7 +68,7 @@
                 aria-checked="{% if variant == v %}true{% else %}false{% endif %}"
                 data-variant-id="{{ variant.id }}"
                 data-price="{{ variant.price }}"
-                data-count="{{ variant.metafields.custom.units.value | default: 1 }}"
+                data-count="{{ variant.metafields.custom.units.value }}"
                 data-available="{{ variant.available }}">
                 <span class="mp-pack__n">{{ variant.title }}</span>
                 <span class="mp-pack__s">{{ variant.price | money }}{% unless variant.available %} · {{ s.sold_out_label | escape }}{% endunless %}</span>
