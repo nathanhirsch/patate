@@ -123,6 +123,20 @@
   .mp-grid3__cell,.mp-grid3__cell:first-child{grid-column:auto;aspect-ratio:auto;height:100%}
 }
 
+/* --- fuel (the root) ----------------------------------------------- */
+.mp-fuel{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:28px}
+.mp-fuel__fig{aspect-ratio:4/3;border-radius:8px}
+.mp-fuel__list{display:flex;flex-direction:column}
+.mp-reason{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid var(--mp-line)}
+.mp-reason:first-child{border-top:0;padding-top:0}
+.mp-reason__n{color:var(--mp-amber-lt);padding-top:5px}
+.mp-reason__d{font-size:14px;line-height:1.6;color:var(--mp-dim);margin:6px 0 0;max-width:52ch}
+@media(min-width:900px){
+  .mp-fuel{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(32px,4vw,56px);margin-top:38px;align-items:start}
+  .mp-fuel__fig{aspect-ratio:4/5;position:sticky;top:96px}
+  .mp-reason{grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 0}
+}
+
 /* --- logbook ------------------------------------------------------- */
 .mp-log{display:grid;gap:24px;margin-top:20px}
 .mp-log__lead .mp-fig{aspect-ratio:3/2;border-radius:4px}

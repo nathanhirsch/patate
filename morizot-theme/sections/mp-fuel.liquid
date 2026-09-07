@@ -1,0 +1,69 @@
+{% comment %}
+  mp-fuel — the case for the root itself. Editorial two-column: figure on the
+  left, numbered reasons on the right. Each reason is a block.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-fuel-h-{{ section.id }}">
+    <div class="mp-head mp-head--split mp-reveal">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h2 id="mp-fuel-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;max-width:26ch;">{{ s.title }}</h2>
+      </div>
+      {%- if s.body != blank -%}<p class="mp-body" style="max-width:38ch;">{{ s.body | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="mp-fuel">
+      <figure class="mp-fig mp-fuel__fig{% if s.image == blank %} mp-fig--ph{% endif %}">
+        {%- if s.image != blank -%}
+          {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 42vw, 100vw', widths: '600,900,1200', alt: s.image.alt | default: s.eyebrow | escape }}
+        {%- endif -%}
+        {%- if s.fig_label != blank -%}<figcaption class="mp-fig__cap">{{ s.fig_label | escape }}</figcaption>{%- endif -%}
+      </figure>
+
+      <div class="mp-fuel__list">
+        {%- for block in section.blocks -%}
+          <div class="mp-reason mp-reveal" style="--mp-stagger:{{ forloop.index0 | times: 60 }}ms;" {{ block.shopify_attributes }}>
+            <span class="mp-reason__n mp-mono">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <div>
+              <h3 class="mp-h3">{{ block.settings.title }}</h3>
+              <p class="mp-reason__d">{{ block.settings.text | escape }}</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if s.footnote != blank -%}
+      <p class="mp-note mp-reveal" style="margin-top:22px;max-width:62ch;">{{ s.footnote | escape }}</p>
+    {%- endif -%}
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Fuel",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The root" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "Sweet potato is <em>real</em> endurance fuel." },
+    { "type": "textarea", "id": "body", "label": "Standfirst", "default": "We didn't pick it for the color. A sweet potato carries dense, slow carbohydrate plus the potassium and magnesium you sweat out — which is why it has fed athletes long before it was a bakery ingredient." },
+    { "type": "image_picker", "id": "image", "label": "Photograph" },
+    { "type": "text", "id": "fig_label", "label": "Figure label", "default": "Fig. 2 — the root, raw" },
+    { "type": "textarea", "id": "footnote", "label": "Footnote" }
+  ],
+  "blocks": [
+    { "type": "reason", "name": "Reason", "settings": [
+      { "type": "html", "id": "title", "label": "Title", "default": "Slow carbohydrate" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Description." }
+    ]}
+  ],
+  "presets": [{ "name": "MP Fuel", "blocks": [
+    { "type": "reason", "settings": { "title": "Carbohydrate that lasts", "text": "Mostly complex starch, so it releases over hours instead of spiking and dropping. 40 g a serving — a real ride's worth, not a gel's." } },
+    { "type": "reason", "settings": { "title": "Potassium and magnesium", "text": "The two minerals you lose fastest in sweat, and the ones cramping legs ask for. A sweet potato has more potassium than a banana." } },
+    { "type": "reason", "settings": { "title": "Beta-carotene", "text": "The orange is vitamin A. It is the one nutrient in this cake that has nothing to do with performance and everything to do with eating well." } },
+    { "type": "reason", "settings": { "title": "Easy at effort", "text": "No grain, no gluten, no dairy. Cooked starch and eggs, which is about the gentlest thing you can ask a stomach to handle at mile 20." } }
+  ]}]
+}
+{% endschema %}
