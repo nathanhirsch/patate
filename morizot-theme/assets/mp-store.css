@@ -137,6 +137,19 @@
   .mp-reason{grid-template-columns:44px minmax(0,1fr);gap:20px;padding:22px 0}
 }
 
+/* --- who it's for ------------------------------------------------- */
+.mp-who{display:grid;grid-template-columns:minmax(0,1fr);gap:30px 18px;margin-top:28px}
+.mp-who__col{min-width:0}
+.mp-who__media{position:relative;overflow:hidden;border-radius:8px;aspect-ratio:4/5;margin-bottom:16px}
+.mp-who__n{display:block;color:var(--mp-dim);margin-bottom:6px}
+.mp-who__col .mp-h3{margin:0}
+.mp-who__d{font-size:14px;line-height:1.6;color:var(--mp-dim);margin:8px 0 0;max-width:44ch}
+@media(min-width:600px){.mp-who{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1000px){
+  .mp-who{grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,3vw,40px) clamp(16px,2vw,28px);margin-top:38px}
+  .mp-who__media{margin-bottom:18px}
+}
+
 /* --- logbook ------------------------------------------------------- */
 .mp-log{display:grid;gap:24px;margin-top:20px}
 .mp-log__lead .mp-fig{aspect-ratio:3/2;border-radius:4px}

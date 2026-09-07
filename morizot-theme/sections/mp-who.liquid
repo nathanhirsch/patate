@@ -1,0 +1,57 @@
+{% comment %}
+  mp-who — "Who it's for". Split head, then a row of audience columns: a tall
+  photograph with a mono caption, a number, a serif name and a line of copy.
+  Each column is a block; numbers come from the loop so reordering renumbers.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-who-h-{{ section.id }}">
+    <div class="mp-head mp-head--split mp-reveal">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h2 id="mp-who-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;max-width:20ch;">{{ s.title }}</h2>
+      </div>
+      {%- if s.body != blank -%}<p class="mp-body" style="max-width:34ch;">{{ s.body | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="mp-who">
+      {%- for block in section.blocks -%}
+        <div class="mp-who__col mp-reveal" style="--mp-stagger:{{ forloop.index0 | times: 60 }}ms;" {{ block.shopify_attributes }}>
+          <div class="mp-who__media">
+            {% render 'mp-figure', image: block.settings.image, caption: block.settings.caption, fill: true, sizes: '(min-width: 1000px) 22vw, (min-width: 600px) 45vw, 100vw' %}
+          </div>
+          <span class="mp-who__n mp-mono">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <h3 class="mp-h3">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}<p class="mp-who__d">{{ block.settings.text | escape }}</p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Who it's for",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Who it's for" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "One cake, <em>four</em> pockets." },
+    { "type": "textarea", "id": "body", "label": "Standfirst", "default": "We made it for a race vest and it kept showing up in gym bags, briefcases and lunchboxes. Same cake, different hour of the day." }
+  ],
+  "blocks": [
+    { "type": "audience", "name": "Audience", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Photograph" },
+      { "type": "text", "id": "caption", "label": "Photo caption", "default": "Photo — pre-dawn, trailhead" },
+      { "type": "html", "id": "title", "label": "Name", "default": "Endurance runners" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Two before a long run, one in the vest for mile 20." }
+    ]}
+  ],
+  "presets": [{ "name": "MP Who it's for", "blocks": [
+    { "type": "audience", "settings": { "caption": "Photo — pre-dawn, trailhead", "title": "Endurance runners", "text": "Two before a long run, one in the vest for mile 20. It goes down when gels have stopped going down." } },
+    { "type": "audience", "settings": { "caption": "Photo — chalk, bar, gym bag", "title": "Lifters", "text": "Ninety minutes out from the first heavy set. Forty grams of carbohydrate and three of protein, without the brick in the stomach." } },
+    { "type": "audience", "settings": { "caption": "Photo — jacket pocket, platform", "title": "Commuters", "text": "Breakfast on the 7:14 that needs no fork, no fridge and no second hand on the wheel." } },
+    { "type": "audience", "settings": { "caption": "Photo — lunchbox, kitchen counter", "title": "Kids", "text": "Vanilla, soft, sweet enough to be a treat. No grain, no dairy, no nuts — so it clears most school lists." } }
+  ]}]
+}
+{% endschema %}

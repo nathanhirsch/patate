@@ -259,12 +259,28 @@
         "c8",
         "c9"
       ]
+    },
+    "who": {
+      "type": "mp-who",
+      "blocks": {
+        "a1": { "type": "audience", "settings": { "caption": "Photo — pre-dawn, trailhead", "title": "Endurance runners", "text": "Two before a long run, one in the vest for mile 20. It goes down when gels have stopped going down." } },
+        "a2": { "type": "audience", "settings": { "caption": "Photo — chalk, bar, gym bag", "title": "Lifters", "text": "Ninety minutes out from the first heavy set. Forty grams of carbohydrate and three of protein, without the brick in the stomach." } },
+        "a3": { "type": "audience", "settings": { "caption": "Photo — jacket pocket, platform", "title": "Commuters", "text": "Breakfast on the 7:14 that needs no fork, no fridge and no second hand on the wheel." } },
+        "a4": { "type": "audience", "settings": { "caption": "Photo — lunchbox, kitchen counter", "title": "Kids", "text": "Vanilla, soft, sweet enough to be a treat. No grain, no dairy, no nuts — so it clears most school lists." } }
+      },
+      "block_order": ["a1", "a2", "a3", "a4"],
+      "settings": {
+        "eyebrow": "Who it's for",
+        "title": "One cake, <em>four</em> pockets.",
+        "body": "We made it for a race vest and it kept showing up in gym bags, briefcases and lunchboxes. Same cake, different hour of the day."
+      }
     }
   },
   "order": [
     "hero",
     "fuel",
     "claims",
+    "who",
     "where",
     "logbook",
     "team",
