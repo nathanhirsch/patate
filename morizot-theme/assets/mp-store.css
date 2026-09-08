@@ -277,8 +277,9 @@
    Utility pages — cart, collection, page, blog, article, search, 404,
    customer accounts. Same ink / cream / amber language as the storefront.
    ===================================================================== */
-.mp-page{padding-top:var(--mp-flow);padding-bottom:var(--mp-flow);min-height:52vh}
-.mp-page__head{display:flex;flex-direction:column;gap:12px;margin-bottom:var(--mp-flow)}
+.mp-page{padding-top:clamp(28px,4vw,48px);padding-bottom:var(--mp-flow);min-height:52vh}
+.mp-page__head{display:flex;flex-direction:column;gap:12px;margin-bottom:clamp(28px,4vw,44px)}
+.mp-page__head>p{margin:0}
 .mp-page__title{font-family:var(--mp-serif);font-size:clamp(2rem,4vw,3.25rem);line-height:1.04;letter-spacing:-.02em;margin:0}
 .mp-prose{max-width:66ch;color:var(--mp-cream)}
 .mp-prose>*+*{margin-top:1em}
@@ -361,7 +362,7 @@
 .mp-pager{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:var(--mp-flow);font-family:var(--mp-mono);font-size:12px}
 .mp-pager a,.mp-pager span{padding:8px 12px;border:1px solid var(--mp-line);border-radius:8px}
 .mp-pager [aria-current]{background:var(--mp-cream);color:var(--mp-ink);border-color:var(--mp-cream)}
-.mp-breadcrumb{font-family:var(--mp-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mp-dim);margin-bottom:14px}
+.mp-breadcrumb{font-family:var(--mp-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mp-dim);margin:0 0 14px}
 .mp-breadcrumb a:hover{color:var(--mp-amber-lt)}
 .mp-center{max-width:460px;margin-inline:auto;text-align:center;display:flex;flex-direction:column;gap:18px;align-items:center}
 .mp-account-grid{display:grid;gap:28px;grid-template-columns:1fr}
