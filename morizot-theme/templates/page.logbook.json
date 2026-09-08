@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "journal": {
+      "type": "mp-journal",
+      "blocks": {
+        "e1": { "type": "entry", "settings": { "date": "Oct 12", "place": "South Kaibab, Arizona", "title": "Two cakes at 5am. One in the pocket for mile 20.", "body": "26.2 miles rim to floor and back. The gels stopped going down around mile 16; the cake did not." } },
+        "e2": { "type": "entry", "settings": { "date": "Sep 2", "place": "Desert loop, 4,200 ft", "title": "Ridge line, no bonk.", "body": "A slow morning out and a fast one back. Half a cake every forty minutes and the legs stayed under me the whole way." } },
+        "e3": { "type": "entry", "settings": { "date": "Daily", "place": "The kitchen, 6:00", "title": "The box before the bakery.", "body": "Every batch is baked, cooled, cut and carried before it is packed. If it does not survive the vest it does not ship." } }
+      },
+      "block_order": ["e1", "e2", "e3"],
+      "settings": {
+        "eyebrow": "Logbook",
+        "title": "Where it has been.",
+        "intro": "Notes from the road, the trail and the 5am kitchen. Kept short, kept honest."
+      }
+    }
+  },
+  "order": ["journal"]
+}

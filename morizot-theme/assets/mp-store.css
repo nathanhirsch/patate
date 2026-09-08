@@ -180,6 +180,30 @@
   .mp-team__copy{flex:1}
 }
 
+/* --- roster (team page) ------------------------------------------- */
+.mp-roster{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(30px,6vw,52px);margin-top:32px}
+.mp-roster__card{min-width:0}
+.mp-roster__media{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/5;margin-bottom:16px}
+.mp-roster__card .mp-h3{margin:0}
+.mp-roster__role{margin:6px 0 0}
+.mp-roster__bio{font-size:15px;line-height:1.6;color:var(--mp-dim);margin:12px 0 0;max-width:52ch}
+@media(min-width:800px){
+  .mp-roster{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,64px);margin-top:44px}
+}
+
+/* --- journal (logbook page) ------------------------------------- */
+.mp-journal{display:flex;flex-direction:column;gap:clamp(40px,7vw,72px);margin-top:32px}
+.mp-journal__entry{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.mp-journal__media{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:3/2}
+.mp-journal__meta{margin:0}
+.mp-journal__entry .mp-h3{margin:10px 0 0}
+.mp-journal__body{font-size:15px;line-height:1.65;color:var(--mp-dim);margin:12px 0 0;max-width:58ch}
+.mp-journal__link{display:inline-block;margin-top:14px;font-weight:600;text-decoration:underline;text-underline-offset:4px}
+@media(min-width:800px){
+  .mp-journal__entry{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(32px,4vw,56px);align-items:start}
+  .mp-journal__entry:nth-child(even) .mp-journal__media{order:2}
+}
+
 /* --- full-bleed closer --------------------------------------------- */
 .mp-closer{position:relative;margin-top:var(--mp-flow);min-height:min(120vw,520px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(20px,4vw,48px);overflow:hidden}
 .mp-closer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
