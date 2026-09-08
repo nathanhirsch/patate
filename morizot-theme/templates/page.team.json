@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "roster": {
+      "type": "mp-roster",
+      "blocks": {
+        "m1": { "type": "member", "settings": { "name": "Chef", "role": "Founder · baker", "bio": "Trained in Paris and baked for a head of state. Builds the recipe around what a working stomach can take at hour three." } },
+        "m2": { "type": "member", "settings": { "name": "Runner", "role": "Founder · testing", "bio": "Runs the long stuff on weekends and the errands on weekdays. Every batch goes in a vest before it goes in a box." } }
+      },
+      "block_order": ["m1", "m2"],
+      "settings": {
+        "eyebrow": "The team",
+        "title": "Two people, one <em>standard</em>.",
+        "intro": "A baker and an athlete. We make the cake we wanted on the start line and could not find."
+      }
+    }
+  },
+  "order": ["roster"]
+}
