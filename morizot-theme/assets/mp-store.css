@@ -28,6 +28,11 @@
 
 [class^="mp-"] *,[class^="mp-"] *::before,[class^="mp-"] *::after{box-sizing:border-box}
 
+/* Sections carry margin-top (mp-team, mp-closer, mp-footer) that collapses out
+   through their wrappers; paint the page ink so those gaps are never white. */
+html{background:var(--mp-ink);color-scheme:dark}
+body{background:var(--mp-ink)}
+
 .mp{background:var(--mp-ink);color:var(--mp-cream);font-family:var(--mp-sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 .mp img{display:block;max-width:100%}
 .mp a{color:var(--mp-cream);text-decoration:none}
