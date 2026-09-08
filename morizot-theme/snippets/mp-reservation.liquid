@@ -21,6 +21,7 @@
 {%- liquid
   assign uid = uid | default: 'r'
   assign max_boxes = max_boxes | default: 20
+  assign default_boxes = default_boxes | default: 3
   assign cakes_per_box = cakes_per_box | default: 6
   assign button_label = button_label | default: 'Pre-order'
   assign success_message = success_message | default: "Reserved. No payment taken. We'll email you a checkout link when the first batch is ready."
@@ -62,7 +63,7 @@
 
       <label class="mp-field" for="mp-r-boxes-{{ uid }}">
         <span>Boxes</span>
-        <input type="number" id="mp-r-boxes-{{ uid }}" name="contact[boxes]" value="6"
+        <input type="number" id="mp-r-boxes-{{ uid }}" name="contact[boxes]" value="{{ default_boxes }}"
                required min="1" max="{{ max_boxes }}" step="1" inputmode="numeric"
                aria-describedby="mp-r-boxes-help-{{ uid }}">
       </label>

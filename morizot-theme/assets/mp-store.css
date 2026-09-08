@@ -66,15 +66,15 @@
 .mp-hero__copy{padding:26px var(--mp-gutter) 0}
 .mp-hero__copy>*+*{margin-top:18px}
 .mp-hero__media{position:relative;margin-top:24px;aspect-ratio:1/1;overflow:hidden}
-.mp-hero__media img{width:100%;height:100%;object-fit:cover}
+.mp-hero__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mp-hero__fig{position:absolute;top:16px;left:16px;background:var(--mp-ink);padding:6px 10px;font-size:10px}
 .mp-hero__buy{margin:-30px var(--mp-gutter) 0;position:relative}
 .mp-hero__actions{display:flex;flex-direction:column;gap:14px;margin-top:0}
 @media(min-width:900px){
-  .mp-hero{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-rows:1fr auto}
-  .mp-hero__copy{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(48px,5vw,72px) clamp(32px,4vw,48px) clamp(32px,3vw,48px)}
-  .mp-hero__media{grid-column:2;grid-row:1 / span 2;margin:0;aspect-ratio:auto;min-height:620px}
-  .mp-hero__buy{grid-column:1;grid-row:2;margin:0 clamp(32px,4vw,48px) clamp(48px,5vw,64px)}
+  .mp-hero{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-rows:auto auto}
+  .mp-hero__copy{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:flex-start;padding:clamp(28px,3vw,44px) clamp(32px,4vw,48px) clamp(20px,2vw,32px)}
+  .mp-hero__media{grid-column:2;grid-row:1 / span 2;margin:0;aspect-ratio:auto;min-height:clamp(320px,44vh,460px)}
+  .mp-hero__buy{grid-column:1;grid-row:2;align-self:start;margin:0 clamp(32px,4vw,48px) clamp(32px,4vw,48px)}
   .mp-hero__actions{flex-direction:row;align-items:center;gap:20px}
 }
 
@@ -340,8 +340,8 @@
 .mp-reserve__submit{margin-top:18px}
 .mp-reserve__ok{background:var(--mp-ink-2);border:1px solid var(--mp-line);border-radius:12px;padding:18px;font-size:15px;line-height:1.5;margin:0;max-width:460px}
 .mp-reserve__hp{position:absolute!important;left:-9999px!important;top:auto;width:1px;height:1px;overflow:hidden}
-.mp-buy--link{cursor:pointer}
-.mp-buy--link:hover{color:var(--mp-ink)}
+.mp a.mp-buy--link,.mp a.mp-buy--link:hover{color:var(--mp-ink);cursor:pointer}
+.mp a.mp-buy--link .mp-buy__price{color:var(--mp-ink)}
 .mp-buy--link:hover .mp-buy__add{background:var(--mp-amber)}
 
 /* product cards / collection grid */

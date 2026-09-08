@@ -22,6 +22,7 @@
            success_message: s.success_message,
            ca_only_message: s.ca_only_message,
            max_boxes: s.max_boxes,
+           default_boxes: s.default_boxes,
            cakes_per_box: s.cakes_per_box %}
       </div>
     </section>
@@ -42,6 +43,7 @@
     { "type": "textarea", "id": "success_message", "label": "Success message", "default": "Reserved. No payment taken. We'll email you a checkout link when the first batch is ready." },
     { "type": "text", "id": "ca_only_message", "label": "Out-of-California message", "default": "We can only ship within California right now." },
     { "type": "number", "id": "max_boxes", "label": "Maximum boxes per reservation", "default": 20 },
+    { "type": "number", "id": "default_boxes", "label": "Boxes prefilled in the form", "default": 3 },
     { "type": "number", "id": "cakes_per_box", "label": "Cakes per box (helper text)", "default": 6 }
   ],
   "presets": [{ "name": "MP Reservation" }]

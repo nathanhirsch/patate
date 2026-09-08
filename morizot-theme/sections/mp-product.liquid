@@ -72,6 +72,7 @@
              success_message: reservation_block.settings.success_message,
              ca_only_message: reservation_block.settings.ca_only_message,
              max_boxes: reservation_block.settings.max_boxes,
+             default_boxes: reservation_block.settings.default_boxes,
              cakes_per_box: reservation_block.settings.cakes_per_box %}
         </div>
 
@@ -189,6 +190,7 @@
       { "type": "textarea", "id": "success_message", "label": "Success message", "default": "Reserved. No payment taken. We'll email you a checkout link when the first batch is ready." },
       { "type": "text", "id": "ca_only_message", "label": "Out-of-California message", "default": "We can only ship within California right now." },
       { "type": "number", "id": "max_boxes", "label": "Maximum boxes per reservation", "default": 20 },
+      { "type": "number", "id": "default_boxes", "label": "Boxes prefilled in the form", "default": 3 },
       { "type": "number", "id": "cakes_per_box", "label": "Cakes per box (helper text)", "default": 6 }
     ]},
     { "type": "detail", "name": "Detail accordion", "settings": [
