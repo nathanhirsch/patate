@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Morizot Passage — QR sheet (A4)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root { --accent: #B5561E; --bg: #F7F3EC; --text: #1A1A1A; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #e9e4da;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* Controls — screen only */
+  .controls {
+    max-width: 620px;
+    margin: 24px auto;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid #cfc7b8;
+    border-radius: 12px;
+  }
+  .controls h2 { margin: 0 0 12px; font-size: 16px; }
+  .controls label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+  .controls input {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 12px;
+    border: 2px solid #d9cfbf;
+    border-radius: 10px;
+  }
+  .controls .row { display: flex; gap: 12px; }
+  .controls .row > div { flex: 1; }
+  .controls button {
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px 18px;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .controls .note { font-size: 12px; color: #6b6560; margin-top: 10px; }
+
+  /* A4 sheet */
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    margin: 24px auto;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30mm 20mm;
+  }
+  .sheet .title { font-size: 30pt; font-weight: 800; letter-spacing: -0.5pt; }
+  .sheet .sub { font-size: 15pt; margin-top: 6mm; color: #4a453f; }
+  #qr {
+    margin: 18mm auto 12mm;
+    width: 105mm;
+    height: 105mm;
+    background: #fff;
+    padding: 6mm;
+    border: 2pt solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #qr img, #qr canvas { width: 100% !important; height: 100% !important; }
+  .sheet .cta { font-size: 20pt; font-weight: 700; color: var(--accent); }
+  .sheet .url { font-size: 11pt; margin-top: 8mm; color: #6b6560; word-break: break-all; }
+  .sheet .time { font-size: 12pt; margin-top: 3mm; color: #6b6560; }
+
+  @media print {
+    body { background: #fff; }
+    .controls { display: none; }
+    .sheet { margin: 0; width: 100%; height: 100vh; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="controls">
+    <h2>QR sheet generator</h2>
+    <div class="row">
+      <div>
+        <label for="base">Deployed URL (no query string)</label>
+        <input id="base" type="text" placeholder="https://your-domain.vercel.app" />
+      </div>
+      <div>
+        <label for="src">Location tag (src)</label>
+        <input id="src" type="text" placeholder="coworking-a" />
+      </div>
+    </div>
+    <button id="go">Update &amp; preview</button>
+    <p class="note">Then use your browser's Print (⌘P / Ctrl-P) → Save as PDF, A4, margins “None”. One sheet per location — change the tag and print again.</p>
+  </div>
+
+  <div class="sheet">
+    <div class="title">One bite, one minute</div>
+    <div class="sub">Tell us how the cake was.</div>
+    <div id="qr"></div>
+    <div class="cta">Scan with your phone camera</div>
+    <div class="url" id="url-text"></div>
+    <div class="time" id="src-text"></div>
+  </div>
+
+<script>
+  var qrEl = document.getElementById('qr');
+  var urlText = document.getElementById('url-text');
+  var srcText = document.getElementById('src-text');
+  var baseInput = document.getElementById('base');
+  var srcInput = document.getElementById('src');
+
+  // Prefill from ?base= and ?src= if present
+  var params = new URLSearchParams(location.search);
+  baseInput.value = params.get('base') || '';
+  srcInput.value = params.get('src') || '';
+
+  function buildUrl() {
+    var base = baseInput.value.trim().replace(/\/+$/, '');
+    var src = srcInput.value.trim();
+    if (!base) return '';
+    return base + '/' + (src ? ('?src=' + encodeURIComponent(src)) : '');
+  }
+
+  function render() {
+    var url = buildUrl();
+    qrEl.innerHTML = '';
+    if (!url) {
+      urlText.textContent = 'Enter your deployed URL above.';
+      srcText.textContent = '';
+      return;
+    }
+    new QRCode(qrEl, {
+      text: url,
+      width: 480,
+      height: 480,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+    urlText.textContent = url;
+    srcText.textContent = srcInput.value.trim() ? ('Location: ' + srcInput.value.trim()) : '';
+  }
+
+  document.getElementById('go').addEventListener('click', render);
+  render();
+</script>
+</body>
+</html>

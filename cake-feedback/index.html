@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>Morizot Passage — cake feedback</title>
+<style>
+  :root {
+    --accent: #B5561E;
+    --bg: #F7F3EC;
+    --text: #1A1A1A;
+    --muted: #6b6560;
+    --line: #d9cfbf;
+    --card: #ffffff;
+    --error: #a3271b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.4;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 28px 18px calc(28px + env(safe-area-inset-bottom));
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 24px;
+  }
+  .q { margin: 0 0 34px; }
+  .q > .label {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+  .hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 8px 0 0;
+  }
+  .missing-msg {
+    display: none;
+    font-size: 14px;
+    color: var(--error);
+    font-weight: 600;
+    margin: 10px 0 0;
+  }
+  .q.missing .missing-msg { display: block; }
+  .q.missing > .label { color: var(--error); }
+  .qnum {
+    margin-right: 6px;
+    color: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .q.missing > .label .qnum { color: var(--error); }
+
+  /* Generic option buttons */
+  .opts { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    text-align: left;
+    color: var(--text);
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+  }
+  .opt:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+
+  /* Rating row */
+  .rating-row { display: flex; gap: 8px; }
+  .rating-row .opt {
+    flex: 1 1 0;
+    min-height: 58px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 10px 0;
+  }
+
+  /* Selected state — kept last so it beats the layout selectors above */
+  .opts .opt[aria-pressed="true"],
+  .rating-row .opt[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 700;
+  }
+  .anchors {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Email */
+  .email-field {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+  }
+  .email-field:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* Free-form "Other" input, revealed when the Other button is selected */
+  .other-field {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 10px;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--card);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+  }
+  .other-field:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .other-field[hidden] { display: none; }
+
+  /* Honeypot */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* Send */
+  .send {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    min-height: 52px;
+    margin-top: 6px;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: inherit;
+    color: #fff;
+    background: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .send[aria-disabled="true"] {
+    background: #cbb8a6;
+    border-color: #cbb8a6;
+    cursor: not-allowed;
+  }
+  .form-error {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: var(--error);
+    background: #fbeae7;
+    border: 1px solid #e7c3bd;
+    border-radius: 12px;
+  }
+  .form-error.show { display: block; }
+
+  /* Thank-you */
+  #thanks {
+    display: none;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 60px 0;
+  }
+  #thanks.show { display: block; }
+  form.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Morizot Passage — cake feedback</h1>
+
+  <div id="thanks">Thanks — that helps.</div>
+
+  <form id="form" novalidate>
+    <!-- Q1 -->
+    <div class="q" id="q-rating" data-q="1">
+      <span class="label"><span class="qnum">1.</span>How was it?</span>
+      <div class="rating-row" role="group" aria-label="How was it? 1 to 5">
+        <button type="button" class="opt" data-value="1" aria-pressed="false">1</button>
+        <button type="button" class="opt" data-value="2" aria-pressed="false">2</button>
+        <button type="button" class="opt" data-value="3" aria-pressed="false">3</button>
+        <button type="button" class="opt" data-value="4" aria-pressed="false">4</button>
+        <button type="button" class="opt" data-value="5" aria-pressed="false">5</button>
+      </div>
+      <div class="anchors"><span>Not for me</span><span>Loved it</span></div>
+      <p class="missing-msg">Tap a number from 1 to 5.</p>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q" id="q-change" data-q="2">
+      <span class="label"><span class="qnum">2.</span>If you could change one thing:</span>
+      <div class="opts" role="group" aria-label="If you could change one thing">
+        <button type="button" class="opt" data-value="Nothing" aria-pressed="false">Nothing</button>
+        <button type="button" class="opt" data-value="Less sweet" aria-pressed="false">Less sweet</button>
+        <button type="button" class="opt" data-value="Sweeter" aria-pressed="false">Sweeter</button>
+        <button type="button" class="opt" data-value="Moister" aria-pressed="false">Moister</button>
+        <button type="button" class="opt" data-value="Drier or firmer" aria-pressed="false">Drier or firmer</button>
+        <button type="button" class="opt" data-value="More flavor" aria-pressed="false">More flavor</button>
+        <button type="button" class="opt" data-value="Smaller portion" aria-pressed="false">Smaller portion</button>
+        <button type="button" class="opt" data-value="Bigger portion" aria-pressed="false">Bigger portion</button>
+        <button type="button" class="opt" data-other="true" aria-pressed="false">Other…</button>
+      </div>
+      <input class="other-field" id="change-other" type="text" hidden
+             maxlength="80" autocomplete="off" autocapitalize="sentences"
+             placeholder="Tell us what you'd change"
+             aria-label="Other — what one thing would you change?" />
+      <p class="missing-msg">Pick one option, or type your own.</p>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q" id="q-occasions" data-q="3">
+      <span class="label"><span class="qnum">3.</span>When would you eat this?</span>
+      <div class="opts" role="group" aria-label="When would you eat this? Select all that apply">
+        <button type="button" class="opt" data-value="Breakfast" aria-pressed="false">Breakfast</button>
+        <button type="button" class="opt" data-value="Mid-morning or afternoon snack" aria-pressed="false">Mid-morning or afternoon snack</button>
+        <button type="button" class="opt" data-value="Before or after a workout" aria-pressed="false">Before or after a workout</button>
+        <button type="button" class="opt" data-value="Dessert" aria-pressed="false">Dessert</button>
+        <button type="button" class="opt" data-value="On the go" aria-pressed="false">On the go</button>
+        <button type="button" class="opt" data-value="I wouldn't" aria-pressed="false" data-exclusive="true">I wouldn't</button>
+        <button type="button" class="opt" data-other="true" aria-pressed="false">Other…</button>
+      </div>
+      <input class="other-field" id="occ-other" type="text" hidden
+             maxlength="80" autocomplete="off" autocapitalize="sentences"
+             placeholder="When else would you eat this?"
+             aria-label="Other — when would you eat this?" />
+      <p class="hint">Tap all that apply.</p>
+      <p class="missing-msg">Pick at least one, or type your own.</p>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q" id="q-price" data-q="4">
+      <span class="label"><span class="qnum">4.</span>What would you pay for one?</span>
+      <div class="opts" role="group" aria-label="What would you pay for one?">
+        <button type="button" class="opt" data-value="Wouldn't buy" aria-pressed="false">Wouldn't buy</button>
+        <button type="button" class="opt" data-value="$2" aria-pressed="false">$2</button>
+        <button type="button" class="opt" data-value="$3" aria-pressed="false">$3</button>
+        <button type="button" class="opt" data-value="$4" aria-pressed="false">$4</button>
+        <button type="button" class="opt" data-value="$5+" aria-pressed="false">$5+</button>
+      </div>
+      <p class="missing-msg">Pick one option.</p>
+    </div>
+
+    <!-- Optional email -->
+    <div class="q" id="q-email">
+      <label class="label" for="email">Want to know when we launch?</label>
+      <input class="email-field" type="email" id="email" name="email"
+             inputmode="email" autocomplete="email"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             placeholder="your@email.com" />
+      <p class="hint">Optional. We won't share it.</p>
+      <p class="missing-msg" id="email-msg">That doesn't look like an email address.</p>
+    </div>
+
+    <!-- Honeypot: humans never see or fill this -->
+    <div class="hp" aria-hidden="true">
+      <label for="website">Leave this field empty</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <button type="submit" class="send" id="send" aria-disabled="true">Send</button>
+    <div class="form-error" id="form-error"></div>
+  </form>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  /* ─────────────────────────────────────────────────────────────
+     FILL THESE IN — from Supabase → Project Settings → API
+     ───────────────────────────────────────────────────────────── */
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';   // e.g. https://abcdefgh.supabase.co
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  /* ───────────────────────────────────────────────────────────── */
+
+  const DONE_KEY = 'morizot_cake_feedback_done';
+
+  // Build the client lazily so a missing/typo'd URL can't break the form itself.
+  let _client = null;
+  function getClient() {
+    if (!_client) _client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return _client;
+  }
+
+  const form = document.getElementById('form');
+  const thanks = document.getElementById('thanks');
+  const sendBtn = document.getElementById('send');
+  const formError = document.getElementById('form-error');
+  const emailInput = document.getElementById('email');
+  const emailQ = document.getElementById('q-email');
+
+  // Source tag from ?src=... (attribute a response to a QR/location)
+  const source = (new URLSearchParams(location.search).get('src') || 'unknown').trim() || 'unknown';
+
+  const state = { rating: null, change_one_thing: null, occasions: [], price: null };
+
+  function showThanks() {
+    form.classList.add('hidden');
+    thanks.classList.add('show');
+  }
+
+  // Already submitted on this phone → show thank-you straight away
+  try {
+    if (localStorage.getItem(DONE_KEY) === '1') showThanks();
+  } catch (e) { /* localStorage unavailable — fall through to the form */ }
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function emailValid() {
+    const v = emailInput.value.trim();
+    return v === '' || EMAIL_RE.test(v);
+  }
+
+  function isComplete() {
+    return state.rating !== null
+      && state.change_one_thing !== null
+      && state.occasions.length > 0
+      && state.price !== null
+      && emailValid();
+  }
+
+  function refreshSendState() {
+    sendBtn.setAttribute('aria-disabled', isComplete() ? 'false' : 'true');
+  }
+
+  function clearMissing(qEl) {
+    if (qEl) qEl.classList.remove('missing');
+  }
+
+  // ── Q1: rating (single select) ────────────────────────────────
+  const ratingBtns = [...document.querySelectorAll('#q-rating .opt')];
+  ratingBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.rating = Number(btn.dataset.value);
+      ratingBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      clearMissing(document.getElementById('q-rating'));
+      refreshSendState();
+    });
+  });
+
+  // ── Q2: change one thing (single select, with free-form "Other") ─
+  const changeQ = document.getElementById('q-change');
+  const changeBtns = [...document.querySelectorAll('#q-change .opt')];
+  const changeOtherBtn = changeBtns.find(b => b.dataset.other === 'true');
+  const changeOtherInput = document.getElementById('change-other');
+
+  function syncChange() {
+    const otherActive = changeOtherBtn.getAttribute('aria-pressed') === 'true';
+    changeOtherInput.hidden = !otherActive;
+    if (otherActive) {
+      const t = changeOtherInput.value.trim();
+      state.change_one_thing = t === '' ? null : t;
+    } else {
+      const picked = changeBtns.find(b => b !== changeOtherBtn && b.getAttribute('aria-pressed') === 'true');
+      state.change_one_thing = picked ? picked.dataset.value : null;
+    }
+    clearMissing(changeQ);
+    refreshSendState();
+  }
+
+  changeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      changeBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      syncChange();
+      if (btn === changeOtherBtn) changeOtherInput.focus();
+    });
+  });
+  changeOtherInput.addEventListener('input', syncChange);
+
+  // ── Q3: occasions (multi select, exclusive "I wouldn't", free-form "Other") ─
+  const occQ = document.getElementById('q-occasions');
+  const occBtns = [...document.querySelectorAll('#q-occasions .opt')];
+  const exclusiveBtn = occBtns.find(b => b.dataset.exclusive === 'true');
+  const occOtherBtn = occBtns.find(b => b.dataset.other === 'true');
+  const occOtherInput = document.getElementById('occ-other');
+  const normalOccBtns = occBtns.filter(b => b.dataset.exclusive !== 'true');
+
+  function syncOccasions() {
+    const otherActive = occOtherBtn.getAttribute('aria-pressed') === 'true';
+    occOtherInput.hidden = !otherActive;
+    const vals = occBtns
+      .filter(b => b !== occOtherBtn && b !== exclusiveBtn && b.getAttribute('aria-pressed') === 'true')
+      .map(b => b.dataset.value);
+    if (exclusiveBtn.getAttribute('aria-pressed') === 'true') vals.push(exclusiveBtn.dataset.value);
+    if (otherActive) {
+      const t = occOtherInput.value.trim();
+      if (t !== '') vals.push(t);
+    }
+    state.occasions = vals;
+    clearMissing(occQ);
+    refreshSendState();
+  }
+
+  occBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nowPressed = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(nowPressed));
+
+      if (btn === exclusiveBtn) {
+        if (nowPressed) {
+          // "I wouldn't" selected → clear + disable every other option
+          normalOccBtns.forEach(b => {
+            b.setAttribute('aria-pressed', 'false');
+            b.disabled = true;
+          });
+          occOtherInput.value = '';
+        } else {
+          normalOccBtns.forEach(b => { b.disabled = false; });
+        }
+      } else if (nowPressed) {
+        // Any normal option selected → clear "I wouldn't"
+        exclusiveBtn.setAttribute('aria-pressed', 'false');
+      }
+      syncOccasions();
+      if (btn === occOtherBtn && nowPressed) occOtherInput.focus();
+    });
+  });
+  occOtherInput.addEventListener('input', syncOccasions);
+
+  // ── Q4: price (single select) ────────────────────────────────
+  const priceBtns = [...document.querySelectorAll('#q-price .opt')];
+  priceBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.price = btn.dataset.value;
+      priceBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      clearMissing(document.getElementById('q-price'));
+      refreshSendState();
+    });
+  });
+
+  // ── Email ────────────────────────────────────────────────────
+  emailInput.addEventListener('input', () => {
+    if (emailValid()) emailQ.classList.remove('missing');
+    refreshSendState();
+  });
+
+  // ── Tapping "Send" while incomplete: point at what's missing ──
+  function firstMissing() {
+    if (state.rating === null) return 'q-rating';
+    if (state.change_one_thing === null) return 'q-change';
+    if (state.occasions.length === 0) return 'q-occasions';
+    if (state.price === null) return 'q-price';
+    if (!emailValid()) return 'q-email';
+    return null;
+  }
+
+  function flagIncomplete() {
+    const id = firstMissing();
+    if (!id) return;
+    const el = document.getElementById(id);
+    el.classList.add('missing');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formError.classList.remove('show');
+
+    // Honeypot filled → silently pretend success, insert nothing
+    if (document.getElementById('website').value.trim() !== '') {
+      try { localStorage.setItem(DONE_KEY, '1'); } catch (err) {}
+      showThanks();
+      return;
+    }
+
+    if (!isComplete()) {
+      flagIncomplete();
+      return;
+    }
+
+    sendBtn.setAttribute('aria-disabled', 'true');
+    sendBtn.textContent = 'Sending…';
+
+    const email = emailInput.value.trim();
+    const row = {
+      rating: state.rating,
+      change_one_thing: state.change_one_thing,
+      occasions: state.occasions,
+      price: state.price,
+      email: email === '' ? null : email,
+      source,
+      user_agent: navigator.userAgent
+    };
+
+    let error;
+    try {
+      ({ error } = await getClient().from('cake_feedback').insert(row));
+    } catch (err) {
+      error = err;
+    }
+
+    if (error) {
+      formError.textContent = "Couldn't send that — check your connection and tap Send again.";
+      formError.classList.add('show');
+      sendBtn.textContent = 'Send';
+      refreshSendState(); // answers are untouched; re-enable if still complete
+      return;
+    }
+
+    try { localStorage.setItem(DONE_KEY, '1'); } catch (err) {}
+    showThanks();
+  });
+
+  refreshSendState();
+</script>
+</body>
+</html>
