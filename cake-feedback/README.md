@@ -35,6 +35,10 @@ Files:
   required answer. Selecting "I wouldn't" also clears a Q3 write-in.
 - **Question numbers** ("1." … "4.") are shown before each required question's
   label. The optional email field is not numbered.
+- **Q4 price options** are `Wouldn't buy`, `$3`, `$4`, `$5`, `$6`, `$7+` (stored
+  verbatim in `price`).
+- **`morizot-passage.com` link** appears under the title and on the thank-you
+  screen (opens in a new tab).
 - The **Send** button is styled-disabled (via `aria-disabled`, not the `disabled`
   attribute) so a tap on it still fires — it scrolls to the first unanswered
   question and highlights it in red.

@@ -192,22 +192,46 @@
   }
   .form-error.show { display: block; }
 
+  /* Website link under the title */
+  .site-link {
+    margin: -14px 0 26px;
+    font-size: 14px;
+  }
+  .site-link a {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
   /* Thank-you */
   #thanks {
     display: none;
-    font-size: 20px;
-    font-weight: 700;
     padding: 60px 0;
   }
   #thanks.show { display: block; }
+  #thanks .thanks-msg {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  #thanks a {
+    display: inline-block;
+    margin-top: 16px;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 16px;
+  }
   form.hidden { display: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Morizot Passage — cake feedback</h1>
+  <p class="site-link"><a href="https://www.morizot-passage.com/" target="_blank" rel="noopener noreferrer">morizot-passage.com</a></p>
 
-  <div id="thanks">Thanks — that helps.</div>
+  <div id="thanks">
+    <p class="thanks-msg">Thanks — that helps.</p>
+    <a href="https://www.morizot-passage.com/" target="_blank" rel="noopener noreferrer">Learn more at Morizot Passage</a>
+  </div>
 
   <form id="form" novalidate>
     <!-- Q1 -->
@@ -270,10 +294,11 @@
       <span class="label"><span class="qnum">4.</span>What would you pay for one?</span>
       <div class="opts" role="group" aria-label="What would you pay for one?">
         <button type="button" class="opt" data-value="Wouldn't buy" aria-pressed="false">Wouldn't buy</button>
-        <button type="button" class="opt" data-value="$2" aria-pressed="false">$2</button>
         <button type="button" class="opt" data-value="$3" aria-pressed="false">$3</button>
         <button type="button" class="opt" data-value="$4" aria-pressed="false">$4</button>
-        <button type="button" class="opt" data-value="$5+" aria-pressed="false">$5+</button>
+        <button type="button" class="opt" data-value="$5" aria-pressed="false">$5</button>
+        <button type="button" class="opt" data-value="$6" aria-pressed="false">$6</button>
+        <button type="button" class="opt" data-value="$7+" aria-pressed="false">$7+</button>
       </div>
       <p class="missing-msg">Pick one option.</p>
     </div>
