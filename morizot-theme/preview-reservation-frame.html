@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Morizot Passage — reservation — static preview — frame</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/mp-store.css">
+<script src="assets/mp-store.js" defer></script>
+<style>html,body{margin:0;background:#16130F}</style>
+</head><body><div class="mp">
+  <header class="mp-header"><div class="mp-wrap mp-header__in">
+    <nav class="mp-header__nav mp-mono"><a href="#">Shop</a><a href="#">The cake</a><a href="#">Logbook</a><a href="#">Team</a></nav>
+    <a class="mp-header__mark" href="#">Morizot Passage</a>
+    <div class="mp-header__meta mp-mono"><span class="mp-issue mp-mono--dim">N° 01 — Fall 2026</span><!-- cart link hidden in reserve mode --></div>
+  </div></header>
+</div>
+
+<div class="mp" data-mp-pdp><section class="mp-pdp">
+  <div class="mp-pdp__media"><div><img src="assets/cake-slice.jpeg" alt=""></div></div>
+  <div class="mp-pdp__panel">
+    <p class="mp-mono mp-mono--accent">The cake · Fig. 1</p>
+    <h1 class="mp-h2" style="font-size:clamp(2rem,4.6vw,4.5rem);">Sweet potato<br><em>rum</em> cake</h1>
+    <p class="mp-body">Roasted sweet potato, vanilla, eggs. Dense and moist.</p>
+
+    <p class="mp-reserve__price">$28.00</p>
+    <div class="mp-reserve" id="mp-reserve">
+      <form action="#" id="mp-reserve-form-preview" class="mp-reserve__form" data-mp-reservation="true" onsubmit="if(!this.dataset.ok){return false}">
+        <h2 id="mp-reserve-h-preview" class="mp-h3 mp-reserve__h">Pre-order</h2>
+        <p class="mp-reserve__sub">Leave your details and we'll email a checkout link when the first batch is ready.</p>
+
+        <div class="mp-reserve__hp" aria-hidden="true"><label>Leave this field empty <input type="text" name="contact[nickname]" tabindex="-1" autocomplete="off"></label></div>
+
+        <label class="mp-field" for="mp-r-name-preview"><span>Name</span><input type="text" id="mp-r-name-preview" name="contact[name]" required autocomplete="name"></label>
+        <label class="mp-field" for="mp-r-email-preview"><span>Email</span><input type="email" id="mp-r-email-preview" name="contact[email]" required autocomplete="email"></label>
+        <label class="mp-field" for="mp-r-boxes-preview"><span>Boxes</span><input type="number" id="mp-r-boxes-preview" name="contact[boxes]" value="6" required min="1" max="20" step="1" inputmode="numeric" aria-describedby="mp-r-boxes-help-preview"></label>
+        <p class="mp-reserve__help" id="mp-r-boxes-help-preview">6 cakes per box</p>
+        <label class="mp-field" for="mp-r-zip-preview"><span>California ZIP code</span><input type="text" id="mp-r-zip-preview" name="contact[zip]" required inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5" aria-describedby="mp-r-zip-msg-preview"></label>
+        <p class="mp-reserve__msg" id="mp-r-zip-msg-preview" data-mp-reserve-zip-msg hidden>We can only ship within California right now.</p>
+        <label class="mp-field" for="mp-r-note-preview"><span>Note <span class="mp-reserve__opt">(optional)</span></span><textarea id="mp-r-note-preview" name="contact[note]" rows="3"></textarea></label>
+
+        <button type="submit" class="mp-btn mp-reserve__submit" data-mp-reserve-submit>Pre-order</button>
+        <p class="mp-reserve__disc">No payment now. California delivery only.</p>
+      </form>
+    </div>
+
+    <details class="mp-acc"><summary>Shipping &amp; freshness</summary><div class="mp-acc__body">Baked and shipped Monday to Wednesday.</div></details>
+  </div>
+</section></div>
+
+</body></html>

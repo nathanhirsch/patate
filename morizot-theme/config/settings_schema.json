@@ -24,6 +24,31 @@
     ]
   },
   {
+    "name": "Reservations",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Reserve mode replaces every add-to-cart with a no-payment pre-order form and hides the cart. Flip to Buy once a payment provider is live."
+      },
+      {
+        "type": "select",
+        "id": "store_mode",
+        "label": "Store mode",
+        "default": "buy",
+        "options": [
+          { "value": "buy", "label": "Buy (checkout)" },
+          { "value": "reserve", "label": "Reserve (pre-order form, no payment)" }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price_in_reserve_mode",
+        "label": "Show price in reserve mode",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Cart",
     "settings": [
       {

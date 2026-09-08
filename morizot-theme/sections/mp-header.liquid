@@ -29,7 +29,9 @@
       </a>
       <div class="mp-header__meta mp-mono">
         <span class="mp-issue mp-mono--dim">{{ s.issue | escape }}</span>
-        <a href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a>
+        {%- unless settings.store_mode == 'reserve' -%}
+          <a href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a>
+        {%- endunless -%}
       </div>
     </div>
   </header>

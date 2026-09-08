@@ -33,7 +33,16 @@
     </div>
 
     <div class="mp-hero__buy">
-      {%- if product != blank -%}
+      {%- if settings.store_mode == 'reserve' -%}
+        <a class="mp-buy mp-buy--link" href="{{ product.url | default: routes.root_url }}#mp-reserve">
+          <div style="flex:1">
+            <div class="mp-buy__price">{{ s.pre_order_label | escape }}{% if settings.show_price_in_reserve_mode and v.price > 0 %} — {{ v.price | money }}{% endif %}</div>
+            <div class="mp-buy__sub">{{ s.offer_note | escape }}</div>
+          </div>
+          <span class="mp-buy__add" aria-hidden="true">&rarr;</span>
+        </a>
+        <p class="mp-note" style="margin-top:12px;">{{ s.ship_note | escape }}</p>
+      {%- elsif product != blank -%}
         {%- form 'product', product, id: 'mp-hero-form', novalidate: 'novalidate' -%}
           <input type="hidden" name="id" value="{{ v.id }}">
           {%- if product.selling_plan_groups.size > 0 and s.use_subscription -%}
@@ -80,6 +89,7 @@
     { "type": "text", "id": "offer_title", "label": "Offer title", "default": "Box of 6" },
     { "type": "text", "id": "offer_note", "label": "Offer note", "default": "or 12 for $50 · subscribe & save 15%" },
     { "type": "text", "id": "button_label", "label": "Add-to-cart label", "default": "Add to bag" },
+    { "type": "text", "id": "pre_order_label", "label": "Pre-order label (reserve mode)", "default": "Pre-order" },
     { "type": "text", "id": "ship_note", "label": "Shipping note", "default": "Ships Mon–Wed · fresh 10 days" },
     { "type": "header", "content": "Claim band" },
     { "type": "text", "id": "stat_1_value", "label": "Value 1", "default": "40<span>g</span>" },

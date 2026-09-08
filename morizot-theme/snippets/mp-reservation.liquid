@@ -1,0 +1,92 @@
+{% comment %}
+  mp-reservation — a no-payment pre-order form.
+
+  Posts through the native {% form 'contact' %}, so submissions arrive as an
+  email to the store's sender address with no app and no payment gateway.
+  California-only by design (the shop is a California Cottage Food Operation).
+
+  Rendered by sections/reservation-form.liquid and by the mp-product
+  "reservation" block. The caller passes every label so all copy stays
+  editable from the theme editor.
+
+  Params:
+    uid              unique suffix for field ids (section or block id)
+    product_title    plain-text product name, written into the email
+    heading subheading button_label disclaimer
+    success_message  shown after a successful post
+    ca_only_message  shown under the ZIP field when it is outside California
+    max_boxes        number input max
+    cakes_per_box    helper text under the box count
+{% endcomment %}
+{%- liquid
+  assign uid = uid | default: 'r'
+  assign max_boxes = max_boxes | default: 20
+  assign cakes_per_box = cakes_per_box | default: 6
+  assign button_label = button_label | default: 'Pre-order'
+  assign success_message = success_message | default: "Reserved. No payment taken. We'll email you a checkout link when the first batch is ready."
+  assign ca_only_message = ca_only_message | default: 'We can only ship within California right now.'
+  assign disclaimer = disclaimer | default: 'No payment now. California delivery only.'
+  assign form_id = 'mp-reserve-form-' | append: uid
+-%}
+<div class="mp-reserve" id="mp-reserve">
+  {%- form 'contact', id: form_id, class: 'mp-reserve__form', data-mp-reservation: true -%}
+    {%- if form.posted_successfully? -%}
+      <p class="mp-reserve__ok" role="status">{{ success_message | escape }}</p>
+    {%- else -%}
+      {%- if heading != blank -%}<h2 id="mp-reserve-h-{{ uid }}" class="mp-h3 mp-reserve__h">{{ heading | escape }}</h2>{%- endif -%}
+      {%- if subheading != blank -%}<p class="mp-reserve__sub">{{ subheading | escape }}</p>{%- endif -%}
+
+      {%- if form.errors -%}
+        <div class="mp-form-err" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+
+      <input type="hidden" name="contact[product]" value="{{ product_title | default: shop.name | escape }}">
+      <input type="hidden" name="contact[source]" value="reservation">
+
+      {%- comment -%} honeypot — off-screen, never seen or filled by a person {%- endcomment -%}
+      <div class="mp-reserve__hp" aria-hidden="true">
+        <label>Leave this field empty
+          <input type="text" name="contact[nickname]" tabindex="-1" autocomplete="off">
+        </label>
+      </div>
+
+      <label class="mp-field" for="mp-r-name-{{ uid }}">
+        <span>Name</span>
+        <input type="text" id="mp-r-name-{{ uid }}" name="contact[name]" required autocomplete="name">
+      </label>
+
+      <label class="mp-field" for="mp-r-email-{{ uid }}">
+        <span>Email</span>
+        <input type="email" id="mp-r-email-{{ uid }}" name="contact[email]" required autocomplete="email" spellcheck="false">
+      </label>
+
+      <label class="mp-field" for="mp-r-boxes-{{ uid }}">
+        <span>Boxes</span>
+        <input type="number" id="mp-r-boxes-{{ uid }}" name="contact[boxes]" value="6"
+               required min="1" max="{{ max_boxes }}" step="1" inputmode="numeric"
+               aria-describedby="mp-r-boxes-help-{{ uid }}">
+      </label>
+      <p class="mp-reserve__help" id="mp-r-boxes-help-{{ uid }}">{{ cakes_per_box }} cakes per box</p>
+
+      <label class="mp-field" for="mp-r-zip-{{ uid }}">
+        <span>California ZIP code</span>
+        <input type="text" id="mp-r-zip-{{ uid }}" name="contact[zip]"
+               required inputmode="numeric" autocomplete="postal-code"
+               pattern="[0-9]{5}" maxlength="5"
+               aria-describedby="mp-r-zip-msg-{{ uid }}">
+      </label>
+      <p class="mp-reserve__msg" id="mp-r-zip-msg-{{ uid }}" data-mp-reserve-zip-msg hidden>{{ ca_only_message | escape }}</p>
+
+      <label class="mp-field" for="mp-r-note-{{ uid }}">
+        <span>Note <span class="mp-reserve__opt">(optional)</span></span>
+        <textarea id="mp-r-note-{{ uid }}" name="contact[note]" rows="3"></textarea>
+      </label>
+
+      <button type="submit" class="mp-btn mp-reserve__submit" data-mp-reserve-submit>{{ button_label | escape }}</button>
+
+      {%- if disclaimer != blank -%}
+        <p class="mp-reserve__disc">{{ disclaimer | escape }}</p>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endform -%}
+</div>

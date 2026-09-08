@@ -24,6 +24,11 @@
   assign s = section.settings
   assign product = section.settings.product | default: product
   assign v = product.selected_or_first_available_variant
+  assign reserve_mode = false
+  if settings.store_mode == 'reserve'
+    assign reserve_mode = true
+  endif
+  assign reservation_block = section.blocks | where: 'type', 'reservation' | first
 -%}
 <div class="mp" data-mp-pdp data-money-format="{{ shop.money_format | escape }}">
   <section class="mp-pdp" aria-labelledby="mp-pdp-h-{{ section.id }}">
@@ -52,7 +57,25 @@
          stat_2_value: s.stat_2_value, stat_2_label: s.stat_2_label,
          stat_3_value: s.stat_3_value, stat_3_label: s.stat_3_label %}
 
-      {%- if product != blank -%}
+      {%- if reserve_mode -%}
+        {%- if settings.show_price_in_reserve_mode and v.price > 0 -%}
+          <p class="mp-reserve__price">{{ v.price | money }}</p>
+        {%- endif -%}
+        <div {% if reservation_block %}{{ reservation_block.shopify_attributes }}{% endif %}>
+          {% render 'mp-reservation',
+             uid: section.id,
+             product_title: product.title,
+             heading: reservation_block.settings.heading,
+             subheading: reservation_block.settings.subheading,
+             button_label: reservation_block.settings.button_label,
+             disclaimer: reservation_block.settings.disclaimer,
+             success_message: reservation_block.settings.success_message,
+             ca_only_message: reservation_block.settings.ca_only_message,
+             max_boxes: reservation_block.settings.max_boxes,
+             cakes_per_box: reservation_block.settings.cakes_per_box %}
+        </div>
+
+      {%- elsif product != blank -%}
         {%- form 'product', product, id: 'mp-pdp-form', novalidate: 'novalidate', data-mp-form: true -%}
           <input type="hidden" name="id" value="{{ v.id }}">
           <input type="hidden" name="quantity" value="1">
@@ -157,11 +180,22 @@
   ],
   "blocks": [
     { "type": "@app" },
+    { "type": "reservation", "name": "Reservation form", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shown in the buy column in place of add-to-cart when Theme settings → Reservations → Store mode is set to Reserve. No payment is taken; California delivery only." },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Pre-order" },
+      { "type": "text", "id": "subheading", "label": "Subheading", "default": "Leave your details and we'll email a checkout link when the first batch is ready." },
+      { "type": "text", "id": "button_label", "label": "Button label", "default": "Pre-order" },
+      { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "No payment now. California delivery only." },
+      { "type": "textarea", "id": "success_message", "label": "Success message", "default": "Reserved. No payment taken. We'll email you a checkout link when the first batch is ready." },
+      { "type": "text", "id": "ca_only_message", "label": "Out-of-California message", "default": "We can only ship within California right now." },
+      { "type": "number", "id": "max_boxes", "label": "Maximum boxes per reservation", "default": 20 },
+      { "type": "number", "id": "cakes_per_box", "label": "Cakes per box (helper text)", "default": 6 }
+    ]},
     { "type": "detail", "name": "Detail accordion", "settings": [
       { "type": "text", "id": "title", "label": "Title", "default": "Shipping & freshness" },
       { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Baked and shipped Monday to Wednesday. Fresh for 10 days at room temperature, 3 weeks refrigerated.</p>" }
     ]}
   ],
-  "presets": [{ "name": "MP Product", "blocks": [{ "type": "detail" }] }]
+  "presets": [{ "name": "MP Product", "blocks": [{ "type": "reservation" }, { "type": "detail" }] }]
 }
 {% endschema %}

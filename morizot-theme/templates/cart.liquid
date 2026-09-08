@@ -9,7 +9,12 @@
       <h1 class="mp-page__title">Your bag</h1>
     </div>
 
-    {%- if cart.item_count == 0 -%}
+    {%- if settings.store_mode == 'reserve' -%}
+      <div class="mp-cart__empty">
+        <p class="mp-body">The shop is taking reservations right now, not orders.</p>
+        <a class="mp-link-btn" href="{{ routes.root_url }}">Back to the shop</a>
+      </div>
+    {%- elsif cart.item_count == 0 -%}
       <div class="mp-cart__empty">
         <p class="mp-body">{{ 'cart.empty' | t }}</p>
         <a class="mp-link-btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }}</a>

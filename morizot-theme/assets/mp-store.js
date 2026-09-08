@@ -98,9 +98,45 @@
     }
   }
 
+  // reservation (pre-order) form: block submit when the ZIP is outside
+  // California (90001–96162), and swallow honeypot hits. Field is never
+  // disabled — with JS off the form still posts and the server takes it.
+  function reservation(){
+    document.querySelectorAll('form[data-mp-reservation]').forEach(function(form){
+      if (form.__mpReserve) return; form.__mpReserve = true;
+      var zip = form.querySelector('[name="contact[zip]"]');
+      var msg = form.querySelector('[data-mp-reserve-zip-msg]');
+      var hp = form.querySelector('[name="contact[nickname]"]');
+      var submit = form.querySelector('[data-mp-reserve-submit]');
+
+      function zipInCA(){
+        var val = (zip && zip.value || '').trim();
+        if (!/^\d{5}$/.test(val)) return false;
+        var n = parseInt(val, 10);
+        return n >= 90001 && n <= 96162;
+      }
+      if (zip) zip.addEventListener('input', function(){
+        if (msg) msg.hidden = true;
+        zip.removeAttribute('aria-invalid');
+      });
+
+      form.addEventListener('submit', function(e){
+        if (hp && hp.value){ e.preventDefault(); return; }
+        if (!zipInCA()){
+          e.preventDefault();
+          if (msg) msg.hidden = false;
+          if (zip){ zip.setAttribute('aria-invalid', 'true'); zip.focus(); }
+          return;
+        }
+        if (submit) submit.setAttribute('aria-busy', 'true');
+      });
+    });
+  }
+
   function init(){
     reveal();
     document.querySelectorAll('[data-mp-pdp]').forEach(pdp);
+    reservation();
   }
   if (document.readyState !== 'loading') init();
   else document.addEventListener('DOMContentLoaded', init);
