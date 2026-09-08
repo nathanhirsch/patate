@@ -59,7 +59,11 @@
 
       {%- if reserve_mode -%}
         {%- if settings.show_price_in_reserve_mode and v.price > 0 -%}
-          <p class="mp-reserve__price">{{ v.price | money }}</p>
+          {%- assign cpb = reservation_block.settings.cakes_per_box | default: 6 -%}
+          <div class="mp-reserve__pricing">
+            <span class="mp-reserve__price">{{ v.price | money }}</span>
+            <span class="mp-reserve__price-sub">a box of {{ cpb }} cake{% unless cpb == 1 %}s{% endunless %}</span>
+          </div>
         {%- endif -%}
         <div {% if reservation_block %}{{ reservation_block.shopify_attributes }}{% endif %}>
           {% render 'mp-reservation',

@@ -337,7 +337,9 @@ body{background:var(--mp-ink)}
 .mp-reserve__form{max-width:460px}
 .mp-reserve__h{margin:0 0 6px}
 .mp-reserve__sub{font-size:14px;line-height:1.55;color:var(--mp-dim);margin:0;max-width:52ch}
-.mp-reserve__price{font-family:var(--mp-serif);font-size:clamp(1.4rem,2vw,1.9rem);line-height:1;margin:0 0 6px}
+.mp-pdp__panel .mp-reserve__pricing,.mp-reserve__pricing{margin:clamp(22px,3.5vw,36px) 0 0}
+.mp-reserve__price{display:block;font-family:var(--mp-serif);font-size:clamp(1.5rem,2.2vw,2rem);line-height:1}
+.mp-reserve__price-sub{display:block;margin-top:5px;font-size:13px;color:var(--mp-dim)}
 .mp-field .mp-reserve__opt{text-transform:none;letter-spacing:0;color:var(--mp-dim)}
 .mp-reserve__help{font-family:var(--mp-mono);font-size:11px;letter-spacing:.04em;color:var(--mp-dim);margin:6px 0 0}
 .mp-reserve__msg{font-size:13px;line-height:1.45;color:var(--mp-amber-lt);margin:6px 0 0}
