@@ -158,9 +158,13 @@
 .mp-log__meta{display:flex;justify-content:space-between;margin-top:12px}
 .mp-log__title{margin-top:6px}
 @media(min-width:900px){
-  .mp-log{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:32px;align-items:start}
+  .mp-log{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:32px;align-items:stretch}
+  .mp-log>article{display:flex;flex-direction:column}
   .mp-log__pair{display:contents}
   .mp-log__pair .mp-fig{aspect-ratio:3/4}
+  /* the wide lead photo grows to fill its column so all three entries
+     bottom out together — no ragged gap before the next section */
+  .mp-log__lead .mp-fig{aspect-ratio:auto;flex:1 1 auto;min-height:320px}
   .mp-log__lead .mp-h3,.mp-log__lead .mp-log__title{font-size:clamp(1.5rem,2vw,1.875rem)}
 }
 
