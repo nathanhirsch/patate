@@ -6,7 +6,8 @@
         "c1": { "type": "chapter", "settings": {
           "kicker": "Origin",
           "heading": "From Réunion",
-          "body": "<p>Réunion is a volcanic island in the Indian Ocean, French since the 1600s and Creole in its kitchen. Sweet potato grows well in its uplands, and gâteau patate douce — a moist, barely sweet cake — turns up at Sunday tables, school fêtes and church halls across the island.</p><p>Our recipe came off one of those tables. It was written for a family, not a bakery: roasted sweet potato, eggs, vanilla, a little flour, baked long and slow.</p>",
+          "body": "<p>Réunion is a volcanic island in the Indian Ocean, French since the 1600s and Creole in its kitchen. Sweet potato is a common ingredient, and gâteau patate (sweet potato cake) is a staple Sunday bake for many families. </p><p>Our recipe is a family recipe. It was written for a family, not a bakery: steamed sweet potato, eggs, vanilla, a little flour, baked long and slow.</p>",
+          "image": "shopify://shop_images/watching-the-water-at-dusk.jpg",
           "image_caption": "The uplands, Cirque de Salazie"
         }},
         "c2": { "type": "chapter", "settings": {
@@ -25,10 +26,11 @@
       "block_order": ["c1", "c2", "c3"],
       "settings": {
         "eyebrow": "The cake",
-        "title": "A <em>Réunion</em> recipe, packed for the mountain.",
+        "title": "A <em>Réunion</em> recipe, made for athletes and adventures.",
         "location": "Réunion · Indian Ocean",
-        "standfirst": "Sweet potato cake — gâteau patate douce — is an everyday dessert on Réunion Island. This is one family's version, baked denser and carried where the roads stop.",
+        "image": "shopify://shop_images/IMG_1675.jpg",
         "image_caption": "Réunion · the interior",
+        "standfirst": "Sweet potato cake —gâteau patate in French— is an everyday dessert on Réunion Island. This is one family's version, baked for adventures.",
         "quote": "Made on the island, for the parts of the island without roads."
       }
     }

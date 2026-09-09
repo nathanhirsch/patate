@@ -3,16 +3,37 @@
     "roster": {
       "type": "mp-roster",
       "blocks": {
-        "m1": { "type": "member", "settings": { "name": "Chef", "role": "Founder · baker", "bio": "Trained in Paris and baked for a head of state. Builds the recipe around what a working stomach can take at hour three." } },
-        "m2": { "type": "member", "settings": { "name": "Runner", "role": "Founder · testing", "bio": "Runs the long stuff on weekends and the errands on weekdays. Every batch goes in a vest before it goes in a box." } }
+        "m1": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/Nathan_Hirsch_founder.jpg",
+            "name": "Nathan",
+            "role": "Founder · CEO",
+            "bio": "I do CrossFit every day among other things."
+          }
+        },
+        "m2": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3031.jpg",
+            "name": "Aude",
+            "role": "Founder · Chef",
+            "bio": "Trained in Paris and baked for a head of state. Builds the recipe around what a working stomach can take at hour three."
+          }
+        }
       },
-      "block_order": ["m1", "m2"],
+      "block_order": [
+        "m1",
+        "m2"
+      ],
       "settings": {
         "eyebrow": "The team",
         "title": "Two people, one <em>standard</em>.",
-        "intro": "A baker and an athlete. We make the cake we wanted on the start line and could not find."
+        "intro": "A chef and 2 athletes from France. We make the cake we wanted on the start line and could not find."
       }
     }
   },
-  "order": ["roster"]
+  "order": [
+    "roster"
+  ]
 }

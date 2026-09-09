@@ -1,16 +1,16 @@
 {
   "current": {
     "show_breadcrumbs": true,
-    "cart_notes_enabled": true,
-    "store_mode": "buy",
-    "show_price_in_reserve_mode": true
+    "store_mode": "reserve",
+    "show_price_in_reserve_mode": true,
+    "cart_notes_enabled": false,
+    "social_instagram": "https://www.instagram.com/morizot_passage/",
+    "content_for_index": []
   },
   "presets": {
     "Morizot Passage": {
       "show_breadcrumbs": true,
-      "cart_notes_enabled": true,
-      "store_mode": "buy",
-      "show_price_in_reserve_mode": true
+      "cart_notes_enabled": true
     }
   }
 }

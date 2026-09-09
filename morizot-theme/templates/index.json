@@ -7,20 +7,194 @@
         "use_subscription": false,
         "eyebrow": "Morizot Passage",
         "title": "Sweet potato<br><em>vanilla</em> fuel",
-        "deck": "A pâtissier's sweet potato vanilla cake, dense with carbohydrate and protein.",
+        "deck": "A delicious sweet potato vanilla cake to fuel your next adventure with carbohydrate and protein.",
         "image": "shopify://shop_images/Product_Shot_2_016dbb70-7819-4476-872d-5bd36e8c7481.jpg",
         "fig_label": "Fig. 1 — the cake",
         "offer_title": "Box of 6",
         "offer_note": "or 12 for $50 · subscribe & save 15%",
         "button_label": "Add to bag",
+        "pre_order_label": "Pre-order",
         "ship_note": "Ships Mon–Wed · fresh 10 days",
         "stat_1_value": "40g",
         "stat_1_label": "Carbs / serving",
         "stat_2_value": "3g",
         "stat_2_label": "Protein / serving",
-        "stat_3_value": "Grain Free",
+        "stat_3_value": "Gluten Free",
         "stat_3_label": "",
         "body": ""
+      }
+    },
+    "fuel": {
+      "type": "mp-fuel",
+      "blocks": {
+        "r1": {
+          "type": "reason",
+          "settings": {
+            "title": "Carbohydrate that lasts",
+            "text": "Mostly complex starch, so it releases over hours instead of spiking and dropping. 40 g a serving — a real ride's worth, not a gel's."
+          }
+        },
+        "r2": {
+          "type": "reason",
+          "settings": {
+            "title": "Potassium and magnesium",
+            "text": "The two minerals you lose fastest in sweat, and the ones cramping legs ask for. A sweet potato has more potassium than a banana."
+          }
+        },
+        "r3": {
+          "type": "reason",
+          "settings": {
+            "title": "Beta-carotene",
+            "text": "The orange is vitamin A. It is the one nutrient in this cake that has nothing to do with performance and everything to do with eating well."
+          }
+        },
+        "r4": {
+          "type": "reason",
+          "settings": {
+            "title": "Easy at effort",
+            "text": "No grain, no gluten, no dairy. Cooked starch and eggs, which is about the gentlest thing you can ask a stomach to handle at mile 20."
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {
+        "eyebrow": "The root",
+        "title": "Sweet potato is <em>real</em> endurance fuel.",
+        "body": "We didn't pick it for the color. A sweet potato carries dense, slow carbohydrate plus the potassium and magnesium you sweat out — which is why it has fed athletes long before it was a bakery ingredient.",
+        "image": "shopify://shop_images/sweet-potato-pile.jpg",
+        "fig_label": "Fig. 2 — the root, raw",
+        "footnote": ""
+      }
+    },
+    "claims": {
+      "type": "mp-claims",
+      "blocks": {
+        "c1": {
+          "type": "claim",
+          "settings": {
+            "text": "Super soft texture"
+          }
+        },
+        "c2": {
+          "type": "claim",
+          "settings": {
+            "text": "3g of protein/ serving"
+          }
+        },
+        "c3": {
+          "type": "claim",
+          "settings": {
+            "text": "40 g of carbs/ serving"
+          }
+        },
+        "c4": {
+          "type": "claim",
+          "settings": {
+            "text": "Highly digestible"
+          }
+        },
+        "c5": {
+          "type": "claim",
+          "settings": {
+            "text": "Gluten-free"
+          }
+        },
+        "c6": {
+          "type": "claim",
+          "settings": {
+            "text": "Dairy-free"
+          }
+        },
+        "c7": {
+          "type": "claim",
+          "settings": {
+            "text": "Convenient"
+          }
+        },
+        "c8": {
+          "type": "claim",
+          "settings": {
+            "text": "Non-GMO"
+          }
+        },
+        "c9": {
+          "type": "claim",
+          "settings": {
+            "text": "French recipe"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8",
+        "c9"
+      ],
+      "settings": {
+        "title": "What's in it",
+        "count_label": "claims"
+      }
+    },
+    "who": {
+      "type": "mp-who",
+      "blocks": {
+        "a1": {
+          "type": "audience",
+          "settings": {
+            "image": "shopify://shop_images/marathon_chicago_2dc8ff55-2a20-40e8-a6a5-226cbd880a81.jpg",
+            "caption": "Photo — Sunday, 10 miles",
+            "title": "Endurance runners",
+            "text": "Two before a long run, one in the vest for mile 20. It goes down when gels have stopped going down."
+          }
+        },
+        "a2": {
+          "type": "audience",
+          "settings": {
+            "image": "shopify://shop_images/Squat.png",
+            "caption": "Photo — chalk, bar, depth",
+            "title": "Lifters",
+            "text": "Ninety minutes out from the first heavy set. Forty grams of carbohydrate and three of protein, without the brick in the stomach."
+          }
+        },
+        "a3": {
+          "type": "audience",
+          "settings": {
+            "image": "shopify://shop_images/boarding-subway.jpg",
+            "caption": "New York — Subway",
+            "title": "Commuters",
+            "text": "Breakfast on the go that needs no fork, no fridge and no second hand on the wheel."
+          }
+        },
+        "a4": {
+          "type": "audience",
+          "settings": {
+            "image": "shopify://shop_images/sitting-on-school-steps-to-go-back-to-school.jpg",
+            "caption": "Photo — On the way to school",
+            "title": "Kids",
+            "text": "Vanilla, soft, sweet enough to be a treat. No gluten, no dairy, no nuts — so it clears most school lists."
+          }
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "settings": {
+        "eyebrow": "Who it's for",
+        "title": "One cake, <em>four</em> pockets.",
+        "body": "We made it for a race vest and it kept showing up in gym bags, briefcases and lunchboxes. Same cake, different hour of the day."
       }
     },
     "where": {
@@ -36,8 +210,8 @@
         "p2": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/marathon_chicago_976c6d58-5f0a-4305-a3a4-009a1742e4e1.jpg",
-            "caption": "Chicago Marathon"
+            "image": "shopify://shop_images/FullSizeRender_2.jpg",
+            "caption": "Joshua Tree"
           }
         },
         "p3": {
@@ -149,130 +323,6 @@
         "image": "shopify://shop_images/IMG_3015_0dad0652-7a35-4109-8aab-1fff155e27b4.jpg",
         "fig_label": "Fig. 3 — every day, outside",
         "title": "We are small. The standard isn't."
-      }
-    },
-    "fuel": {
-      "type": "mp-fuel",
-      "blocks": {
-        "r1": {
-          "type": "reason",
-          "settings": {
-            "title": "Carbohydrate that lasts",
-            "text": "Mostly complex starch, so it releases over hours instead of spiking and dropping. 40 g a serving — a real ride's worth, not a gel's."
-          }
-        },
-        "r2": {
-          "type": "reason",
-          "settings": {
-            "title": "Potassium and magnesium",
-            "text": "The two minerals you lose fastest in sweat, and the ones cramping legs ask for. A sweet potato has more potassium than a banana."
-          }
-        },
-        "r3": {
-          "type": "reason",
-          "settings": {
-            "title": "Beta-carotene",
-            "text": "The orange is vitamin A. It is the one nutrient in this cake that has nothing to do with performance and everything to do with eating well."
-          }
-        },
-        "r4": {
-          "type": "reason",
-          "settings": {
-            "title": "Easy at effort",
-            "text": "No grain, no gluten, no dairy. Cooked starch and eggs, which is about the gentlest thing you can ask a stomach to handle at mile 20."
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2",
-        "r3",
-        "r4"
-      ]
-    },
-    "claims": {
-      "type": "mp-claims",
-      "blocks": {
-        "c1": {
-          "type": "claim",
-          "settings": {
-            "text": "Super soft texture"
-          }
-        },
-        "c2": {
-          "type": "claim",
-          "settings": {
-            "text": "Grain-free"
-          }
-        },
-        "c3": {
-          "type": "claim",
-          "settings": {
-            "text": "40 g of carbs per serving"
-          }
-        },
-        "c4": {
-          "type": "claim",
-          "settings": {
-            "text": "Highly digestible"
-          }
-        },
-        "c5": {
-          "type": "claim",
-          "settings": {
-            "text": "Gluten-free"
-          }
-        },
-        "c6": {
-          "type": "claim",
-          "settings": {
-            "text": "Dairy-free"
-          }
-        },
-        "c7": {
-          "type": "claim",
-          "settings": {
-            "text": "Kosher"
-          }
-        },
-        "c8": {
-          "type": "claim",
-          "settings": {
-            "text": "Non-GMO"
-          }
-        },
-        "c9": {
-          "type": "claim",
-          "settings": {
-            "text": "French recipe"
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4",
-        "c5",
-        "c6",
-        "c7",
-        "c8",
-        "c9"
-      ]
-    },
-    "who": {
-      "type": "mp-who",
-      "blocks": {
-        "a1": { "type": "audience", "settings": { "caption": "Photo — pre-dawn, trailhead", "title": "Endurance runners", "text": "Two before a long run, one in the vest for mile 20. It goes down when gels have stopped going down." } },
-        "a2": { "type": "audience", "settings": { "caption": "Photo — chalk, bar, gym bag", "title": "Lifters", "text": "Ninety minutes out from the first heavy set. Forty grams of carbohydrate and three of protein, without the brick in the stomach." } },
-        "a3": { "type": "audience", "settings": { "caption": "Photo — jacket pocket, platform", "title": "Commuters", "text": "Breakfast on the 7:14 that needs no fork, no fridge and no second hand on the wheel." } },
-        "a4": { "type": "audience", "settings": { "caption": "Photo — lunchbox, kitchen counter", "title": "Kids", "text": "Vanilla, soft, sweet enough to be a treat. No grain, no dairy, no nuts — so it clears most school lists." } }
-      },
-      "block_order": ["a1", "a2", "a3", "a4"],
-      "settings": {
-        "eyebrow": "Who it's for",
-        "title": "One cake, <em>four</em> pockets.",
-        "body": "We made it for a race vest and it kept showing up in gym bags, briefcases and lunchboxes. Same cake, different hour of the day."
       }
     }
   },
