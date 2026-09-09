@@ -37,7 +37,7 @@
         <a class="mp-buy mp-buy--link" href="{{ product.url | default: routes.root_url }}#mp-reserve">
           <div style="flex:1">
             <div class="mp-buy__price">{{ s.pre_order_label | escape }}{% if settings.show_price_in_reserve_mode and v.price > 0 %} — {{ v.price | money }}{% endif %}</div>
-            <div class="mp-buy__sub">{{ s.offer_note | escape }}</div>
+            <div class="mp-buy__sub">{{ s.pre_order_note | default: 'One box · 6 individually wrapped cakes' | escape }}</div>
           </div>
           <span class="mp-buy__add" aria-hidden="true">&rarr;</span>
         </a>
@@ -90,6 +90,7 @@
     { "type": "text", "id": "offer_note", "label": "Offer note", "default": "or 12 for $50 · subscribe & save 15%" },
     { "type": "text", "id": "button_label", "label": "Add-to-cart label", "default": "Add to bag" },
     { "type": "text", "id": "pre_order_label", "label": "Pre-order label (reserve mode)", "default": "Pre-order" },
+    { "type": "text", "id": "pre_order_note", "label": "Pre-order note (reserve mode) — say what the price buys", "default": "One box · 6 individually wrapped cakes" },
     { "type": "text", "id": "ship_note", "label": "Shipping note", "default": "Ships Mon–Wed · fresh 10 days" },
     { "type": "header", "content": "Claim band" },
     { "type": "text", "id": "stat_1_value", "label": "Value 1", "default": "40<span>g</span>" },
