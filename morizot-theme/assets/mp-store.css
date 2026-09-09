@@ -209,6 +209,24 @@ body{background:var(--mp-ink)}
   .mp-journal__entry:nth-child(even) .mp-journal__media{order:2}
 }
 
+/* --- story (the cake page) ------------------------------------- */
+.mp-story__hero{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:16/9;background:var(--mp-ink-2);margin:clamp(28px,5vw,44px) 0 0}
+.mp-story__hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mp-story{display:flex;flex-direction:column;gap:clamp(44px,8vw,80px);margin-top:clamp(44px,8vw,80px)}
+.mp-story__chapter{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.mp-story__text{max-width:62ch}
+.mp-story__text .mp-h3{margin:8px 0 0}
+.mp-story__text .mp-prose{margin-top:14px}
+.mp-story__fig{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;background:var(--mp-ink-2)}
+.mp-story__fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(min-width:900px){
+  .mp-story__chapter--figure{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,56px);align-items:start}
+  .mp-story__chapter--figure:nth-of-type(even) .mp-story__fig{order:-1}
+}
+.mp-story__quote{margin:clamp(44px,8vw,80px) 0 0;border-left:2px solid var(--mp-amber);padding-left:clamp(16px,3vw,28px);max-width:46ch}
+.mp-story__quote p{font-family:var(--mp-serif);font-style:italic;font-size:clamp(1.3rem,2vw,1.8rem);line-height:1.3;margin:0;color:var(--mp-cream)}
+.mp-story__quote cite{display:block;margin-top:12px;font-family:var(--mp-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mp-dim);font-style:normal}
+
 /* --- full-bleed closer --------------------------------------------- */
 .mp-closer{position:relative;margin-top:var(--mp-flow);min-height:min(120vw,520px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(20px,4vw,48px);overflow:hidden}
 .mp-closer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}

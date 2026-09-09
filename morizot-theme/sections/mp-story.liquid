@@ -1,0 +1,95 @@
+{% comment %}
+  mp-story — a story page (built for "The cake"). Split head, an optional hero
+  photograph, then chapters: each a kicker, a heading, a paragraph or two and
+  an optional image that alternates side to side on desktop. One pull-quote at
+  the end. Every string is a setting.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-story-h-{{ section.id }}">
+    <div class="mp-head mp-head--split mp-reveal">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h1 id="mp-story-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;max-width:26ch;">{{ s.title }}</h1>
+      </div>
+      {%- if s.standfirst != blank -%}<p class="mp-deck">{{ s.standfirst | escape }}</p>{%- endif -%}
+    </div>
+
+    {%- if s.image != blank -%}
+      <figure class="mp-story__hero mp-reveal">
+        {{ s.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,2000', alt: s.image.alt | default: s.title }}
+        {%- if s.image_caption != blank -%}<figcaption class="mp-fig__cap">{{ s.image_caption | escape }}</figcaption>{%- endif -%}
+      </figure>
+    {%- endif -%}
+
+    <div class="mp-story">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <section class="mp-story__chapter mp-reveal{% if b.image != blank %} mp-story__chapter--figure{% endif %}" {{ block.shopify_attributes }}>
+          <div class="mp-story__text">
+            {%- if b.kicker != blank -%}<p class="mp-mono mp-mono--accent">{{ b.kicker | escape }}</p>{%- endif -%}
+            {%- if b.heading != blank -%}<h2 class="mp-h3">{{ b.heading | escape }}</h2>{%- endif -%}
+            {%- if b.body != blank -%}<div class="mp-prose">{{ b.body }}</div>{%- endif -%}
+          </div>
+          {%- if b.image != blank -%}
+            <figure class="mp-story__fig">
+              {{ b.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 44vw, 100vw', widths: '600,900,1200,1400', alt: b.image.alt | default: b.heading }}
+              {%- if b.image_caption != blank -%}<figcaption class="mp-fig__cap">{{ b.image_caption | escape }}</figcaption>{%- endif -%}
+            </figure>
+          {%- endif -%}
+        </section>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.quote != blank -%}
+      <blockquote class="mp-story__quote mp-reveal">
+        <p>{{ s.quote | escape }}</p>
+        {%- if s.quote_by != blank -%}<cite>{{ s.quote_by | escape }}</cite>{%- endif -%}
+      </blockquote>
+    {%- endif -%}
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Story",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The cake" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "A <em>Réunion</em> recipe, packed for the mountain." },
+    { "type": "textarea", "id": "standfirst", "label": "Standfirst", "default": "Sweet potato cake — gâteau patate douce — is an everyday dessert on Réunion Island. This is one family's version, baked denser and carried where the roads stop." },
+    { "type": "image_picker", "id": "image", "label": "Hero photograph" },
+    { "type": "text", "id": "image_caption", "label": "Hero caption", "default": "Réunion · the interior" },
+    { "type": "header", "content": "Pull quote" },
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "Made on the island, for the parts of the island without roads." },
+    { "type": "text", "id": "quote_by", "label": "Attribution (optional)" }
+  ],
+  "blocks": [
+    { "type": "chapter", "name": "Chapter", "settings": [
+      { "type": "text", "id": "kicker", "label": "Kicker", "default": "Origin" },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+      { "type": "richtext", "id": "body", "label": "Body", "default": "<p>A paragraph or two.</p>" },
+      { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+      { "type": "text", "id": "image_caption", "label": "Image caption" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Story", "blocks": [
+    { "type": "chapter", "settings": {
+      "kicker": "Origin",
+      "heading": "From Réunion",
+      "body": "<p>Réunion is a volcanic island in the Indian Ocean, French since the 1600s and Creole in its kitchen. Sweet potato grows well in its uplands, and gâteau patate douce — a moist, barely sweet cake — turns up at Sunday tables, school fêtes and church halls across the island.</p><p>Our recipe came off one of those tables. It was written for a family, not a bakery: roasted sweet potato, eggs, vanilla, a little flour, baked long and slow.</p>"
+    }},
+    { "type": "chapter", "settings": {
+      "kicker": "The recipe",
+      "heading": "Built to travel",
+      "body": "<p>We changed two things. We roast the sweet potatoes whole so the sugars concentrate and the crumb holds together, and we bake each cake small enough to fit a jersey pocket or a vest.</p><p>What did not change: no shortcuts, no preservatives, the same vanilla these islands have grown for generations. A cake keeps ten days at room temperature and takes heat, cold and a full day of bouncing without falling apart.</p>"
+    }},
+    { "type": "chapter", "settings": {
+      "kicker": "On the mountain",
+      "heading": "La Diagonale des Fous",
+      "body": "<p>La Diagonale des Fous — the Madmen's Diagonal — runs roughly 165 km across Réunion, coast to coast over the volcano, with about 9,500 metres of climbing. It is the island's race.</p><p>Cakes from this recipe have been carried at aid stations along the route. Thirty hours in, when gels stop working, a slice of something a runner grew up eating still goes down. That is the whole idea.</p>"
+    }}
+  ]}]
+}
+{% endschema %}
