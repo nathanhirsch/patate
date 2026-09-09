@@ -8,7 +8,14 @@
 <div class="mp">
   <header class="mp-header">
     <div class="mp-wrap mp-header__in">
-      <nav class="mp-header__nav mp-mono" aria-label="{{ 'general.navigation' | t | default: 'Primary' }}">
+      <button class="mp-header__toggle mp-mono" type="button" aria-expanded="false" aria-controls="mp-menu-{{ section.id }}">
+        <svg class="mp-header__burger" width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true">
+          <path d="M0 1h15M0 5.5h15M0 10h15" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span class="mp-header__toggle-open">Menu</span>
+        <span class="mp-header__toggle-close">Close</span>
+      </button>
+      <nav id="mp-menu-{{ section.id }}" class="mp-header__nav mp-mono" aria-label="{{ 'general.navigation' | t | default: 'Primary' }}">
         {%- if s.menu != blank -%}
           {%- for link in linklists[s.menu].links -%}
             <a href="{{ link.url }}">{{ link.title | escape }}</a>

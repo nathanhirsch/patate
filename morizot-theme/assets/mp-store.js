@@ -133,8 +133,29 @@
     });
   }
 
+  // mobile header menu: the toggle opens the nav as a dropdown panel.
+  // Desktop CSS keeps the nav inline and hides the toggle, so this is inert there.
+  function menu(){
+    document.querySelectorAll('.mp-header__toggle').forEach(function(toggle){
+      if (toggle.__mpMenu) return; toggle.__mpMenu = true;
+      var nav = document.getElementById(toggle.getAttribute('aria-controls'));
+      if (!nav) return;
+      function set(open){
+        if (open) nav.setAttribute('data-open', ''); else nav.removeAttribute('data-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      toggle.addEventListener('click', function(){ set(!nav.hasAttribute('data-open')); });
+      nav.addEventListener('click', function(e){ if (e.target.closest('a')) set(false); });
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') set(false); });
+      document.addEventListener('click', function(e){
+        if (nav.hasAttribute('data-open') && !nav.contains(e.target) && !toggle.contains(e.target)) set(false);
+      });
+    });
+  }
+
   function init(){
     reveal();
+    menu();
     document.querySelectorAll('[data-mp-pdp]').forEach(pdp);
     reservation();
   }
