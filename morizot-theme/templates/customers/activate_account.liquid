@@ -1,0 +1,18 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-center">
+      <p class="mp-mono mp-mono--accent">Account</p>
+      <h1 class="mp-page__title">{{ 'customer.activate_account.title' | t }}</h1>
+      <p class="mp-body">{{ 'customer.activate_account.subtext' | t }}</p>
+      {%- form 'activate_customer_password', class: 'mp-center', style: 'width:100%' -%}
+        {%- if form.errors -%}<div class="mp-form-err">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.activate_account.password' | t }}</span><input type="password" name="customer[password]" required></label>
+        <label class="mp-field" style="width:100%"><span>{{ 'customer.activate_account.password_confirm' | t }}</span><input type="password" name="customer[password_confirmation]" required></label>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button type="submit" name="commit" class="mp-link-btn">{{ 'customer.activate_account.submit' | t }}</button>
+          <button type="submit" name="decline" class="mp-link-btn mp-link-btn--ghost">{{ 'customer.activate_account.cancel' | t }}</button>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+{% paginate blog.articles by 12 %}
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">Logbook</p>
+      <h1 class="mp-page__title">{{ blog.title | escape }}</h1>
+    </div>
+    <div class="mp-articles">
+      {%- for article in blog.articles -%}
+        <a class="mp-article-card" href="{{ article.url }}">
+          <div class="mp-article-card__media">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 1000 | image_tag: loading: 'lazy', sizes: '(min-width: 760px) 45vw, 100vw', widths: '400,600,800,1000', alt: article.image.alt | escape }}
+            {%- endif -%}
+          </div>
+          <div class="mp-mono mp-mono--dim">{{ article.published_at | date: '%b %-d, %Y' }}</div>
+          <div class="mp-article-card__t">{{ article.title | escape }}</div>
+          {%- if article.excerpt_or_content != blank -%}
+            <p class="mp-body" style="font-size:14px">{{ article.excerpt_or_content | strip_html | truncate: 140 }}</p>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+    {% render 'mp-pagination', paginate: paginate %}
+  </div>
+</div>
+{% endpaginate %}

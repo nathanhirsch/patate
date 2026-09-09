@@ -1,0 +1,37 @@
+{% comment %}
+  mp-footer — quiet mono footer. Links are blocks.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <div class="mp-wrap">
+    <footer class="mp-footer mp-mono mp-mono--dim">
+      <span>{{ s.left | escape }}</span>
+      {%- if section.blocks.size > 0 -%}
+        <nav class="mp-footer__links" aria-label="Footer">
+          {%- for block in section.blocks -%}
+            <a href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+      <span>{{ s.right | escape }}</span>
+    </footer>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "MP Footer",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "left", "label": "Left", "default": "© Morizot Passage" },
+    { "type": "text", "id": "right", "label": "Right", "default": "Chicago, IL" }
+  ],
+  "blocks": [
+    { "type": "link", "name": "Link", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Shipping" },
+      { "type": "url", "id": "url", "label": "URL" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Footer" }]
+}
+{% endschema %}

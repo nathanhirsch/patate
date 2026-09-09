@@ -1,0 +1,21 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">Catalogue</p>
+      <h1 class="mp-page__title">Collections</h1>
+    </div>
+    <div class="mp-cards">
+      {%- for collection in collections -%}
+        <a class="mp-card" href="{{ collection.url }}">
+          <div class="mp-card__media">
+            {%- if collection.featured_image -%}
+              {{ collection.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width:1100px) 22vw, (min-width:760px) 30vw, 45vw', widths: '300,500,700', alt: collection.featured_image.alt | escape }}
+            {%- endif -%}
+          </div>
+          <div class="mp-card__title">{{ collection.title | escape }}</div>
+          <div class="mp-card__price">{{ collection.all_products_count }} items</div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

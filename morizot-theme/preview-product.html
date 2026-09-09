@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Morizot Passage — product</title>
+<style>
+  body{margin:0;background:#0D0B09;font:500 12px/1 'Work Sans',system-ui,sans-serif;color:rgba(244,238,227,.7)}
+  .pv-bar{position:sticky;top:0;z-index:10;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#0D0B09;border-bottom:1px solid rgba(244,238,227,.14)}
+  .pv-bar a,.pv-bar button{font:inherit;color:inherit;background:none;border:1px solid rgba(244,238,227,.25);border-radius:6px;padding:6px 10px;cursor:pointer;text-decoration:none}
+  .pv-bar button[data-on]{background:#F4EEE3;color:#16130F;border-color:#F4EEE3}
+  .pv-hold{padding:16px;display:flex;justify-content:center;overflow:auto}
+  iframe{flex:none;width:1440px;height:calc(100vh - 84px);border:0;background:#16130F;box-shadow:0 0 0 1px rgba(244,238,227,.14)}
+  iframe[data-w="402"]{width:402px}
+</style>
+</head><body>
+<div class="pv-bar">
+  <span>Static preview · Liquid resolved to defaults · media queries evaluate at the frame width</span>
+  <button data-w="402">Mobile 402</button>
+  <button data-w="1440" data-on>Desktop 1440</button>
+  <a href="preview.html">← Home</a>
+</div>
+<div class="pv-hold"><iframe src="preview-product-frame.html" data-w="1440" title="Morizot Passage — product"></iframe></div>
+<script>
+  var f=document.querySelector('iframe');
+  document.querySelectorAll('.pv-bar button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.pv-bar button').forEach(function(o){o.removeAttribute('data-on')});
+      b.setAttribute('data-on','');f.setAttribute('data-w',b.dataset.w);
+    });
+  });
+</script>
+</body></html>

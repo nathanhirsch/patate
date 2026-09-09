@@ -1,0 +1,74 @@
+{% comment %}
+  mp-journal — the logbook page. A vertical run of entries; each has a
+  photograph, a date + place line, a title and an optional paragraph.
+  Photo and text side by side on desktop (alternating), stacked on mobile.
+  Each entry is a block.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-journal-h-{{ section.id }}">
+    <div class="mp-head mp-head--split mp-reveal">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h1 id="mp-journal-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;">{{ s.title }}</h1>
+      </div>
+      {%- if s.intro != blank -%}<p class="mp-body" style="max-width:40ch;">{{ s.intro | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="mp-journal">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <article class="mp-journal__entry mp-reveal" {{ block.shopify_attributes }}>
+          <div class="mp-journal__media">
+            {%- if b.url != blank -%}<a href="{{ b.url }}">{%- endif -%}
+            {% render 'mp-figure', image: b.image, caption: b.caption, fill: true, sizes: '(min-width: 800px) 44vw, 100vw' %}
+            {%- if b.url != blank -%}</a>{%- endif -%}
+          </div>
+          <div class="mp-journal__text">
+            {%- capture meta -%}
+              {%- if b.date != blank -%}{{ b.date | escape }}{%- endif -%}
+              {%- if b.date != blank and b.place != blank -%} &middot; {%- endif -%}
+              {%- if b.place != blank -%}{{ b.place | escape }}{%- endif -%}
+            {%- endcapture -%}
+            {%- if meta != blank -%}<p class="mp-mono mp-mono--dim mp-journal__meta">{{ meta }}</p>{%- endif -%}
+            <h2 class="mp-h3">{{ b.title | escape }}</h2>
+            {%- if b.body != blank -%}<p class="mp-journal__body">{{ b.body | escape }}</p>{%- endif -%}
+            {%- if b.url != blank and b.link_label != blank -%}
+              <a class="mp-journal__link" href="{{ b.url }}">{{ b.link_label | escape }}</a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Journal",
+  "tag": "div",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Logbook" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "Where it has been." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Notes from the road, the trail and the 5am kitchen. Kept short, kept honest." }
+  ],
+  "blocks": [
+    { "type": "entry", "name": "Entry", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Photograph" },
+      { "type": "text", "id": "caption", "label": "Photo caption" },
+      { "type": "text", "id": "date", "label": "Date", "default": "Oct 12" },
+      { "type": "text", "id": "place", "label": "Place", "default": "Arizona" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Entry title" },
+      { "type": "textarea", "id": "body", "label": "Body", "default": "A sentence or two on what happened." },
+      { "type": "url", "id": "url", "label": "Link (optional)" },
+      { "type": "text", "id": "link_label", "label": "Link label", "default": "Read more" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Journal", "blocks": [
+    { "type": "entry", "settings": { "date": "Oct 12", "place": "South Kaibab, Arizona", "title": "Two cakes at 5am. One in the pocket for mile 20.", "body": "26.2 miles rim to floor and back. The gels stopped going down around mile 16; the cake did not." } },
+    { "type": "entry", "settings": { "date": "Sep 2", "place": "Desert loop, 4,200 ft", "title": "Ridge line, no bonk.", "body": "A slow morning out and a fast one back. Half a cake every forty minutes and the legs stayed under me the whole way." } },
+    { "type": "entry", "settings": { "date": "Daily", "place": "The kitchen, 6:00", "title": "The box before the bakery.", "body": "Every batch is baked, cooled, cut and carried before it is packed. If it does not survive the vest it does not ship." } }
+  ]}]
+}
+{% endschema %}

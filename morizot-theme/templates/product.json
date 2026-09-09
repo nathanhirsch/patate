@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "main": {
+      "type": "mp-product",
+      "blocks": {
+        "d1": { "type": "detail", "settings": { "title": "Shipping & freshness", "body": "<p>Baked and shipped Monday to Wednesday. Fresh for 10 days at room temperature, 3 weeks refrigerated.</p>" } },
+        "d2": { "type": "detail", "settings": { "title": "How the chef makes it", "body": "<p>Sweet potatoes are roasted whole, then folded into a French sponge with Madagascar vanilla. No grain, no dairy, no preservatives.</p>" } },
+        "d3": { "type": "detail", "settings": { "title": "Storage", "body": "<p>Room temperature 10 days, refrigerated 3 weeks, frozen 3 months.</p>" } }
+      },
+      "block_order": ["d1", "d2", "d3"],
+      "settings": {
+        "product": "",
+        "eyebrow": "The cake · Fig. 1",
+        "title_html": "Sweet potato<br><em>vanilla</em> cake",
+        "body": "Roasted sweet potato, Madagascar vanilla, eggs. A French recipe, dense and moist, stable in a jersey pocket for hours.",
+        "pack_label": "Box Options",
+        "plan_label": "Delivery",
+        "plan_note": "Skip or cancel anytime",
+        "onetime_label": "One-time purchase",
+        "button_label": "Add to bag",
+        "sold_out_label": "Sold out",
+        "sticky_label": "Box of 6 · every 2 weeks",
+        "ship_note": "Ships Mon–Wed · fresh 10 days",
+        "stat_1_value": "40g",
+        "stat_1_label": "Carbs / serving",
+        "stat_2_value": "3g",
+        "stat_2_label": "Protein / serving",
+        "stat_3_value": "Grain",
+        "stat_3_label": "Free"
+      }
+    },
+    "claims": {
+      "type": "mp-claims",
+      "blocks": {
+        "c1": { "type": "claim", "settings": { "text": "Super soft texture" } },
+        "c2": { "type": "claim", "settings": { "text": "Grain-free" } },
+        "c3": { "type": "claim", "settings": { "text": "40 g of carbs per serving" } },
+        "c4": { "type": "claim", "settings": { "text": "Highly digestible" } },
+        "c5": { "type": "claim", "settings": { "text": "Gluten-free" } },
+        "c6": { "type": "claim", "settings": { "text": "Dairy-free" } },
+        "c7": { "type": "claim", "settings": { "text": "Kosher" } },
+        "c8": { "type": "claim", "settings": { "text": "Non-GMO" } },
+        "c9": { "type": "claim", "settings": { "text": "French recipe" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"],
+      "settings": { "title": "What's in it", "count_label": "claims" }
+    },
+    "timing": {
+      "type": "mp-timing",
+      "blocks": {
+        "t1": { "type": "moment", "settings": { "title": "−90 min", "body": "Before the start. Slow carbs, no gut issues." } },
+        "t2": { "type": "moment", "settings": { "title": "During", "body": "Half a cake every 45 min on long efforts." } },
+        "t3": { "type": "moment", "settings": { "title": "+30 min", "body": "Recovery. Fast carbs back in the tank." } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": { "eyebrow": "When to eat it", "title": "Three moments." }
+    },
+    "nutrition": {
+      "type": "mp-nutrition",
+      "blocks": {
+        "n1": { "type": "row", "settings": { "label": "Carbohydrates", "value": "40 g" } },
+        "n2": { "type": "row", "settings": { "label": "Protein", "value": "3 g" } },
+        "n3": { "type": "row", "settings": { "label": "Fat", "value": "9 g" } },
+        "n4": { "type": "row", "settings": { "label": "Sodium", "value": "180 mg" } }
+      },
+      "block_order": ["n1", "n2", "n3", "n4"],
+      "settings": {
+        "title": "Nutrition · per serving",
+        "kcal": "310 kcal",
+        "ingredients": "Sweet potato, eggs, almond flour, vanilla, sea salt. Grain free, gluten free, dairy free.",
+        "caption_1": "Carried · desert loop",
+        "caption_2": "Rim to rim"
+      }
+    },
+    "closer": {
+      "type": "mp-closer",
+      "settings": {
+        "fig_label": "Fig. 2 — every day, outside",
+        "title": "We are small. The standard isn't."
+      }
+    }
+  },
+  "order": ["main", "claims", "timing", "nutrition", "closer"]
+}

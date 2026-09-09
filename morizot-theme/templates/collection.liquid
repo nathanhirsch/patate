@@ -1,0 +1,27 @@
+{% paginate collection.products by 24 %}
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    {%- if settings.show_breadcrumbs -%}
+      <p class="mp-breadcrumb"><a href="{{ routes.root_url }}">Shop</a> / {{ collection.title | escape }}</p>
+    {%- endif -%}
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">Collection</p>
+      <h1 class="mp-page__title">{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="mp-prose">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products_count == 0 -%}
+      <p class="mp-body">Nothing here yet.</p>
+    {%- else -%}
+      <div class="mp-cards">
+        {%- for product in collection.products -%}
+          {% render 'mp-card', product: product %}
+        {%- endfor -%}
+      </div>
+      {% render 'mp-pagination', paginate: paginate %}
+    {%- endif -%}
+  </div>
+</div>
+{% endpaginate %}

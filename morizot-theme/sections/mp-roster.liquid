@@ -1,0 +1,55 @@
+{% comment %}
+  mp-roster — the team page. One card per person: portrait, name, role, a
+  short bio. Two-up on desktop, stacked on mobile. Each person is a block.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-roster-h-{{ section.id }}">
+    <div class="mp-head mp-head--split mp-reveal">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h1 id="mp-roster-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;max-width:24ch;">{{ s.title }}</h1>
+      </div>
+      {%- if s.intro != blank -%}<p class="mp-body" style="max-width:40ch;">{{ s.intro | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="mp-roster">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <article class="mp-roster__card mp-reveal" style="--mp-stagger:{{ forloop.index0 | times: 80 }}ms;" {{ block.shopify_attributes }}>
+          <div class="mp-roster__media">
+            {% render 'mp-figure', image: b.image, fill: true, sizes: '(min-width: 800px) 46vw, 100vw' %}
+          </div>
+          <h2 class="mp-h3">{{ b.name | escape }}</h2>
+          {%- if b.role != blank -%}<p class="mp-mono mp-mono--dim mp-roster__role">{{ b.role | escape }}</p>{%- endif -%}
+          {%- if b.bio != blank -%}<p class="mp-roster__bio">{{ b.bio | escape }}</p>{%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Roster",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The team" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "Two people, one <em>standard</em>." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "A baker and an athlete. We make the cake we wanted on the start line and could not find." }
+  ],
+  "blocks": [
+    { "type": "member", "name": "Member", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Portrait" },
+      { "type": "text", "id": "name", "label": "Name", "default": "Name" },
+      { "type": "text", "id": "role", "label": "Role", "default": "Role" },
+      { "type": "textarea", "id": "bio", "label": "Bio", "default": "One or two sentences on who they are and what they bring." }
+    ]}
+  ],
+  "presets": [{ "name": "MP Roster", "blocks": [
+    { "type": "member", "settings": { "name": "Chef", "role": "Founder · baker", "bio": "Trained in Paris and baked for a head of state. Builds the recipe around what a working stomach can take at hour three." } },
+    { "type": "member", "settings": { "name": "Runner", "role": "Founder · testing", "bio": "Runs the long stuff on weekends and the errands on weekdays. Every batch goes in a vest before it goes in a box." } }
+  ]}]
+}
+{% endschema %}

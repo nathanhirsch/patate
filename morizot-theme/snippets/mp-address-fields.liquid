@@ -1,0 +1,16 @@
+{% comment %}
+  mp-address-fields — shared inputs for the {% form 'customer_address' %} form.
+  `address` is the address object (customer.new_address or an existing one).
+{% endcomment %}
+<label class="mp-field"><span>{{ 'customer.addresses.first_name' | t }}</span><input type="text" name="address[first_name]" value="{{ address.first_name }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.last_name' | t }}</span><input type="text" name="address[last_name]" value="{{ address.last_name }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.company' | t }}</span><input type="text" name="address[company]" value="{{ address.company }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.address1' | t }}</span><input type="text" name="address[address1]" value="{{ address.address1 }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.address2' | t }}</span><input type="text" name="address[address2]" value="{{ address.address2 }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.city' | t }}</span><input type="text" name="address[city]" value="{{ address.city }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.zip' | t }}</span><input type="text" name="address[zip]" value="{{ address.zip }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.phone' | t }}</span><input type="tel" name="address[phone]" value="{{ address.phone }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.province' | t }}</span><input type="text" name="address[province]" value="{{ address.province }}"></label>
+<label class="mp-field"><span>{{ 'customer.addresses.country' | t }}</span>
+  <select name="address[country]">{{ country_option_tags }}</select>
+</label>

@@ -1,0 +1,5 @@
+# Google Fonts are loaded intentionally: DM Serif Display / Work Sans are on the
+# Shopify font library but JetBrains Mono (used for every eyebrow and caption)
+# is not, so the type system is loaded from one <link> with preconnect.
+RemoteAsset:
+  enabled: false

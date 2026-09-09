@@ -1,0 +1,44 @@
+{% comment %}
+  mp-timing — "When to eat it": a hairline timeline with three moments.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-timing-h-{{ section.id }}" style="display:grid;gap:24px;">
+    <div class="mp-reveal">
+      <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+      <h2 id="mp-timing-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;">{{ s.title | escape }}</h2>
+    </div>
+    <div class="mp-timing mp-reveal">
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          <span class="mp-timing__dot"></span>
+          <div class="mp-timing__t">{{ block.settings.title | escape }}</div>
+          <div class="mp-timing__d">{{ block.settings.body | escape }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Timing",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "When to eat it" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Three moments." }
+  ],
+  "blocks": [
+    { "type": "moment", "name": "Moment", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "−90 min" },
+      { "type": "textarea", "id": "body", "label": "Body", "default": "Before the start. Slow carbs, no gut issues." }
+    ]}
+  ],
+  "presets": [{ "name": "MP Timing", "blocks": [
+    { "type": "moment", "settings": { "title": "−90 min", "body": "Before the start. Slow carbs, no gut issues." } },
+    { "type": "moment", "settings": { "title": "During", "body": "Half a cake every 45 min on long efforts." } },
+    { "type": "moment", "settings": { "title": "+30 min", "body": "Recovery. Fast carbs back in the tank." } }
+  ]}]
+}
+{% endschema %}

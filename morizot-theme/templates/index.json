@@ -1,0 +1,289 @@
+{
+  "sections": {
+    "hero": {
+      "type": "mp-hero",
+      "settings": {
+        "product": "sweet-potato-vanilla-cake",
+        "use_subscription": false,
+        "eyebrow": "Morizot Passage",
+        "title": "Sweet potato<br><em>vanilla</em> fuel",
+        "deck": "A pâtissier's sweet potato vanilla cake, dense with carbohydrate and protein.",
+        "image": "shopify://shop_images/Product_Shot_2_016dbb70-7819-4476-872d-5bd36e8c7481.jpg",
+        "fig_label": "Fig. 1 — the cake",
+        "offer_title": "Box of 6",
+        "offer_note": "or 12 for $50 · subscribe & save 15%",
+        "button_label": "Add to bag",
+        "ship_note": "Ships Mon–Wed · fresh 10 days",
+        "stat_1_value": "40g",
+        "stat_1_label": "Carbs / serving",
+        "stat_2_value": "3g",
+        "stat_2_label": "Protein / serving",
+        "stat_3_value": "Grain Free",
+        "stat_3_label": "",
+        "body": ""
+      }
+    },
+    "where": {
+      "type": "mp-where",
+      "blocks": {
+        "p1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3283_9ad6e6f9-6e67-464b-9825-c026d0953d54.jpg",
+            "caption": "Grand Canyon · trail day"
+          }
+        },
+        "p2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/marathon_chicago_976c6d58-5f0a-4305-a3a4-009a1742e4e1.jpg",
+            "caption": "Chicago Marathon"
+          }
+        },
+        "p3": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/Squat.png",
+            "caption": "Crossfit"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {
+        "eyebrow": "Where it goes",
+        "title": "Fuel we actually eat, every day.",
+        "body": "Race mornings, between workouts, and breakfast in a jacket pocket. Made in Chicago, tested outside."
+      }
+    },
+    "logbook": {
+      "type": "mp-logbook",
+      "blocks": {
+        "e1": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3156.jpg",
+            "caption": "South Kaibab, 5,200 ft",
+            "meta_left": "Oct 12 · Arizona",
+            "meta_right": "26.2 mi",
+            "title": "Two cakes at 5am. One in the pocket for mile 20.",
+            "url": ""
+          }
+        },
+        "e2": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/marathon_chicago_2dc8ff55-2a20-40e8-a6a5-226cbd880a81.jpg",
+            "caption": "Marathon 2026",
+            "meta_left": "Chicago · 10:12",
+            "meta_right": "26.2 mi",
+            "title": "Running our first marathon",
+            "url": ""
+          }
+        },
+        "e3": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3156.jpg",
+            "caption": "Desert loop",
+            "meta_left": "Sep 2 · 4,200 ft",
+            "meta_right": "26.2 mi",
+            "title": "Ridge line, no bonk",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ],
+      "settings": {
+        "title": "Logbook",
+        "year": "2026"
+      }
+    },
+    "team": {
+      "type": "mp-team",
+      "blocks": {
+        "m1": {
+          "type": "member",
+          "settings": {
+            "name": "Chef",
+            "tone": "#c4651d"
+          }
+        },
+        "m2": {
+          "type": "member",
+          "settings": {
+            "name": "Runner",
+            "tone": "#e0a672"
+          }
+        },
+        "m3": {
+          "type": "member",
+          "settings": {
+            "name": "Lifter",
+            "tone": "#7a3a0f"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "settings": {
+        "eyebrow": "The team",
+        "title": "A chef who baked for the President. Athletes who train every day.",
+        "link_label": "Meet us",
+        "link": ""
+      }
+    },
+    "closer": {
+      "type": "mp-closer",
+      "settings": {
+        "image": "shopify://shop_images/IMG_3015_0dad0652-7a35-4109-8aab-1fff155e27b4.jpg",
+        "fig_label": "Fig. 3 — every day, outside",
+        "title": "We are small. The standard isn't."
+      }
+    },
+    "fuel": {
+      "type": "mp-fuel",
+      "blocks": {
+        "r1": {
+          "type": "reason",
+          "settings": {
+            "title": "Carbohydrate that lasts",
+            "text": "Mostly complex starch, so it releases over hours instead of spiking and dropping. 40 g a serving — a real ride's worth, not a gel's."
+          }
+        },
+        "r2": {
+          "type": "reason",
+          "settings": {
+            "title": "Potassium and magnesium",
+            "text": "The two minerals you lose fastest in sweat, and the ones cramping legs ask for. A sweet potato has more potassium than a banana."
+          }
+        },
+        "r3": {
+          "type": "reason",
+          "settings": {
+            "title": "Beta-carotene",
+            "text": "The orange is vitamin A. It is the one nutrient in this cake that has nothing to do with performance and everything to do with eating well."
+          }
+        },
+        "r4": {
+          "type": "reason",
+          "settings": {
+            "title": "Easy at effort",
+            "text": "No grain, no gluten, no dairy. Cooked starch and eggs, which is about the gentlest thing you can ask a stomach to handle at mile 20."
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ]
+    },
+    "claims": {
+      "type": "mp-claims",
+      "blocks": {
+        "c1": {
+          "type": "claim",
+          "settings": {
+            "text": "Super soft texture"
+          }
+        },
+        "c2": {
+          "type": "claim",
+          "settings": {
+            "text": "Grain-free"
+          }
+        },
+        "c3": {
+          "type": "claim",
+          "settings": {
+            "text": "40 g of carbs per serving"
+          }
+        },
+        "c4": {
+          "type": "claim",
+          "settings": {
+            "text": "Highly digestible"
+          }
+        },
+        "c5": {
+          "type": "claim",
+          "settings": {
+            "text": "Gluten-free"
+          }
+        },
+        "c6": {
+          "type": "claim",
+          "settings": {
+            "text": "Dairy-free"
+          }
+        },
+        "c7": {
+          "type": "claim",
+          "settings": {
+            "text": "Kosher"
+          }
+        },
+        "c8": {
+          "type": "claim",
+          "settings": {
+            "text": "Non-GMO"
+          }
+        },
+        "c9": {
+          "type": "claim",
+          "settings": {
+            "text": "French recipe"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8",
+        "c9"
+      ]
+    },
+    "who": {
+      "type": "mp-who",
+      "blocks": {
+        "a1": { "type": "audience", "settings": { "caption": "Photo — pre-dawn, trailhead", "title": "Endurance runners", "text": "Two before a long run, one in the vest for mile 20. It goes down when gels have stopped going down." } },
+        "a2": { "type": "audience", "settings": { "caption": "Photo — chalk, bar, gym bag", "title": "Lifters", "text": "Ninety minutes out from the first heavy set. Forty grams of carbohydrate and three of protein, without the brick in the stomach." } },
+        "a3": { "type": "audience", "settings": { "caption": "Photo — jacket pocket, platform", "title": "Commuters", "text": "Breakfast on the 7:14 that needs no fork, no fridge and no second hand on the wheel." } },
+        "a4": { "type": "audience", "settings": { "caption": "Photo — lunchbox, kitchen counter", "title": "Kids", "text": "Vanilla, soft, sweet enough to be a treat. No grain, no dairy, no nuts — so it clears most school lists." } }
+      },
+      "block_order": ["a1", "a2", "a3", "a4"],
+      "settings": {
+        "eyebrow": "Who it's for",
+        "title": "One cake, <em>four</em> pockets.",
+        "body": "We made it for a race vest and it kept showing up in gym bags, briefcases and lunchboxes. Same cake, different hour of the day."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "fuel",
+    "claims",
+    "who",
+    "where",
+    "logbook",
+    "team",
+    "closer"
+  ]
+}

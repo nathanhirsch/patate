@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "mp-footer",
+      "blocks": {
+        "l1": { "type": "link", "settings": { "label": "Shipping", "url": "shopify://policies/shipping-policy" } },
+        "l2": { "type": "link", "settings": { "label": "Contact", "url": "/pages/contact" } },
+        "l3": { "type": "link", "settings": { "label": "Wholesale", "url": "/pages/wholesale" } }
+      },
+      "block_order": ["l1", "l2", "l3"],
+      "settings": {}
+    }
+  },
+  "order": ["footer"]
+}

@@ -1,0 +1,51 @@
+{% comment %}
+  mp-team — the one cream card on the ink page. Faces are blocks; each takes an
+  optional portrait, and falls back to a flat disc so the layout never breaks.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <div class="mp-wrap">
+    <section class="mp-team mp-reveal" aria-labelledby="mp-team-h-{{ section.id }}">
+      <div class="mp-team__copy">
+        <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
+        <h2 id="mp-team-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;max-width:40ch;">{{ s.title | escape }}</h2>
+      </div>
+      {%- if section.blocks.size > 0 -%}
+        <div class="mp-team__faces" aria-hidden="true">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.portrait != blank -%}
+              {{ block.settings.portrait | image_url: width: 200 | image_tag: loading: 'lazy', alt: block.settings.name }}
+            {%- else -%}
+              <span class="mp-team__face" style="background:{{ block.settings.tone }};"></span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if s.link_label != blank -%}
+        <a class="mp-team__link" href="{{ s.link | default: '/pages/team' }}">{{ s.link_label | escape }}</a>
+      {%- endif -%}
+    </section>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "MP Team",
+  "tag": "div",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The team" },
+    { "type": "text", "id": "title", "label": "Title", "default": "A chef who baked for the President. Athletes who train every day." },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Meet us" },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "blocks": [
+    { "type": "member", "name": "Member", "settings": [
+      { "type": "image_picker", "id": "portrait", "label": "Portrait" },
+      { "type": "text", "id": "name", "label": "Name", "default": "Chef" },
+      { "type": "color", "id": "tone", "label": "Fallback disc", "default": "#C4651D" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Team", "blocks": [{ "type": "member" }, { "type": "member" }, { "type": "member" }] }]
+}
+{% endschema %}

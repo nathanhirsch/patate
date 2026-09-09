@@ -1,0 +1,40 @@
+{% paginate search.results by 20 %}
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-page__head">
+      <p class="mp-mono mp-mono--accent">{{ 'general.search.heading' | t }}</p>
+      <h1 class="mp-page__title">Search</h1>
+      <form action="{{ routes.search_url }}" method="get" role="search" style="max-width:520px;width:100%">
+        <label class="mp-field">
+          <span class="mp-vh">{{ 'general.search.placeholder' | t }}</span>
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off">
+        </label>
+      </form>
+    </div>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <p class="mp-body">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+      {%- else -%}
+        <p class="mp-mono mp-mono--dim">{{ 'general.search.results_count' | t: count: search.results_count, terms: search.terms }}</p>
+        <div class="mp-cards" style="margin-top:20px">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'mp-card', product: item %}
+            {%- else -%}
+              <a class="mp-card" href="{{ item.url }}">
+                <div class="mp-card__media">
+                  {%- if item.image -%}{{ item.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width:1100px) 22vw, (min-width:760px) 30vw, 45vw', widths: '300,500,700', alt: '' }}{%- endif -%}
+                </div>
+                <div class="mp-card__title">{{ item.title | escape }}</div>
+                <div class="mp-card__price">{{ item.object_type }}</div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {% render 'mp-pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+{% endpaginate %}

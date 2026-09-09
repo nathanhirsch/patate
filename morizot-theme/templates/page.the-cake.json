@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "story": {
+      "type": "mp-story",
+      "blocks": {
+        "c1": { "type": "chapter", "settings": {
+          "kicker": "Origin",
+          "heading": "From Réunion",
+          "body": "<p>Réunion is a volcanic island in the Indian Ocean, French since the 1600s and Creole in its kitchen. Sweet potato grows well in its uplands, and gâteau patate douce — a moist, barely sweet cake — turns up at Sunday tables, school fêtes and church halls across the island.</p><p>Our recipe came off one of those tables. It was written for a family, not a bakery: roasted sweet potato, eggs, vanilla, a little flour, baked long and slow.</p>",
+          "image_caption": "The uplands, Cirque de Salazie"
+        }},
+        "c2": { "type": "chapter", "settings": {
+          "kicker": "The recipe",
+          "heading": "Built to travel",
+          "body": "<p>We changed two things. We roast the sweet potatoes whole so the sugars concentrate and the crumb holds together, and we bake each cake small enough to fit a jersey pocket or a vest.</p><p>What did not change: no shortcuts, no preservatives, the same vanilla these islands have grown for generations. A cake keeps ten days at room temperature and takes heat, cold and a full day of bouncing without falling apart.</p>",
+          "image_caption": "One cake, one pocket"
+        }},
+        "c3": { "type": "chapter", "settings": {
+          "kicker": "On the mountain",
+          "heading": "La Diagonale des Fous",
+          "body": "<p>La Diagonale des Fous — the Madmen's Diagonal — runs roughly 165 km across Réunion, coast to coast over the volcano, with about 9,500 metres of climbing. It is the island's race.</p><p>Cakes from this recipe have been carried at aid stations along the route. Thirty hours in, when gels stop working, a slice of something a runner grew up eating still goes down. That is the whole idea.</p>",
+          "image_caption": "Aid station, Cilaos"
+        }}
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": {
+        "eyebrow": "The cake",
+        "title": "A <em>Réunion</em> recipe, packed for the mountain.",
+        "location": "Réunion · Indian Ocean",
+        "standfirst": "Sweet potato cake — gâteau patate douce — is an everyday dessert on Réunion Island. This is one family's version, baked denser and carried where the roads stop.",
+        "image_caption": "Réunion · the interior",
+        "quote": "Made on the island, for the parts of the island without roads."
+      }
+    }
+  },
+  "order": ["story"]
+}

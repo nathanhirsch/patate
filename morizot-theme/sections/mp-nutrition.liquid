@@ -1,0 +1,59 @@
+{% comment %}
+  mp-nutrition — the panel table plus two photographs. Rows are blocks so the
+  merchant can restate the panel after a recipe change; values can also be
+  pulled from product metafields by typing them here.
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-nut-h-{{ section.id }}">
+    <div class="mp-nut">
+      <div class="mp-reveal">
+        <div class="mp-rule mp-mono mp-mono--accent">
+          <span id="mp-nut-h-{{ section.id }}">{{ s.title | escape }}</span>
+          <span>{{ s.kcal | escape }}</span>
+        </div>
+        {%- for block in section.blocks -%}
+          <div class="mp-nut__row" {{ block.shopify_attributes }}>
+            <span>{{ block.settings.label | escape }}</span><b>{{ block.settings.value | escape }}</b>
+          </div>
+        {%- endfor -%}
+        {%- if s.ingredients != blank -%}
+          <p class="mp-body" style="font-size:13px;margin-top:16px;">{{ s.ingredients | escape }}</p>
+        {%- endif -%}
+      </div>
+      <div class="mp-pair mp-reveal" style="--mp-stagger:80ms;">
+        {% render 'mp-figure', image: s.photo_1, caption: s.caption_1, ratio: '1', radius: '14px', sizes: '(min-width: 1000px) 24vw, 50vw' %}
+        {% render 'mp-figure', image: s.photo_2, caption: s.caption_2, ratio: '1', radius: '14px', sizes: '(min-width: 1000px) 24vw, 50vw' %}
+      </div>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Nutrition",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Rule label", "default": "Nutrition · per serving" },
+    { "type": "text", "id": "kcal", "label": "Rule right", "default": "310 kcal" },
+    { "type": "textarea", "id": "ingredients", "label": "Ingredients", "default": "Sweet potato, eggs, almond flour, vanilla, sea salt. Grain free, gluten free, dairy free." },
+    { "type": "image_picker", "id": "photo_1", "label": "Photograph 1" },
+    { "type": "text", "id": "caption_1", "label": "Caption 1", "default": "Carried · desert loop" },
+    { "type": "image_picker", "id": "photo_2", "label": "Photograph 2" },
+    { "type": "text", "id": "caption_2", "label": "Caption 2", "default": "Rim to rim" }
+  ],
+  "blocks": [
+    { "type": "row", "name": "Row", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Carbohydrates" },
+      { "type": "text", "id": "value", "label": "Value", "default": "40 g" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Nutrition", "blocks": [
+    { "type": "row", "settings": { "label": "Carbohydrates", "value": "40 g" } },
+    { "type": "row", "settings": { "label": "Protein", "value": "3 g" } },
+    { "type": "row", "settings": { "label": "Fat", "value": "9 g" } },
+    { "type": "row", "settings": { "label": "Sodium", "value": "180 mg" } }
+  ]}]
+}
+{% endschema %}

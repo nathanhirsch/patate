@@ -1,0 +1,50 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <div class="mp-page__head" style="flex-direction:row;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:16px">
+      <div>
+        <p class="mp-mono mp-mono--accent">{{ 'customer.account.title' | t }}</p>
+        <h1 class="mp-page__title">{{ customer.name | default: customer.email | escape }}</h1>
+      </div>
+      <a class="mp-form-note" href="{{ routes.account_logout_url }}">{{ 'customer.log_out' | t }}</a>
+    </div>
+
+    <div class="mp-account-grid">
+      <div>
+        <p class="mp-mono mp-mono--dim">{{ 'customer.account.orders' | t }}</p>
+        {%- paginate customer.orders by 20 -%}
+          {%- if customer.orders.size == 0 -%}
+            <p class="mp-body">{{ 'customer.account.no_orders' | t }}</p>
+          {%- else -%}
+            <table class="mp-order-table">
+              <thead><tr>
+                <th>{{ 'customer.orders.order_number' | t }}</th>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.payment_status' | t }}</th>
+                <th>{{ 'customer.orders.total' | t }}</th>
+              </tr></thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | date: '%b %-d, %Y' }}</td>
+                    <td>{{ order.financial_status_label }}</td>
+                    <td>{{ order.total_net_amount | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+            {% render 'mp-pagination', paginate: paginate %}
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+
+      <div>
+        <p class="mp-mono mp-mono--dim">{{ 'customer.account.details' | t }}</p>
+        {%- if customer.default_address -%}
+          <div class="mp-body" style="font-size:14px">{{ customer.default_address | format_address }}</div>
+        {%- endif -%}
+        <a class="mp-link-btn mp-link-btn--ghost" href="{{ routes.account_addresses_url }}" style="margin-top:14px">{{ 'customer.account.view_addresses' | t }}</a>
+      </div>
+    </div>
+  </div>
+</div>

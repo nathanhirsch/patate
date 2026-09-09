@@ -1,0 +1,43 @@
+<div class="mp">
+  <div class="mp-wrap mp-page">
+    <p class="mp-breadcrumb"><a href="{{ blog.url }}">{{ 'blogs.article.back_to_blog' | t }}</a></p>
+    <article class="mp-article__body">
+      <div class="mp-page__head">
+        <p class="mp-mono mp-mono--dim">{{ article.published_at | date: '%B %-d, %Y' }}{% if article.author != blank %} · {{ article.author }}{% endif %}</p>
+        <h1 class="mp-page__title">{{ article.title | escape }}</h1>
+      </div>
+      {%- if article.image -%}
+        <div class="mp-article__hero">
+          {{ article.image | image_url: width: 1600 | image_tag: sizes: '(min-width: 700px) 68ch, 100vw', widths: '600,900,1200,1600', alt: article.image.alt | escape }}
+        </div>
+      {%- endif -%}
+      <div class="mp-prose">{{ article.content }}</div>
+
+      {%- if blog.comments_enabled? -%}
+        <div style="margin-top:var(--mp-flow)">
+          {%- if article.comments_count > 0 -%}
+            <p class="mp-mono mp-mono--accent">{{ article.comments_count }} comments</p>
+            {%- for comment in article.comments -%}
+              <div style="padding:14px 0;border-bottom:1px solid var(--mp-line)">
+                <div class="mp-mono mp-mono--dim">{{ comment.author | escape }} · {{ comment.created_at | date: '%b %-d, %Y' }}</div>
+                <div class="mp-prose" style="margin-top:6px">{{ comment.content }}</div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          {%- form 'new_comment', article -%}
+            {%- if form.errors -%}
+              <div class="mp-form-err">{{ form.errors | default_errors }}</div>
+            {%- elsif form.posted_successfully? -%}
+              <div class="mp-form-err">Thanks — your comment is awaiting moderation.</div>
+            {%- endif -%}
+            <label class="mp-field"><span>Name</span><input type="text" name="comment[author]" value="{{ form.author }}" required></label>
+            <label class="mp-field"><span>Email</span><input type="email" name="comment[email]" value="{{ form.email }}" required></label>
+            <label class="mp-field"><span>Comment</span><textarea name="comment[body]" rows="4" required>{{ form.body }}</textarea></label>
+            <button type="submit" class="mp-link-btn" style="margin-top:16px">Post comment</button>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </article>
+  </div>
+</div>
