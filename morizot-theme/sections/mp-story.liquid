@@ -12,7 +12,8 @@
 <div class="mp">
   <section class="mp-story__monument{% unless s.image %} mp-story__monument--ph{% endunless %}" aria-labelledby="mp-story-h-{{ section.id }}">
     {%- if s.image != blank -%}
-      {{ s.image | image_url: width: 2600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '900,1200,1600,2000,2600', alt: s.image.alt | default: s.title | strip_html }}
+      {%- assign monument_alt = s.image.alt | default: s.title | strip_html -%}
+      {{ s.image | image_url: width: 2600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '900,1200,1600,2000,2600', alt: monument_alt }}
     {%- endif -%}
     <div class="mp-story__monument-copy">
       <p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>
