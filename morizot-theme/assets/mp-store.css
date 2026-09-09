@@ -210,20 +210,36 @@ body{background:var(--mp-ink)}
 }
 
 /* --- story (the cake page) ------------------------------------- */
-.mp-story__hero{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:16/9;background:var(--mp-ink-2);margin:clamp(28px,5vw,44px) 0 0}
-.mp-story__hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.mp-story{display:flex;flex-direction:column;gap:clamp(44px,8vw,80px);margin-top:clamp(44px,8vw,80px)}
-.mp-story__chapter{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
-.mp-story__text{max-width:62ch}
+/* monumental full-bleed hero, small quiet title over a gradient to ink */
+.mp-story__monument{position:relative;min-height:min(84vh,860px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(24px,5vw,64px);overflow:hidden;background:var(--mp-ink-2)}
+.mp-story__monument img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mp-story__monument::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(22,19,15,.3) 0%,transparent 22%,transparent 40%,rgba(22,19,15,.6) 62%,rgba(22,19,15,.97) 90%,var(--mp-ink))}
+.mp-story__monument>*{position:relative;z-index:1}
+.mp-story__monument--ph{background:repeating-linear-gradient(135deg,#2A241D 0 8px,#221D17 8px 16px)}
+.mp-story__monument-copy{max-width:32ch}
+.mp-story__monument-copy>*{text-shadow:0 1px 10px rgba(0,0,0,.45)}
+.mp-story__monument-title{font-family:var(--mp-serif);font-size:clamp(1.45rem,2.4vw,2.3rem);line-height:1.1;letter-spacing:-.01em;margin:10px 0 0}
+.mp-story__monument-title em{font-style:italic;color:var(--mp-amber-lt)}
+.mp-story__monument-copy .mp-mono--dim{margin:14px 0 0}
+.mp-story__monument-cap{position:absolute;top:clamp(16px,3vw,28px);right:clamp(16px,3vw,28px);z-index:1;text-align:right;max-width:24ch}
+
+.mp-story__lead{max-width:38ch;margin:0}
+.mp-story{display:flex;flex-direction:column;gap:clamp(48px,9vw,96px);margin-top:clamp(40px,7vw,72px)}
+.mp-story__chapter{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.mp-story__text{max-width:60ch}
 .mp-story__text .mp-h3{margin:8px 0 0}
 .mp-story__text .mp-prose{margin-top:14px}
-.mp-story__fig{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;background:var(--mp-ink-2)}
+.mp-story__fig{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:flex-end;padding:14px;background:var(--mp-ink-2)}
 .mp-story__fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mp-story__fig .mp-fig__cap{position:relative}
+.mp-story__fig--ph{background:repeating-linear-gradient(135deg,#2A241D 0 6px,#221D17 6px 12px)}
+.mp-story__fig--ph .mp-fig__cap{color:var(--mp-amber-lt);text-shadow:none}
 @media(min-width:900px){
-  .mp-story__chapter--figure{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,56px);align-items:start}
-  .mp-story__chapter--figure:nth-of-type(even) .mp-story__fig{order:-1}
+  .mp-story__chapter{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
+  .mp-story__chapter:nth-child(even) .mp-story__fig{order:-1}
+  .mp-story__fig{aspect-ratio:5/4}
 }
-.mp-story__quote{margin:clamp(44px,8vw,80px) 0 0;border-left:2px solid var(--mp-amber);padding-left:clamp(16px,3vw,28px);max-width:46ch}
+.mp-story__quote{margin:clamp(48px,9vw,88px) 0 0;border-left:2px solid var(--mp-amber);padding-left:clamp(16px,3vw,28px);max-width:46ch}
 .mp-story__quote p{font-family:var(--mp-serif);font-style:italic;font-size:clamp(1.3rem,2vw,1.8rem);line-height:1.3;margin:0;color:var(--mp-cream)}
 .mp-story__quote cite{display:block;margin-top:12px;font-family:var(--mp-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mp-dim);font-style:normal}
 
