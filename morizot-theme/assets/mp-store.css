@@ -215,6 +215,28 @@ body{background:var(--mp-ink)}
   .mp-team__copy{flex:1}
 }
 
+/* --- proof (video panels: kitchen + mountain) -------------------- */
+.mp-proof{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:28px}
+.mp-proof__panel{position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/5;background:var(--mp-ink-2);margin:0}
+.mp-proof__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.mp-proof__panel::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(22,19,15,.72));pointer-events:none}
+.mp-proof__panel--ph{background:repeating-linear-gradient(135deg,#2A241D 0 8px,#221D17 8px 16px)}
+.mp-proof__label{position:absolute;left:16px;bottom:14px;z-index:1;font-size:11px;letter-spacing:.1em;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6);margin:0}
+.mp-proof__panel--ph .mp-proof__label{color:var(--mp-amber-lt);text-shadow:none}
+.mp-proof__sound{position:absolute;top:12px;right:12px;z-index:1;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(22,19,15,.55);color:var(--mp-cream);cursor:pointer;backdrop-filter:blur(4px)}
+.mp-proof__sound:hover{background:var(--mp-ink)}
+.mp-proof__panel[data-sound-on] .mp-proof__wave{opacity:1}
+.mp-proof__wave{opacity:.35}
+@media(min-width:800px){
+  .mp-proof{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:36px}
+  .mp-proof__panel{aspect-ratio:3/4}
+  .mp-proof__label{left:20px;bottom:18px;font-size:11px}
+}
+/* three or four clips: let them wrap to a row on desktop */
+@media(min-width:1000px){
+  .mp-proof:has(> :nth-child(3)){grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+}
+
 /* --- roster (team page) ------------------------------------------- */
 .mp-roster{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(30px,6vw,52px);margin-top:32px}
 .mp-roster__card{min-width:0}

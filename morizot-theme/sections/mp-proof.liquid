@@ -1,0 +1,75 @@
+{% comment %}
+  mp-proof — two (or more) short video panels, side by side, that show the
+  real thing: the kitchen and the mountain. Muted autoplay loops with a small
+  mono label; tap a panel for sound. Drop it on the homepage and the team page.
+
+  Each clip is a block:
+  · video   — a video uploaded to Content → Files (Shopify hosts and transcodes)
+  · poster  — a still, shown until the video is set, and as the loading frame
+  · label   — the line over the clip ("We bake elite")
+{% endcomment %}
+{% render 'mp-assets' %}
+{%- assign s = section.settings -%}
+<div class="mp">
+  <section class="mp-wrap mp-flow" aria-labelledby="mp-proof-h-{{ section.id }}">
+    {%- if s.eyebrow != blank or s.title != blank -%}
+      <div class="mp-head mp-head--split mp-reveal">
+        <div>
+          {%- if s.eyebrow != blank -%}<p class="mp-mono mp-mono--accent">{{ s.eyebrow | escape }}</p>{%- endif -%}
+          {%- if s.title != blank -%}<h2 id="mp-proof-h-{{ section.id }}" class="mp-h2" style="margin-top:12px;max-width:24ch;">{{ s.title }}</h2>{%- endif -%}
+        </div>
+        {%- if s.body != blank -%}<p class="mp-body" style="max-width:36ch;">{{ s.body | escape }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mp-proof">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <figure class="mp-proof__panel mp-reveal{% unless b.video or b.poster %} mp-proof__panel--ph{% endunless %}" style="--mp-stagger:{{ forloop.index0 | times: 90 }}ms;" {{ block.shopify_attributes }}>
+          {%- if b.video != blank -%}
+            {{ b.video | video_tag:
+                image_size: '1400x',
+                autoplay: true, loop: true, muted: true, controls: false, playsinline: true,
+                preload: 'metadata',
+                class: 'mp-proof__video' }}
+            <button type="button" class="mp-proof__sound" aria-label="{{ 'Play with sound' }}" data-mp-sound>
+              <svg width="15" height="14" viewBox="0 0 15 14" aria-hidden="true"><path d="M1 4.5h3L8 1v12L4 9.5H1z" fill="currentColor"/><path class="mp-proof__wave" d="M11 4a4 4 0 0 1 0 6M12.7 2a7 7 0 0 1 0 10" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+            </button>
+          {%- elsif b.poster != blank -%}
+            {%- assign poster_alt = b.poster.alt | default: b.label | strip_html -%}
+            {{ b.poster | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 800px) 46vw, 100vw', widths: '600,900,1200,1600', alt: poster_alt, class: 'mp-proof__video' }}
+          {%- endif -%}
+          {%- if b.label != blank -%}<figcaption class="mp-proof__label mp-mono">{{ b.label | escape }}</figcaption>{%- endif -%}
+        </figure>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.footnote != blank -%}
+      <p class="mp-note mp-reveal" style="margin-top:20px;max-width:60ch;">{{ s.footnote | escape }}</p>
+    {%- endif -%}
+  </section>
+</div>
+{% schema %}
+{
+  "name": "MP Proof",
+  "tag": "div",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "No stock photos" },
+    { "type": "html", "id": "title", "label": "Title (use <em> for the italic accent)", "default": "We bake it. We <em>race</em> on it." },
+    { "type": "textarea", "id": "body", "label": "Standfirst", "default": "One of us trained in a Paris kitchen. One of us is out on the trail every week. The cake sits in the middle." },
+    { "type": "textarea", "id": "footnote", "label": "Footnote" }
+  ],
+  "blocks": [
+    { "type": "clip", "name": "Clip", "settings": [
+      { "type": "video", "id": "video", "label": "Video (upload to Content → Files first)" },
+      { "type": "image_picker", "id": "poster", "label": "Poster still (fallback + loading frame)" },
+      { "type": "text", "id": "label", "label": "Label", "default": "We bake elite" }
+    ]}
+  ],
+  "presets": [{ "name": "MP Proof", "blocks": [
+    { "type": "clip", "settings": { "label": "We bake elite" } },
+    { "type": "clip", "settings": { "label": "We're elite fit" } }
+  ]}]
+}
+{% endschema %}

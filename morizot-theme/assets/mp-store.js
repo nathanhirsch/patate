@@ -153,9 +153,38 @@
     });
   }
 
+  // proof — video panels. Play only while on screen; a button turns sound on.
+  function proof(){
+    document.querySelectorAll('.mp-proof__panel').forEach(function(panel){
+      if (panel.__mpProof) return; panel.__mpProof = true;
+      var video = panel.querySelector('video');
+      if (!video) return;
+
+      if (reduce) { video.removeAttribute('autoplay'); video.pause(); return; }
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if (en.isIntersecting) { var p = video.play(); if (p && p.catch) p.catch(function(){}); }
+            else video.pause();
+          });
+        }, { threshold: 0.25 }).observe(panel);
+      }
+
+      var btn = panel.querySelector('[data-mp-sound]');
+      if (btn) btn.addEventListener('click', function(){
+        video.muted = !video.muted;
+        video.controls = !video.muted;
+        if (video.muted) panel.removeAttribute('data-sound-on');
+        else { panel.setAttribute('data-sound-on', ''); var p = video.play(); if (p && p.catch) p.catch(function(){}); }
+      });
+    });
+  }
+
   function init(){
     reveal();
     menu();
+    proof();
     document.querySelectorAll('[data-mp-pdp]').forEach(pdp);
     reservation();
   }
